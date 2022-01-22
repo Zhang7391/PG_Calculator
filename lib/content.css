@@ -1,0 +1,244 @@
+/*  Copyright © 2021 Editor.PG All rights reserved
+	Unauthorized alteration, disseminate and use are prohibited. */
+
+html, body
+{
+	margin: 0;
+	height: 100%;
+	text-align: center;
+}
+
+h1
+{
+	color:#6c2dc7;
+	font-size:2em;
+	text-indent:0;
+	margin:0 0 0.05em;
+}
+
+h2
+{
+	font-size:1.6em;
+	font-weight:700;
+	/*color:#228b22;*/
+	text-indent:0;
+	text-align:center;
+}
+
+h3
+{
+	font-size: 1.3em;
+}
+
+div h2:nth-of-type(1), div h3:nth-of-type(1)
+{
+	margin-bottom: 0;
+}
+
+footer
+{
+	height: 35px;
+	line-height: 35px;
+	display: block;
+	text-align: center;
+	border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+
+footer p
+{
+	display: inline;
+}
+
+textarea
+{
+	width: 35%;
+	color: #ffffff;
+	min-height: 100px;
+	caret-color: #5efb6e;
+	background-color: #000000;
+}
+
+input[type="text"]
+{
+	width: 95.4%;
+	color: #ffffff;
+	padding: 5px 10px;
+	background-color: #000000;
+}
+
+#mainWeb
+{
+	min-height: 100%;
+	margin-bottom: -35px;
+}
+
+#content
+{
+	padding-bottom: 35px;
+}
+
+#enterValue
+{
+	width: 95%;
+	height: 24px;
+	padding:5px 5px; 
+	border:2px black solid;
+	cursor:pointer;
+	border-radius: 5px;
+    -moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	margin:0.05em 0 0.5em;
+}
+
+#resultView::election, input[type="text"]::election
+{
+	background-color:#00ff00;
+}
+#resultView::-moz-selection, input[type="text"]::-moz-selection
+{
+	background-color:#00ff00;
+}
+
+#historyInput
+{
+	box-shadow:inset 0px 1px 0px 0px #ad6de8;
+	background:linear-gradient(to bottom, #913ede 5%, #7e12e3 100%);
+	background-color:#913ede;
+	border-radius:4px;
+	border:1px solid #913ede;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 10px;
+	margin-bottom: 6px;
+	text-decoration:none;
+}
+#historyInput:hover 
+{
+	background:linear-gradient(to bottom, #7e12e3 5%, #913ede 100%);
+	background-color:#7e12e3;
+}
+#historyInput:active 
+{
+	position:relative;
+	top:1px;
+}
+
+#settingButtom
+{
+	color: #ffffff;
+	background-color: #228b22;
+	padding: 3px 4px;
+	border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+
+#settingBox
+{
+	text-align: left;
+}
+#gear
+{
+	font-size:24px;
+	color:#ceffce;
+	background-color: #228b22;
+	border-radius: 15px;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+}
+#trash
+{
+	color: #ff0000;
+	font-size: 18px;
+	background-color: #fbc0c0;
+	border-radius: 15px;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+}
+#trash2
+{
+	color: #ff0000;
+	font-size: 30px;
+	position: absolute;
+	padding: 1px 8px;
+	background-color:#fbc0c0;
+	border-radius: 23px;
+	-moz-border-radius: 23px;
+	-webkit-border-radius: 23px;
+}
+
+.historyViewer
+{
+	text-align:left;
+	text-indent:1em;
+}
+
+.check
+{
+	border-radius: 23px;
+	-moz-border-radius: 23px;
+	-webkit-border-radius: 23px;
+	color: #ffffff;
+	font-size: 15px;
+	background-color: #7e12e3;
+	padding: 10px 15px;
+}
+
+.alert-info 
+{
+	color: #31708f;
+	border-color: #bce8f1;
+	background-color: #d9edf7;
+}
+
+.alert-success
+{
+    color: #3c763d;
+    border-color: #d6e9c6;
+    background-color: #dff0d8;
+}
+
+.alert-warning 
+{
+	color: #8a6d3b;
+	border-color: #faebcc;
+	background-color: #fcf8e3;
+}
+
+.copyright
+{
+	color: #808080;
+	background-color: #d3d3d3;
+}
+
+.alert2 
+{
+	border: 1px solid transparent;
+	border-radius: 6px;
+	padding: 3px;
+}
+
+.po
+{
+	font-size:0.8em;
+	color:#888888;
+	text-indent:0;
+}
+
+.tableCenter
+{
+	margin: 0 auto;
+	width: 55%;
+}
+
+
+@font-face
+{
+	font-family: "Taipei";
+	src: url("./TaipeiSansTCBeta-Bold.ttf");
+}

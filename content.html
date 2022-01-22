@@ -1,0 +1,127 @@
+<!-- Copyright © 2021 Editor.PG All rights reserved -->
+<!-- Unauthorized alteration, disseminate and use are prohibited. -->
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./lib/content.css" type="text/css" />
+	<link rel="stylesheet" href="./lib/fontawesome.min.css" type="text/css" />
+    <link rel="shortcut icon" href="../logo.ico" type="image/vnd.microsoft.icon" />
+    <link rel="icon" href="../logo.ico" type="image/vnd.microsoft.icon" />
+	<script src="./decimal.js"></script>
+    <script src="./content.js" charset="UTF-8"></script>
+    <title>Easy Calculator</title>
+</head>
+
+<body>
+	<div id="mainWeb">
+		<div id="content">
+			<table hidden>
+				<tr>
+					<td>Calculator Mode: </td>
+					<td>
+						<select>
+							<option value="0">Infix Notation Calculator</option>
+							<option value="1">Prefix Notation Calculator</option>
+							<option value="2">Postfix Notation Calculator</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+
+			<h1 id="topTitle">Infix Notation Calculator</h1>
+
+			<div>
+				<div id="calculatorMod">
+					<table class="tableCenter">
+						<tr>
+							<td>
+								<input id="enterValue" name="massage" placeholder="Please enter your Postfix Notation." />
+							</td>
+							<td>
+								<a id="historyInput">▾</a>
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<p><input id="postfix" class="check" type="submit" value="Calculation" hidden /></p>
+
+				<p><input id="prefix" class="check" type="submit" value="Calculation" hidden /></p>
+
+				<p><input id="infix" class="check" style="display:inline;" type="submit" value="Calculation" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				
+				<button id="trash2"><i class="fa fa-trash"></i></button></p>
+
+				<div id="historyMod" hidden>
+					<div style="text-indent:0;text-align:left;">
+						<table class="tableCenter">
+							<tr>
+								<td style="width:130px"><b>calculate history</b></td>
+								<td><button id="trash"><i class="fa fa-trash"></i></button></td>
+							</tr>
+						</table>
+					</div>
+					<div>
+						<table id="historyShow" class="tableCenter">
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<div id="settingBox">
+				<button id="gear"><i class="fa fa-gear fa-spin-hover"></i></button>
+
+				<table id="setting" hidden>
+					<caption style="color:#228b22;font-size:1.1em"><b>Settings</b></caption>
+
+					<tr>
+						<td>Result maximum fractional digits</td>
+						<td><input id="Result_Maximum_Fractional" /></td>
+					</tr>
+					<tr>
+						<td>History maximum fractional digits</td>
+						<td><input id="History_Maximum_Fractional" /></td>
+					</tr>
+					<tr>
+						<td>Calculate history maximum record</td>
+						<td><input id="Calculate_History_Maximum" /></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td style="text-align:center;"><input id="settingButtom" type="submit" value="Update" /></td>
+					</tr>
+				</table>
+			</div>
+
+			<p>&nbsp;</p>
+
+			<div class="alert-success alert2">
+				<h2>conversion result</h2>
+
+				<textarea id="resultView" readonly>...</textarea>
+			</div>
+
+			<div id="infixToPostfix" class="alert-warning alert2" hidden>
+				<h3>other notation result</h3>
+
+				<table class="tableCenter" style="width:35%">
+					<tr>
+						<td style="width:5%">postfix notation</td>
+						<td style="width:30%"><input id="postfixResultView" type="text" value="..." readonly /></td>
+					</tr>
+					<tr hidden>
+						<td>prefix notation</td>
+						<td><input id="prefixResultView" type="text" value="..." readonly /></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<footer class="copyright">
+		<p>Copyright &copy; 2021 Editor.PG All rights reserved</p>
+	</footer>
+</body>
+</html>
