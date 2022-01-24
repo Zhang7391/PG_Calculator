@@ -13,7 +13,9 @@
 
 ## pending bugs
 
-- [ ]Too many decimal places(To use scientific notation to display)
-- [ ]Historical record fractional inaccuracy
-- [ ]Prevention XSS attack
-- [ ]Modular Code
+- [ ] Too many decimal places(To use exponential to display)
+- [ ] Historical record fractional inaccuracy
+- [ ] Prevention XSS attack
+- [ ] Modular Code
+- [ ] Incorrect input position in \#enterValue
+- [ ] History's localStorage(ID: userInputHistory) save mod reorganization

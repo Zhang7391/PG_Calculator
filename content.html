@@ -1,5 +1,14 @@
-<!-- Copyright © 2021 Editor.PG All rights reserved -->
-<!-- Unauthorized alteration, disseminate and use are prohibited. -->
+<!--***************************************************/
+//                                                     /
+// Copyright (c) 2021 zhang7391 All rights reserved    /
+//             <zhang7391@protonmail.com>              /
+//                                                     /
+// License: GNU General Public License v3.0            /
+// Github: https://github.com/Zhang7391/PG_Calculator  /
+//                                                     / 
+// Please keep this information if you use this code.  /
+//                                                     /
+//************************************************** -->
 
 <!doctype html>
 <html>
@@ -7,30 +16,18 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="./lib/content.css" type="text/css" />
 	<link rel="stylesheet" href="./lib/fontawesome.min.css" type="text/css" />
-    <link rel="shortcut icon" href="../logo.ico" type="image/vnd.microsoft.icon" />
-    <link rel="icon" href="../logo.ico" type="image/vnd.microsoft.icon" />
+    <link rel="shortcut icon" href="./logo.ico" type="image/vnd.microsoft.icon" />
+    <link rel="icon" href="./logo.ico" type="image/vnd.microsoft.icon" />
 	<script src="./decimal.js"></script>
-    <script src="./content.js" charset="UTF-8"></script>
-    <title>Easy Calculator</title>
+    <script src="./content.js"></script>
+	<script src="./PGcalculator.js"></script>
+    <title>PG Calculator</title>
 </head>
 
 <body>
 	<div id="mainWeb">
 		<div id="content">
-			<table hidden>
-				<tr>
-					<td>Calculator Mode: </td>
-					<td>
-						<select>
-							<option value="0">Infix Notation Calculator</option>
-							<option value="1">Prefix Notation Calculator</option>
-							<option value="2">Postfix Notation Calculator</option>
-						</select>
-					</td>
-				</tr>
-			</table>
-
-			<h1 id="topTitle">Infix Notation Calculator</h1>
+			<h1 id="topTitle">Calculator</h1>
 
 			<div>
 				<div id="calculatorMod">
@@ -45,10 +42,6 @@
 						</tr>
 					</table>
 				</div>
-
-				<p><input id="postfix" class="check" type="submit" value="Calculation" hidden /></p>
-
-				<p><input id="prefix" class="check" type="submit" value="Calculation" hidden /></p>
 
 				<p><input id="infix" class="check" style="display:inline;" type="submit" value="Calculation" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				
@@ -102,26 +95,11 @@
 
 				<textarea id="resultView" readonly>...</textarea>
 			</div>
-
-			<div id="infixToPostfix" class="alert-warning alert2" hidden>
-				<h3>other notation result</h3>
-
-				<table class="tableCenter" style="width:35%">
-					<tr>
-						<td style="width:5%">postfix notation</td>
-						<td style="width:30%"><input id="postfixResultView" type="text" value="..." readonly /></td>
-					</tr>
-					<tr hidden>
-						<td>prefix notation</td>
-						<td><input id="prefixResultView" type="text" value="..." readonly /></td>
-					</tr>
-				</table>
-			</div>
 		</div>
 	</div>
 
 	<footer class="copyright">
-		<p>Copyright &copy; 2021 Editor.PG All rights reserved</p>
+		<p id="license">Copyright (c) 2022 zhang7391 All rights reserved(click me)</p>
 	</footer>
 </body>
 </html>

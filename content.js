@@ -1,208 +1,18 @@
-// Copyright Ã‚Â© 2021 Editor.PG All rights reserved
-// Unauthorized alteration, disseminate and use are prohibited.
+//*****************************************************/
+//                                                     /
+// Copyright (c) 2021 zhang7391 All rights reserved    /
+//             <zhang7391@protonmail.com>              /
+//                                                     /
+// License: GNU General Public License v3.0            /
+// Github: https://github.com/Zhang7391/PG_Calculator  /
+//                                                     / 
+// Please keep this information if you use this code.  /
+//                                                     /
+//*****************************************************/
 
-const haveBottom = 
+class core
 {
-	"0" : "Infix", 
-	"1" : "Prefix",
-	"2" : "Postfix"
-};
-
-document.addEventListener("keyup", (press) =>
-{
-	localStorage.userInputHistory = document.querySelector("#enterValue").value;
-	document.querySelector("#infix").click();
-
-	if(localStorage.userInputHistory !== document.querySelector("#enterValue").value)
-	{
-		localStorage.userInputHistory = document.querySelector("#enterValue").value;
-
-		for(let page of Object.keys(haveBottom))
-			if(!document.querySelector(`#${haveBottom[page].toLowerCase()}`).hidden)
-				document.querySelector(`#${haveBottom[page].toLowerCase()}`).click();
-
-		if(document.querySelector("#enterValue").value === "")
-		{
-			localStorage.viewResultPrint =
-			document.querySelector("#resultView").value = "...";
-			localStorage.postfixResult = 
-			document.querySelector("#postfixResultView").value = "...";
-		}
-	}
-	
-	if(press.keyCode === 13)	//enter
-	{
-		localStorage.historyReview = "-1";
-		try
-		{
-			let result = new Decimal(document.querySelector("#resultView").value);
-			if(result.minus(result.toFixed(0)).toString().length > parseInt(localStorage.HistoryMaximumFractional)+3) result = result.toFixed(parseInt(localStorage.HistoryMaximumFractional));
-		
-			localStorage.CalculateHistory += (',' + document.querySelector("#enterValue").value.replaceAll(',',' ') + " = " + result.toString());
-
-			for(x of document.querySelectorAll(".historyViewer")) document.querySelector("#historyShow").removeChild(x);
-
-			let calculateData = localStorage.CalculateHistory.split(',');
-			calculateData.shift();
-
-			let now = 0, num = calculateData.length - 1;
-			while(parseInt(localStorage.CalculateHistoryMaximum) > now && calculateData.length > now)
-			{
-				let tr = document.createElement("tr"), td = document.createElement("td");
-				td.innerHTML = calculateData[num - now];
-				td.addEventListener("click", (itself) => {localStorage.userInputHistory = document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];document.querySelector("#infix").click();localStorage.viewResultPrint = document.querySelector("#resultView").value;document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];});
-				tr.appendChild(td);
-				tr.className = "historyViewer";
-				document.querySelector("#historyShow").appendChild(tr);
-				now += 1;
-			}
-		}
-		catch {;}
-	}
-	else if(press.keyCode === 38)	//up arrow
-	{
-		let calculateData = localStorage.CalculateHistory.split(',');
-		calculateData.shift();
-
-		if(localStorage.historyReview === "0") ;
-		else if(localStorage.historyReview === "-1") localStorage.historyReview = calculateData.length - 1;
-		else localStorage.historyReview = parseInt(localStorage.historyReview) - 1;
-
-		localStorage.userInputHistory =
-		document.querySelector("#enterValue").value = calculateData[parseInt(localStorage.historyReview)].split('=')[0];
-		document.querySelector("#infix").click();
-		localStorage.viewResultPrint = document.querySelector("#resultView").value;
-		document.querySelector("#enterValue").value = calculateData[parseInt(localStorage.historyReview)].split('=')[0];
-	}
-	else if(press.keyCode === 40)	//down arrow
-	{
-		let calculateData = localStorage.CalculateHistory.split(',');
-		calculateData.shift();
-
-		let place = parseInt(localStorage.historyReview);
-		if(calculateData.length-1 > place) localStorage.historyReview = place + 1;
-
-		localStorage.userInputHistory =
-		document.querySelector("#enterValue").value = calculateData[parseInt(localStorage.historyReview)].split('=')[0];
-		document.querySelector("#infix").click();
-		localStorage.viewResultPrint = document.querySelector("#resultView").value;
-		document.querySelector("#enterValue").value = calculateData[parseInt(localStorage.historyReview)].split('=')[0];
-	}
-});
-
-window.addEventListener("load", () =>
-{
-	document.querySelector("#calculatorMod").addEventListener("change", () =>
-	{
-		localStorage.nowMod = document.querySelector("#calculatorMod").value;
-
-		for(let page of Object.keys(haveBottom))
-		{
-			if(page === localStorage.nowMod)
-			{
-				document.querySelector(`#${haveBottom[page].toLowerCase()}`).hidden = false;
-				document.querySelector("#topTitle").innerHTML = `${haveBottom[page]} Notation Calculator`;
-			}
-			else document.querySelector(`#${haveBottom[page].toLowerCase()}`).hidden = true;
-		}
-
-		if(/Infix|Prefix/.test(haveBottom[localStorage.nowMod]))
-		{
-			localStorage.postfixResultView = "false";
-			document.querySelector("#infixToPostfix").hidden = false;
-		}
-		else 
-		{
-			localStorage.postfixResult = "...";
-			localStorage.postfixResultView = "true";
-			document.querySelector("#infixToPostfix").hidden = true;
-			document.querySelector("#postfixResultView").value = "...";
-		}
-	});
-
-	document.querySelector("#historyInput").addEventListener("click", () =>
-	{
-		if(document.querySelector("#historyMod").hidden) document.querySelector("#historyMod").hidden = false;
-		else document.querySelector("#historyMod").hidden = true;
-	});
-
-	document.querySelector("#trash").addEventListener("click", () =>
-	{
-		localStorage.CalculateHistory = "";
-		for(x of document.querySelectorAll(".historyViewer")) document.querySelector("#historyShow").removeChild(x);
-	});
-
-	document.querySelector("#trash2").addEventListener("click", () =>
-	{
-		document.querySelector("#resultView").value =
-		localStorage.viewResultPrint = "...";
-		document.querySelector("#resultView").style.color =
-		localStorage.viewResultColor = "#ffffff";
-
-		localStorage.userInputHistory =
-		document.querySelector("#enterValue").value = "";
-	});
-
-	document.querySelector("#gear").addEventListener("click", () =>
-	{
-		if(document.querySelector("#setting").hidden) document.querySelector("#setting").hidden = false;
-		else document.querySelector("#setting").hidden = true;
-	});
-
-	document.querySelector("#settingButtom").addEventListener("click", () =>
-	{
-		let x = parseInt(document.querySelector("#History_Maximum_Fractional").value)
-		if(!isNaN(x) && 1000 >= x && x >= 0) 
-		{
-			localStorage.HistoryMaximumFractional = x;
-			document.querySelector("#History_Maximum_Fractional").placeholder = `${x} (0~1000)`;
-		}
-		document.querySelector("#History_Maximum_Fractional").value = "";
-
-		x = parseInt(document.querySelector("#Result_Maximum_Fractional").value);
-		if(!isNaN(x) && 1000 >= x && x >= 0)
-		{
-			localStorage.ResultMaximumFractional = x;
-			document.querySelector("#Result_Maximum_Fractional").placeholder = `${x} (0~1000)`;
-			document.querySelector("#infix").click();
-		}
-		document.querySelector("#Result_Maximum_Fractional").value = "";
-
-		x = parseInt(document.querySelector("#Calculate_History_Maximum").value);
-		if(!isNaN(x) && x >= 0)
-		{
-			localStorage.CalculateHistoryMaximum = x;
-			document.querySelector("#Calculate_History_Maximum").placeholder = `${x} (â‰§0)`;
-
-			if(document.querySelector("#historyShow").children.length > x)
-			{
-				let historyViewer = Array.from(document.querySelectorAll(".historyViewer"));
-				while(historyViewer.length > x) document.querySelector("#historyShow").removeChild(historyViewer.pop());
-			}
-			else
-			{
-				for(x of document.querySelectorAll(".historyViewer")) document.querySelector("#historyShow").removeChild(x);
-
-				let calculateData = localStorage.CalculateHistory.split(',');
-				calculateData.shift();
-
-				let now = 0, num = calculateData.length - 1;
-				while(parseInt(localStorage.CalculateHistoryMaximum) > now && calculateData.length > now)
-				{
-					let tr = document.createElement("tr"), td = document.createElement("td");
-					td.innerHTML = calculateData[num - now];
-					td.addEventListener("click", (itself) => {localStorage.userInputHistory = document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];document.querySelector("#infix").click();localStorage.viewResultPrint = document.querySelector("#resultView").value;document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];});
-					tr.appendChild(td);
-					tr.className = "historyViewer";
-					document.querySelector("#historyShow").appendChild(tr);
-					now += 1;
-				}
-			}
-		}
-		document.querySelector("#Calculate_History_Maximum").value = "";
-	});
-
-	document.querySelector("#infix").addEventListener("click", () =>
+	calculation(algorithm)
 	{
 		const tool = new toolbox();
 		const weighting =
@@ -219,7 +29,7 @@ window.addEventListener("load", () =>
 		let needChange = false, endBracket = false;
 		let numStack = [], operStack = [];
 
-		unlawful: for(let x of tool.plusSplit(tool.Standardization(document.querySelector("#enterValue").value).split(/(-\d+\.\d+)|(\d+\.\d+)|(-\d+)|(\d+)/)))
+		unlawful: for(let x of tool.plusSplit(tool.Standardization(algorithm).split(/(-\d+\.\d+)|(\d+\.\d+)|(-\d+)|(\d+)/)))
 		{
 			if(x.trim().length === 0) continue;
 			let nd;
@@ -337,6 +147,7 @@ window.addEventListener("load", () =>
 		}
 		while(!!operStack.length) 
 		{
+			let nd;
 			if(endBracket)
 			{
 				while(!/\(/.test(operStack[operStack.length - 1]) && operStack.length !== 0)
@@ -373,31 +184,11 @@ window.addEventListener("load", () =>
 				numStack.push(`${numStack.pop()} ${nd} ${operStack.pop()}`);
 			}
 		}
-
-		if(numStack[0] === undefined)
-		{
-			localStorage.postfixResult =
-			document.querySelector("#postfixResultView").value = "...";
-		}
-		else
-		{
-			localStorage.postfixResult = 
-			document.querySelector("#postfixResultView").value = numStack[0].replace(/undefined/g, "").replace(/\(\*/g, "*").replace(/\(\-/g, "-");
-			document.querySelector("#enterValue").value = numStack[0].replace(/undefined|\)/g, "");
-			document.querySelector("#postfix").click();
-			document.querySelector("#enterValue").value = localStorage.userInputHistory;
-		}
-	});
-
-	Decimal.set({precision: 1000, toExpNeg: -9e15, toExpPos: 9e15, rounding: Decimal.ROUND_DOWN})
-	document.querySelector("#postfix").addEventListener("click", () =>
-	{
-		const tool = new toolbox();
+		
 		let stack = [], fractional = 0;
 		let error = false, error2 = false, errorMsg = [0, ""];
-		
-			
-		unlawful: for(let x of tool.plusSplit(tool.Standardization(document.querySelector("#enterValue").value).split(/(-\d+\.\d+)|(\d+\.\d+)|(-\d+)|(\d+)/)))
+					
+		unlawful: for(let x of numStack[0].replace(/undefined|\)/g, "").split(' '))
 		{
 			if(x === " " || /[^\*\^\-\+\/\s\d\.]/.test(x)) continue;
 			errorMsg[0] += 1;
@@ -472,11 +263,179 @@ window.addEventListener("load", () =>
 				stack.push(new Decimal(x));
 			}
 		}
+		
+		return (stack[0] === undefined)? undefined : stack[0].toString()
+//		tool.setResultView(error, error2, stack.length, stack[0], errorMsg[0], errorMsg[1], fractional)
+	}
+}
+Decimal.set({precision: 1000, toExpNeg: -9e15, toExpPos: 9e15, rounding: Decimal.ROUND_DOWN})
 
-		tool.setResultView(error, error2, stack.length, stack[0], errorMsg[0], errorMsg[1], fractional)
+class localStorageUpdate
+{
+	constructor()
+	{
+	}
+	
+	userInputHistory_Update(algorithm)
+	{
+		if(localStorage.userInputHistory !== algorithm)
+		{
+			localStorage.userInputHistory = algorithm;
+
+			if(algorithm === "") localStorage.viewResultPrint = "...";
+		}
+	}
+	
+	CalculateHistory_Update(algorithm, result)
+	{
+		localStorage.CalculateHistory += (',' + algorithm.replaceAll(',','') + " = " + result.toString());
+	}
+	
+	viewResultPrint_Update(result)
+	{
+		localStorage.viewResultPrint = result;
+	}
+	
+	historyReview_Update(num, mod)
+	{
+		switch(mod)
+		{
+		case this.SET:
+			localStorage.historyReview = num.toString();
+			break;
+		
+		case this.MINUS:
+			localStorage.historyReview = (parseInt(localStorage.historyReview) - num).toString();
+			break;
+		
+		case this.ADD:
+			localStorage.historyReview = (parseInt(localStorage.historyReview) + num).toString();
+			break;
+		}
+	}
+	
+	get SET() {return "set";}
+	get ADD() {return "add";}
+	get DEL() {return "delete";}
+	get MINUS() {return "nimus";}
+}
+
+window.addEventListener("load", () =>
+{
+	// DEPRECATED
+	/*document.querySelector("#calculatorMod").addEventListener("change", () =>
+	{
+		localStorage.nowMod = document.querySelector("#calculatorMod").value;
+
+		for(let page of Object.keys(haveBottom))
+		{
+			if(page === localStorage.nowMod)
+			{
+				document.querySelector(`#${haveBottom[page].toLowerCase()}`).hidden = false;
+				document.querySelector("#topTitle").innerHTML = `${haveBottom[page]} Notation Calculator`;
+			}
+			else document.querySelector(`#${haveBottom[page].toLowerCase()}`).hidden = true;
+		}
+
+		if(/Infix|Prefix/.test(haveBottom[localStorage.nowMod]))
+		{
+			localStorage.postfixResultView = "false";
+			document.querySelector("#infixToPostfix").hidden = false;
+		}
+		else 
+		{
+			localStorage.postfixResult = "...";
+			localStorage.postfixResultView = "true";
+			document.querySelector("#infixToPostfix").hidden = true;
+			document.querySelector("#postfixResultView").value = "...";
+		}
+	});*/
+
+	document.querySelector("#historyInput").addEventListener("click", () =>
+	{
+		if(document.querySelector("#historyMod").hidden) document.querySelector("#historyMod").hidden = false;
+		else document.querySelector("#historyMod").hidden = true;
 	});
 
-	document.querySelector("#prefix").addEventListener("click", () =>
+	document.querySelector("#trash").addEventListener("click", () =>
+	{
+		localStorage.CalculateHistory = "";
+		for(x of document.querySelectorAll(".historyViewer")) document.querySelector("#historyShow").removeChild(x);
+	});
+
+	document.querySelector("#trash2").addEventListener("click", () =>
+	{
+		document.querySelector("#resultView").value =
+		localStorage.viewResultPrint = "...";
+		document.querySelector("#resultView").style.color =
+		localStorage.viewResultColor = "#ffffff";
+
+		localStorage.userInputHistory =
+		document.querySelector("#enterValue").value = "";
+	});
+
+	document.querySelector("#gear").addEventListener("click", () =>
+	{
+		if(document.querySelector("#setting").hidden) document.querySelector("#setting").hidden = false;
+		else document.querySelector("#setting").hidden = true;
+	});
+
+	document.querySelector("#settingButtom").addEventListener("click", () =>
+	{
+		let x = parseInt(document.querySelector("#History_Maximum_Fractional").value)
+		if(!isNaN(x) && 1000 >= x && x >= 0) 
+		{
+			localStorage.HistoryMaximumFractional = x;
+			document.querySelector("#History_Maximum_Fractional").placeholder = `${x} (0~1000)`;
+		}
+		document.querySelector("#History_Maximum_Fractional").value = "";
+
+		x = parseInt(document.querySelector("#Result_Maximum_Fractional").value);
+		if(!isNaN(x) && 1000 >= x && x >= 0)
+		{
+			localStorage.ResultMaximumFractional = x;
+			document.querySelector("#Result_Maximum_Fractional").placeholder = `${x} (0~1000)`;
+			document.querySelector("#infix").click();
+		}
+		document.querySelector("#Result_Maximum_Fractional").value = "";
+
+		x = parseInt(document.querySelector("#Calculate_History_Maximum").value);
+		if(!isNaN(x) && x >= 0)
+		{
+			localStorage.CalculateHistoryMaximum = x;
+			document.querySelector("#Calculate_History_Maximum").placeholder = `${x} (â‰§0)`;
+
+			if(document.querySelector("#historyShow").children.length > x)
+			{
+				let historyViewer = Array.from(document.querySelectorAll(".historyViewer"));
+				while(historyViewer.length > x) document.querySelector("#historyShow").removeChild(historyViewer.pop());
+			}
+			else
+			{
+				for(x of document.querySelectorAll(".historyViewer")) document.querySelector("#historyShow").removeChild(x);
+
+				let calculateData = localStorage.CalculateHistory.split(',');
+				calculateData.shift();
+
+				let now = 0, num = calculateData.length - 1;
+				while(parseInt(localStorage.CalculateHistoryMaximum) > now && calculateData.length > now)
+				{
+					let tr = document.createElement("tr"), td = document.createElement("td");
+					td.innerHTML = calculateData[num - now];
+					td.addEventListener("click", (itself) => {localStorage.userInputHistory = document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];document.querySelector("#infix").click();localStorage.viewResultPrint = document.querySelector("#resultView").value;document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];});
+					tr.appendChild(td);
+					tr.className = "historyViewer";
+					document.querySelector("#historyShow").appendChild(tr);
+					now += 1;
+				}
+			}
+		}
+		document.querySelector("#Calculate_History_Maximum").value = "";
+	});
+
+//	document.querySelector("#postfix").addEventListener("click", () => {});
+
+/*	document.querySelector("#prefix").addEventListener("click", () =>
 	{
 		let  tool = new toolbox();
 		let x = tool.plusSplit(localStorage.userInputHistory.split(/(\d+\.\d+)|(-\d+)|(\d+)/)).filter(y => /[\*\^\-\+\/\d\.]/.test(y));
@@ -512,65 +471,13 @@ window.addEventListener("load", () =>
 		document.querySelector("#postfix").click();
 
 		document.querySelector("#enterValue").value = localStorage.userInputHistory;
-	});
+	});*/
 
-	if(!localStorage.nowMod) localStorage.nowMod = "0";
-	for(let page of Object.keys(haveBottom))
-	{
-		if(page === localStorage.nowMod)
-		{
-			document.querySelector(`#${haveBottom[page].toLowerCase()}`).hidden = false;
-			document.querySelector("#topTitle").innerHTML = `${haveBottom[page]} Notation Calculator`;
-		}
-		else document.querySelector(`#${haveBottom[page].toLowerCase()}`).hidden = true;
-	}
-	document.querySelector("#calculatorMod").value = localStorage.nowMod;
+//	if(!localStorage.postfixResult) localStorage.postfixResult = "...";
+//	document.querySelector("#infixToPostfix").value = localStorage.postfixResult;
 
-	if(!localStorage.viewResultColor) localStorage.viewResultColor = "#ffffff";
-	document.querySelector("#resultView").style.color = localStorage.viewResultColor;
-
-	if(!localStorage.viewResultPrint) localStorage.viewResultPrint = "...";
-	document.querySelector("#resultView").value = localStorage.viewResultPrint;
-
-	if(!localStorage.userInputHistory) localStorage.userInputHistory = "";
-	document.querySelector("#enterValue").value = localStorage.userInputHistory;
-
-	if(!localStorage.postfixResult) localStorage.postfixResult = "...";
-	document.querySelector("#infixToPostfix").value = localStorage.postfixResult;
-
-	if(!localStorage.postfixResultView) localStorage.postfixResultView = "false";
-	document.querySelector("#infixToPostfix").hidden = (localStorage.postfixResultView === "true");
-
-	if(!localStorage.ResultMaximumFractional) localStorage.ResultMaximumFractional = "1000";
-	document.querySelector("#Result_Maximum_Fractional").placeholder = `${localStorage.ResultMaximumFractional} (0~1000)`;
-	Decimal.set({precision: parseInt(localStorage.ResultMaximumFractional)});
-
-	if(!localStorage.HistoryMaximumFractional) localStorage.HistoryMaximumFractional = "10";
-	document.querySelector("#History_Maximum_Fractional").placeholder = `${localStorage.HistoryMaximumFractional} (0~1000)`;
-
-	if(!localStorage.CalculateHistoryMaximum) localStorage.CalculateHistoryMaximum = "5";
-	document.querySelector("#Calculate_History_Maximum").placeholder = `${localStorage.CalculateHistoryMaximum} (â‰§0)`;
-
-	if(!localStorage.CalculateHistory) localStorage.CalculateHistory = "";
-	if(localStorage.CalculateHistory !== "")
-	{
-		let calculateData = localStorage.CalculateHistory.split(',');
-		calculateData.shift();
-
-		let now = 0, num = calculateData.length - 1;
-		while(parseInt(localStorage.CalculateHistoryMaximum) > now && calculateData.length > now)
-		{
-			let tr = document.createElement("tr"), td = document.createElement("td");
-			td.innerHTML = calculateData[num - now];
-			td.addEventListener("click", (itself) => {localStorage.userInputHistory = document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];document.querySelector("#infix").click();localStorage.viewResultPrint = document.querySelector("#resultView").value;document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];});
-			tr.appendChild(td);
-			tr.className = "historyViewer";
-			document.querySelector("#historyShow").appendChild(tr);
-			now += 1;
-		}
-	}
-
-	if(!localStorage.historyReview) localStorage.historyReview = "-1";
+//	if(!localStorage.postfixResultView) localStorage.postfixResultView = "false";
+//	document.querySelector("#infixToPostfix").hidden = (localStorage.postfixResultView === "true");
 });
 
 class toolbox
@@ -579,23 +486,24 @@ class toolbox
 	{
 		return userInput
 			.replace(/\s+/g, " ")
-			.replace(/Ã¯Â¼/g, "0")
-			.replace(/Ã¯Â¼â€˜/g, "1")
-			.replace(/Ã¯Â¼â€™/g, "2")
-			.replace(/Ã¯Â¼â€œ/g, "3")
-			.replace(/Ã¯Â¼â€/g, "4")
-			.replace(/Ã¯Â¼â€¢/g, "5")
-			.replace(/Ã¯Â¼â€“/g, "6")
-			.replace(/Ã¯Â¼â€”/g, "7")
-			.replace(/Ã¯Â¼Ëœ/g, "8")
-			.replace(/Ã¯Â¼â„¢/g, "9")
-			.replace(/Ã¯Â¼â€¹/g, "+")
-			.replace(/Ã¯Â¼/g, "-")
-			.replace(/Ã¯Â¸Â¿/g, "^")
-			.replace(/Ã¯Â¼Ë†/g, "(")
-			.replace(/Ã¯Â¼â€°/g, ")")
-			.replace(/[ÃƒÂ·Ã¯Â¼]/g, "/")
-			.replace(/[xÃƒâ€”XÃ¯Â½ËœÃ¯Â¼Â¸Ã¯Â¼Å]/g, "*");
+			.replace(/\uff10/ug, "0")
+			.replace(/\uff11/ug, "1")
+			.replace(/\uff12/ug, "2")
+			.replace(/\uff13/ug, "3")
+			.replace(/\uff14/ug, "4")
+			.replace(/\uff15/ug, "5")
+			.replace(/\uff16/ug, "6")
+			.replace(/\uff17/ug, "7")
+			.replace(/\uff18/ug, "8")
+			.replace(/\uff19/ug, "9")
+			.replace(/\uff0b/ug, "+")
+			.replace(/\uff0d/ug, "-")
+			.replace(/\ufe3f/ug, "^")
+			.replace(/\uff08/ug, "(")
+			.replace(/\uff09/ug, ")")
+			.replace(/[\uff0f\u00f7]/ug, "/")
+			.replace(/[\u00d7\uff58\uff38]/ug, "*")
+			.replace(/[xX]/g, "*");
 	}
 
 	plusSplit(strArray)
@@ -621,7 +529,7 @@ class toolbox
 		{
 			viewMsg.style.color = "#ff0000";
 			localStorage.viewResultColor = "#ff0000";
-			document.querySelector("#postfixResultView").value = "?";
+//			document.querySelector("#postfixResultView").value = "?";
 			document.querySelector("#resultView").value = "Error! Unlawful Infix Notation! (in " + errorPlace + ": \"" + errorMsg + "\" is not a operator or operand)";
 			localStorage.viewResultPrint = document.querySelector("#resultView").value;
 		}
@@ -629,8 +537,8 @@ class toolbox
 		{
 			viewMsg.style.color =
 			localStorage.viewResultColor = "#ff0000";
-			document.querySelector("#postfixResultView").value =
-			localStorage.postfixResult = "?";
+//			document.querySelector("#postfixResultView").value =
+//			localStorage.postfixResult = "?";
 			document.querySelector("#resultView").value =
 			localStorage.viewResultPrint = "Operator are too much!";
 		}
@@ -638,8 +546,8 @@ class toolbox
 		{
 			viewMsg.style.color =
 			localStorage.viewResultColor = "#ff0000";
-			document.querySelector("#postfixResultView").value =
-			localStorage.postfixResult = "?";
+//			document.querySelector("#postfixResultView").value =
+//			localStorage.postfixResult = "?";
 			document.querySelector("#resultView").value =
 			localStorage.viewResultPrint = "Operand are too much!";
 		}
@@ -650,8 +558,8 @@ class toolbox
 			case "A space between two numbers":
 				document.querySelector("#resultView").style.color =
 				localStorage.viewResultColor = "#ff0000";
-				document.querySelector("#postfixResultView").value =
-				localStorage.postfixResult = "?";
+//				document.querySelector("#postfixResultView").value =
+//				localStorage.postfixResult = "?";
 				document.querySelector("#resultView").value = "A space between two numbers is unlawful";
 				localStorage.viewResultPrint = document.querySelector("#resultView").value;
 				break;
