@@ -245,6 +245,11 @@ input[type="text"]
 	width: 55%;
 }
 
+.center{text-align: center;}
+
+.red{color: #ff0000;}
+.green{color: #00ff00;}
+
 
 @font-face
 {

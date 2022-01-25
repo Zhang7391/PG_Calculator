@@ -27,13 +27,16 @@ window.addEventListener("load", () =>
 	
 	//Settings initialization
 	if(!localStorage.ResultMaximumFractional) localStorage.ResultMaximumFractional = "1000";
+	document.querySelector("#Result_Maximum_Fractional").value = localStorage.ResultMaximumFractional;
 	document.querySelector("#Result_Maximum_Fractional").placeholder = `${localStorage.ResultMaximumFractional} (0~1000)`;
 	Decimal.set({precision: parseInt(localStorage.ResultMaximumFractional)});
 
 	if(!localStorage.HistoryMaximumFractional) localStorage.HistoryMaximumFractional = "10";
+	document.querySelector("#History_Maximum_Fractional").value = localStorage.HistoryMaximumFractional;
 	document.querySelector("#History_Maximum_Fractional").placeholder = `${localStorage.HistoryMaximumFractional} (0~1000)`;
 
 	if(!localStorage.CalculateHistoryMaximum) localStorage.CalculateHistoryMaximum = "5";
+	document.querySelector("#Calculate_History_Maximum").value = localStorage.CalculateHistoryMaximum;
 	document.querySelector("#Calculate_History_Maximum").placeholder = `${localStorage.CalculateHistoryMaximum} (>=0)`;
 
 	//History initialization
@@ -150,8 +153,158 @@ window.addEventListener("load", () =>
 			}
 		}
 		
-		let ans = PGcore.calculation(document.querySelector("#enterValue").value);
-		document.querySelector("#resultView").value = ans;
+		let result = PGcore.calculation(document.querySelector("#enterValue").value);
+		document.querySelector("#resultView").value = result;
+	});
+	
+	document.querySelector("#settingButtom").addEventListener("click", () =>
+	{
+		let asari = new localStorageUpdate();
+		
+		let x = parseInt(document.querySelector("#History_Maximum_Fractional").value);
+		let old = document.querySelector("#History_Maximum_Fractional").placeholder.split(' ')[0];
+		if(!isNaN(x) && 1000 >= x && x >= 0) 
+		{
+			if(parseInt(old) !== x)
+			{
+				asari.HistoryMaximumFractional_Update(x);
+				document.querySelector("#History_Maximum_Fractional").value = x;
+				document.querySelector("#History_Maximum_Fractional").placeholder = `${x} (0~1000)`;
+			
+				document.querySelector("#History_Maximum_Fractional_Error").hidden = true;
+				document.querySelector("#History_Maximum_Fractional_Success").hidden = false;
+			}
+			else 
+			{
+				document.querySelector("#History_Maximum_Fractional_Error").hidden = true;
+				document.querySelector("#History_Maximum_Fractional_Success").hidden = true;
+			}
+		}
+		else
+		{
+			document.querySelector("#History_Maximum_Fractional").value = old;
+			document.querySelector("#History_Maximum_Fractional_Error").hidden = false;
+			document.querySelector("#History_Maximum_Fractional_Success").hidden = true;
+		}
+
+		x = parseInt(document.querySelector("#Result_Maximum_Fractional").value);
+		old = document.querySelector("#Result_Maximum_Fractional").placeholder.split(' ')[0];
+		if(!isNaN(x) && 1000 >= x && x >= 0)
+		{
+			if(parseInt(old) !== x)
+			{
+				let PGcore = new core();
+			
+				asari.ResultMaximumFractional_Update(x);
+				document.querySelector("#Result_Maximum_Fractional").value = x;
+				document.querySelector("#Result_Maximum_Fractional").placeholder = `${x} (0~1000)`;
+				
+				document.querySelector("#Result_Maximum_Fractional_Error").hidden = true;
+				document.querySelector("#Result_Maximum_Fractional_Success").hidden = false;
+			
+				let result = PGcore.calculation(document.querySelector("#enterValue").value);
+				document.querySelector("#resultView").value = result;
+			}
+			else
+			{
+				document.querySelector("#Result_Maximum_Fractional_Error").hidden = true;
+				document.querySelector("#Result_Maximum_Fractional_Success").hidden = true;
+			}
+		}
+		else
+		{
+			document.querySelector("#Result_Maximum_Fractional").value = old;
+			document.querySelector("#Result_Maximum_Fractional_Error").hidden = false;
+			document.querySelector("#Result_Maximum_Fractional_Success").hidden = true;
+		}
+
+		x = parseInt(document.querySelector("#Calculate_History_Maximum").value);
+		old = document.querySelector("#Calculate_History_Maximum").placeholder.split(' ')[0];
+		if(!isNaN(x) && x >= 0)
+		{
+			if(parseInt(old) !== x)
+			{
+				asari.CalculateHistoryMaximum_Update(x);
+				document.querySelector("#Calculate_History_Maximum").value = x;
+				document.querySelector("#Calculate_History_Maximum").placeholder = `${x} (>=0)`;
+				
+				document.querySelector("#Calculate_History_Maximum_Error").hidden = true;
+				document.querySelector("#Calculate_History_Maximum_Success").hidden = false;
+
+				if(document.querySelector("#historyShow").children.length > x)
+				{
+					let historyViewer = Array.from(document.querySelectorAll(".historyViewer"));
+					while(historyViewer.length > x) document.querySelector("#historyShow").removeChild(historyViewer.pop());
+				}
+				else
+				{
+					for(x of document.querySelectorAll(".historyViewer")) document.querySelector("#historyShow").removeChild(x);
+
+					let calculateData = localStorage.CalculateHistory.split(',');
+					calculateData.shift();
+
+					let now = 0, num = calculateData.length - 1;
+					while(parseInt(localStorage.CalculateHistoryMaximum) > now && calculateData.length > now)
+					{
+						let tr = document.createElement("tr"), td = document.createElement("td");
+						td.innerHTML = calculateData[num - now];
+						td.addEventListener("click", (itself) => {localStorage.userInputHistory = document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];document.querySelector("#infix").click();localStorage.viewResultPrint = document.querySelector("#resultView").value;document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];});
+						tr.appendChild(td);
+						tr.className = "historyViewer";
+						document.querySelector("#historyShow").appendChild(tr);
+						now += 1;
+					}
+				}
+			}
+			else
+			{
+				document.querySelector("#Calculate_History_Maximum_Error").hidden = true;
+				document.querySelector("#Calculate_History_Maximum_Success").hidden = true;
+			}
+		}
+		else
+		{
+			document.querySelector("#Calculate_History_Maximum").value = old;
+			document.querySelector("#Calculate_History_Maximum_Error").hidden = false;
+			document.querySelector("#Calculate_History_Maximum_Success").hidden = true;
+		}
+	});
+	
+	document.querySelector("#historyInput").addEventListener("click", () => {
+		document.querySelector("#historyMod").hidden = !document.querySelector("#historyMod").hidden;
+	});
+	
+	document.querySelector("#gear").addEventListener("click", () => 
+	{
+		document.querySelector("#setting").hidden = !document.querySelector("#setting").hidden;
+		document.querySelector("#Result_Maximum_Fractional_Error").hidden =
+		document.querySelector("#Result_Maximum_Fractional_Success").hidden =
+		document.querySelector("#History_Maximum_Fractional_Error").hidden =
+		document.querySelector("#History_Maximum_Fractional_Success").hidden = 
+		document.querySelector("#Calculate_History_Maximum_Error").hidden =
+		document.querySelector("#Calculate_History_Maximum_Success").hidden = true;
+	});
+	
+	document.querySelector("#trash").addEventListener("click", () =>
+	{
+		let asari = new localStorageUpdate();
+		
+		asari.CalculateHistory_Update("", "", asari.DEL);
+		for(x of document.querySelectorAll(".historyViewer")) document.querySelector("#historyShow").removeChild(x);
+	});
+	
+	document.querySelector("#trash2").addEventListener("click", () =>
+	{
+		let asari = new localStorageUpdate();
+		
+		asari.viewResultPrint_Update("...");
+		document.querySelector("#resultView").value = "...";
+		
+		asari.viewResultColor_Update("#ffffff");
+		document.querySelector("#resultView").style.color = "#ffffff";
+
+		asari.userInputHistory_Update("");
+		document.querySelector("#enterValue").value = "";
 	});
 	
 	document.querySelector("#license").addEventListener("click", () =>

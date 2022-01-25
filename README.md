@@ -14,8 +14,9 @@
 ## pending bugs
 
 - [ ] Too many decimal places(To use exponential to display)
-- [ ] Historical record fractional inaccuracy
+- [ ] Historical result fraction inaccuracy
 - [ ] Prevention XSS attack
 - [ ] Modular Code
-- [ ] Incorrect input position in \#enterValue
+- [x] Incorrect input position in \#enterValue
 - [ ] History's localStorage(ID: userInputHistory) save mod reorganization
+- [x] Setting text more clearly
