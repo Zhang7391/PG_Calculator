@@ -265,91 +265,65 @@ class core
 	
 	setResultView(result, length = 1)
 	{
-		let viewMsg = document.querySelector("#resultView");
+		let asari = new localStorageUpdate();
 
 		switch(result)
 		{
 		case "Operator are too much!":
-			viewMsg.style.color =
-			localStorage.viewResultColor = "#ff0000";
-//			document.querySelector("#postfixResultView").value =
-//			localStorage.postfixResult = "?";
-			document.querySelector("#resultView").value =
-			localStorage.viewResultPrint = "Operator are too much!";
+			asari.viewResultColor_Update("#ff0000");
+			asari.viewResultPrint_Update("Operator are too much!");
 			break;
+			
 		case "Error! Unlawful Infix Notation!":
-			viewMsg.style.color = "#ff0000";
-			localStorage.viewResultColor = "#ff0000";
-//			document.querySelector("#postfixResultView").value = "?";
-			document.querySelector("#resultView").value = "Error! Unlawful Infix Notation! (in "/* + errorPlace + ": \"" + errorMsg + "\" is not a operator or operand)"*/;
-			localStorage.viewResultPrint = document.querySelector("#resultView").value;
+			asari.viewResultColor_Update("#ff0000");
+			asari.viewResultPrint_Update("Error! Unlawful Infix Notation!");
 			break;
+			
 		case "A space between two numbers":
-			document.querySelector("#resultView").style.color =
-			localStorage.viewResultColor = "#ff0000";
-//			document.querySelector("#postfixResultView").value =
-//			localStorage.postfixResult = "?";
-			document.querySelector("#resultView").value = "A space between two numbers is unlawful";
-			localStorage.viewResultPrint = document.querySelector("#resultView").value;
+			asari.viewResultColor_Update("#ff0000");
+			asari.viewResultPrint_Update("A space between two numbers");
 			break;
-// DEPRECATED
-/*		case "Unlawful prefix notation":
-			viewMsg.style.color =
-			localStorage.viewResultColor = "#ff0000";
-			document.querySelector("#resultView").value =
-			localStorage.viewResultPrint = "Unlawful prefix notation";
-			break;
-
-		case "Unlawful exponent":
-			viewMsg.style.color =
-			localStorage.viewResultColor = "#ff0000";
-			document.querySelector("#resultView").value =
-			localStorage.viewResultPrint = "Unlawful exponent, must be a \"INTEGER\" or \"ONE-HALF\"."
-			break;
-
-		case "Unlawful negative exponent":
-			viewMsg.style.color =
-			localStorage.viewResultColor = "#ff0000";
-			document.querySelector("#resultView").value =
-			localStorage.viewResultPrint = "Unlawful exponent, must be a \"INTEGER\" or \"ZERO\".";
-			break;*/
 
 		case "Division by zero":
-			viewMsg.style.color =
-			localStorage.viewResultColor = "#ff0000";
-			document.querySelector("#resultView").value =
-			localStorage.viewResultPrint = "Division by zero";
+			asari.viewResultColor_Update("#ff0000");
+			asari.viewResultPrint_Update("Division by zero");
 			break;
 
 		default:
 			switch(length)
 			{
+			case this.RED_WORDS:	//red words in "conversion result" block
+				asari.viewResultColor_Update("#ff0000");
+				asari.viewResultPrint_Update(result);
+				break;
+			
+			case this.WHILE_WORDS:	//white words in "conversion result" block
+				asari.viewResultColor_Update("#ffffff");
+				asari.viewResultPrint_Update(result);
+				break;
+				
 			case 0:
-				viewMsg.style.color =
-				localStorage.viewResultColor = "#ffffff";
-				localStorage.viewResultPrint =
-				document.querySelector("#resultView").value = "...";
+				asari.viewResultColor_Update("#ffffff");
+				asari.viewResultPrint_Update("...");
 				break;
 				
 			case 1:
-				viewMsg.style.color =
-				localStorage.viewResultColor = "#ffffff";
+				asari.viewResultColor_Update("#ffffff");
 				if(result.minus(result.toFixed(0)).toString().length > parseInt(localStorage.ResultMaximumFractional)+2) result = result.toExponential();
-				localStorage.viewResultPrint =
-				document.querySelector("#resultView").value = result.toString();
+				asari.viewResultPrint_Update(result.toString());
 				break;
 			
 			default:
-				viewMsg.style.color =
-				localStorage.viewResultColor = "#ff0000";
-//				document.querySelector("#postfixResultView").value =
-//				localStorage.postfixResult = "?";
-				document.querySelector("#resultView").value =
-				localStorage.viewResultPrint = "Operand are too much!";
+				asari.viewResultColor_Update("#ff0000");
+				asari.viewResultPrint_Update("Operand are too much!");
 				break;
 			}
+			break;
 		}
 	}
+	
+	get RED_WORDS() {return "red";}
+	get WHILE_WORDS() {return "while"}
 }
 Decimal.set({precision: 1000, toExpNeg: -9e15, toExpPos: 9e15, rounding: Decimal.ROUND_DOWN})
 

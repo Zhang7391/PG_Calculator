@@ -20,7 +20,6 @@
 - [ ] Too many decimal places(To use exponential to display)
 - [ ] Historical result fraction inaccuracy
 - [ ] Prevention XSS attack
-- [ ] Modular Code
+- [x] Modular Code
 - [x] Incorrect input position in \#enterValue
-- [ ] History's localStorage(ID: userInputHistory) save mod reorganization
 - [x] Setting text more clearly
