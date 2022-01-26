@@ -11,6 +11,10 @@
 7. Press the up key will show the first history, press the twice up key will show the second history, and so on...
 8. Press the down key will show the next history, like the Linux console line
 
+## pending new features
+
+- [ ] calculation ln, e, and log
+
 ## pending bugs
 
 - [ ] Too many decimal places(To use exponential to display)

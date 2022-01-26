@@ -51,7 +51,7 @@ window.addEventListener("load", () =>
 		{
 			let tr = document.createElement("tr"), td = document.createElement("td");
 			td.innerHTML = calculateData[num - now];
-			td.addEventListener("click", (itself) => {localStorage.userInputHistory = document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];document.querySelector("#infix").click();localStorage.viewResultPrint = document.querySelector("#resultView").value;document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];});
+			td.addEventListener("click", (itself) => {localStorage.userInputHistory = document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);});
 			tr.appendChild(td);
 			tr.className = "historyViewer";
 			document.querySelector("#historyShow").appendChild(tr);
@@ -67,9 +67,9 @@ window.addEventListener("load", () =>
 	{
 		const PGcore = new core();
 		
-		let ans = PGcore.calculation(document.querySelector("#enterValue").value)
+		let result = PGcore.calculation(document.querySelector("#enterValue").value);
 		
-		document.querySelector("#resultView").value = ans;
+		PGcore.setResultView(result[0], result.length);
 	});
 	
 	document.addEventListener("keyup", (press) =>
@@ -77,25 +77,20 @@ window.addEventListener("load", () =>
 		//alert(press.keyCode);
 		const PGcore = new core();
 		const asari = new localStorageUpdate();
+		const tool = new toolbox();
 	
 		asari.userInputHistory_Update(document.querySelector("#enterValue").value);
+		let result = PGcore.calculation(document.querySelector("#enterValue").value);
 	
 		switch(press.keyCode)
 		{
-		case 8:
-		case 46:
-			{
-			if(document.querySelector("#resultView").value)
-			break;
-			}
 		case 13:		//enter
 			asari.historyReview_Update("-1", asari.SET)
-			try
-			{
-				let result = new Decimal(document.querySelector("#resultView").value);
-				if(result.minus(result.toFixed(0)).toString().length > parseInt(localStorage.HistoryMaximumFractional)+3) result = result.toExponential();
+//			try
+//			{
+				if(result[0].minus(result[0].toFixed(0)).toString().length > parseInt(localStorage.HistoryMaximumFractional)+3) result[0] = result[0].toExponential();
 		
-				asari.CalculateHistory_Update(document.querySelector("#enterValue").value, result);
+				asari.CalculateHistory_Update(document.querySelector("#enterValue").value, result[0]);
 
 				for(x of document.querySelectorAll(".historyViewer")) document.querySelector("#historyShow").removeChild(x);
 
@@ -104,15 +99,15 @@ window.addEventListener("load", () =>
 				{
 					let tr = document.createElement("tr"), td = document.createElement("td");
 					td.innerHTML = calculateData[calculateData.length - now - 1];
-					td.addEventListener("click", (itself) => {localStorage.userInputHistory = document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];let PGcore = new core();document.querySelector("#resultView").value = PGcore.calculation(document.querySelector("#enterValue").value);localStorage.viewResultPrint = document.querySelector("#resultView").value;document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];});
+					td.addEventListener("click", (itself) => {localStorage.userInputHistory = document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);});
 					tr.appendChild(td);
 					tr.className = "historyViewer";
 					document.querySelector("#historyShow").appendChild(tr);
 					now += 1;
 				}
-			}
-			catch {;}
-			finally {break;}
+//			}
+//			catch {;}
+//			finally {break;}
 			
 		case 38:		//up arrow
 			{
@@ -123,14 +118,12 @@ window.addEventListener("load", () =>
 			else asari.historyReview_Update(1, asari.MINUS);
 			
 			let algorithm = calculateData[parseInt(localStorage.historyReview)].split('=')[0];
-			let result = PGcore.calculation(algorithm);
 
 			asari.userInputHistory_Update(algorithm);
 			document.querySelector("#enterValue").value = algorithm;
 			
 			asari.viewResultPrint_Update(result);
 			document.querySelector("#enterValue").value = algorithm;
-			document.querySelector("#resultView").value = result;
 			break;
 			}
 			
@@ -141,20 +134,17 @@ window.addEventListener("load", () =>
 			if(calculateData.length-1 > parseInt(localStorage.historyReview)) asari.historyReview_Update(1, asari.ADD);
 
 			let algorithm = calculateData[parseInt(localStorage.historyReview)].split('=')[0];
-			let result = PGcore.calculation(algorithm);
 			
 			asari.userInputHistory_Update(algorithm);
 			document.querySelector("#enterValue").value = algorithm;
 			
 			asari.viewResultPrint_Update(result);
 			document.querySelector("#enterValue").value = algorithm;
-			document.querySelector("#resultView").value = result;
 			break;
 			}
 		}
 		
-		let result = PGcore.calculation(document.querySelector("#enterValue").value);
-		document.querySelector("#resultView").value = result;
+		PGcore.setResultView(result[0], result.length);
 	});
 	
 	document.querySelector("#settingButtom").addEventListener("click", () =>
@@ -276,6 +266,10 @@ window.addEventListener("load", () =>
 	
 	document.querySelector("#gear").addEventListener("click", () => 
 	{
+		document.querySelector("#History_Maximum_Fractional").value = document.querySelector("#History_Maximum_Fractional").placeholder.split(' ')[0];
+		document.querySelector("#Result_Maximum_Fractional").value = document.querySelector("#Result_Maximum_Fractional").placeholder.split(' ')[0];
+		document.querySelector("#Result_Maximum_Fractional").value = document.querySelector("#Result_Maximum_Fractional").placeholder.split(' ')[0];
+		
 		document.querySelector("#setting").hidden = !document.querySelector("#setting").hidden;
 		document.querySelector("#Result_Maximum_Fractional_Error").hidden =
 		document.querySelector("#Result_Maximum_Fractional_Success").hidden =
@@ -318,3 +312,12 @@ window.addEventListener("load", () =>
 		document.querySelector("#license").innerHTML = license[document.querySelector("#license").innerHTML]
 	});
 });
+
+/*
+localStorage.userInputHistory = document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];
+let PGcore = new core();
+let result = PGcore.calculation(localStorage.userInputHistory);
+PGcore.setResultView(result, result.length);
+*/
+
+//localStorage.userInputHistory = document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result, result.length);

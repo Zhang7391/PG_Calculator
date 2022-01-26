@@ -14,7 +14,6 @@ class core
 {
 	calculation(algorithm)
 	{
-		let error;
 		const tool = new toolbox();
 		const weighting =
 		{
@@ -30,7 +29,7 @@ class core
 		let needChange = false, endBracket = false;
 		let numStack = [], operStack = [];
 
-		unlawful: for(let x of tool.plusSplit(tool.Standardization(algorithm).split(/(-\d+\.\d+)|(\d+\.\d+)|(-\d+)|(\d+)/)))
+		for(let x of tool.plusSplit(tool.Standardization(algorithm).split(/(-\d+\.\d+)|(\d+\.\d+)|(-\d+)|(\d+)/)))
 		{
 			if(x.trim().length === 0) continue;
 			let nd;
@@ -108,8 +107,8 @@ class core
 			default:
 				if(isNaN(parseFloat(x)))
 				{
-					error = true;
-					break unlawful;
+					numStack[0] = "Error! Unlawful Infix Notation!";
+					return numStack;
 				}
 				if(noMul && 0 > x)
 				{
@@ -132,8 +131,8 @@ class core
 				}
 				if(noMul)	//Reject a space between two numbers.
 				{
-					tool.setResultView(false, false, 1, "A space between two numbers", 0, 0, 0);
-					return false;
+					numStack[0] = "A space between two numbers";
+					return numStack;
 				}
 				else if(noMul2) 
 				{
@@ -185,16 +184,14 @@ class core
 				numStack.push(`${numStack.pop()} ${nd} ${operStack.pop()}`);
 			}
 		}		
-		if(numStack[0] === undefined) return "...";
+		if(numStack.length !== 1) return numStack;
 		
 		let stack = [], fractional = 0;
-		//let error = false
-		let error2 = false, errorMsg = [0, ""];
+		//let error = false, error2 = false, errorMsg = [0, ""];
 		
 		unlawful: for(let x of numStack[0].replace(/undefined|\)/g, "").split(' '))
 		{
 			if(x === " " || /[^\*\^\-\+\/\s\d\.]/.test(x)) continue;
-			errorMsg[0] += 1;
 			let nd;
 
 			switch(x)
@@ -202,8 +199,7 @@ class core
 			case "+":
 				if(2 > stack.length)
 				{
-					error2 = true;
-					errorMsg[1] = x;
+					stack[0] = "Operator are too much!";
 					break unlawful;
 				}	
 				stack.push(stack.pop().plus(stack.pop()));
@@ -211,8 +207,7 @@ class core
 			case "-":
 				if(stack.length === 0)
 				{
-					error2 = true;
-					errorMsg[1] = x;
+					stack[0] = "Operator are too much!";
 					break unlawful;
 				}
 				else if(stack.length === 1) stack.push(stack.pop().times("-1"));
@@ -225,8 +220,7 @@ class core
 			case "*":
 				if(2 > stack.length)
 				{
-					error2 = true;
-					errorMsg[1] = x;
+					stack[0] = "Operator are too much!";
 					break unlawful;
 				}
 				stack.push(stack.pop().times(stack.pop()));
@@ -234,8 +228,7 @@ class core
 			case "/":
 				if(2 > stack.length)
 				{
-					error2 = true;
-					errorMsg[1] = x;
+					stack[0] = "Operator are too much!";
 					break unlawful;
 				}
 				nd = stack.pop();
@@ -249,8 +242,7 @@ class core
 			case "^":
 				if(2 > stack.length)
 				{
-					error2 = true;
-					errorMsg[1] = x;
+					stack[0] = "Operator are too much!";
 					break unlawful;
 				}
 				nd = stack.pop();
@@ -259,19 +251,104 @@ class core
 			default:
 				if(isNaN(parseFloat(x)))
 				{
-					errorMsg[1] = x;
-					error = true;
+					stack[0] = "Error! Unlawful Infix Notation!";
 					break unlawful;
 				}
 				stack.push(new Decimal(x));
 			}
 		}
 		
-		if(stack[0] === undefined) return undefined;
-		
-		if(stack[0].minus(stack[0].toFixed(0)).toString().length > parseInt(localStorage.ResultMaximumFractional)+2) stack[0] = stack[0].toExponential();
-		return stack[0];
-//		tool.setResultView(error, error2, stack.length, stack[0], errorMsg[0], errorMsg[1], fractional)
+//		if(stack.length !== 1) return stack;
+//		else if(stack[0].minus(stack[0].toFixed(0)).toString().length > parseInt(localStorage.ResultMaximumFractional)+2) stack[0] = stack[0].toExponential();
+		return stack;
+	}
+	
+	setResultView(result, length = 1)
+	{
+		let viewMsg = document.querySelector("#resultView");
+
+		switch(result)
+		{
+		case "Operator are too much!":
+			viewMsg.style.color =
+			localStorage.viewResultColor = "#ff0000";
+//			document.querySelector("#postfixResultView").value =
+//			localStorage.postfixResult = "?";
+			document.querySelector("#resultView").value =
+			localStorage.viewResultPrint = "Operator are too much!";
+			break;
+		case "Error! Unlawful Infix Notation!":
+			viewMsg.style.color = "#ff0000";
+			localStorage.viewResultColor = "#ff0000";
+//			document.querySelector("#postfixResultView").value = "?";
+			document.querySelector("#resultView").value = "Error! Unlawful Infix Notation! (in "/* + errorPlace + ": \"" + errorMsg + "\" is not a operator or operand)"*/;
+			localStorage.viewResultPrint = document.querySelector("#resultView").value;
+			break;
+		case "A space between two numbers":
+			document.querySelector("#resultView").style.color =
+			localStorage.viewResultColor = "#ff0000";
+//			document.querySelector("#postfixResultView").value =
+//			localStorage.postfixResult = "?";
+			document.querySelector("#resultView").value = "A space between two numbers is unlawful";
+			localStorage.viewResultPrint = document.querySelector("#resultView").value;
+			break;
+// DEPRECATED
+/*		case "Unlawful prefix notation":
+			viewMsg.style.color =
+			localStorage.viewResultColor = "#ff0000";
+			document.querySelector("#resultView").value =
+			localStorage.viewResultPrint = "Unlawful prefix notation";
+			break;
+
+		case "Unlawful exponent":
+			viewMsg.style.color =
+			localStorage.viewResultColor = "#ff0000";
+			document.querySelector("#resultView").value =
+			localStorage.viewResultPrint = "Unlawful exponent, must be a \"INTEGER\" or \"ONE-HALF\"."
+			break;
+
+		case "Unlawful negative exponent":
+			viewMsg.style.color =
+			localStorage.viewResultColor = "#ff0000";
+			document.querySelector("#resultView").value =
+			localStorage.viewResultPrint = "Unlawful exponent, must be a \"INTEGER\" or \"ZERO\".";
+			break;*/
+
+		case "Division by zero":
+			viewMsg.style.color =
+			localStorage.viewResultColor = "#ff0000";
+			document.querySelector("#resultView").value =
+			localStorage.viewResultPrint = "Division by zero";
+			break;
+
+		default:
+			switch(length)
+			{
+			case 0:
+				viewMsg.style.color =
+				localStorage.viewResultColor = "#ffffff";
+				localStorage.viewResultPrint =
+				document.querySelector("#resultView").value = "...";
+				break;
+				
+			case 1:
+				viewMsg.style.color =
+				localStorage.viewResultColor = "#ffffff";
+				if(result.minus(result.toFixed(0)).toString().length > parseInt(localStorage.ResultMaximumFractional)+2) result = result.toExponential();
+				localStorage.viewResultPrint =
+				document.querySelector("#resultView").value = result.toString();
+				break;
+			
+			default:
+				viewMsg.style.color =
+				localStorage.viewResultColor = "#ff0000";
+//				document.querySelector("#postfixResultView").value =
+//				localStorage.postfixResult = "?";
+				document.querySelector("#resultView").value =
+				localStorage.viewResultPrint = "Operand are too much!";
+				break;
+			}
+		}
 	}
 }
 Decimal.set({precision: 1000, toExpNeg: -9e15, toExpPos: 9e15, rounding: Decimal.ROUND_DOWN})
@@ -382,90 +459,6 @@ class toolbox
 			else ans.push(x);
 		}
 		return ans;
-	}
-
-	//error1: data is neither operator nor operand.
-	//error2: data have too much operator.
-	//error3: data have too much operand.
-	setResultView(error, error2, length, result, errorPlace, errorMsg, fractional)
-	{
-		let viewMsg = document.querySelector("#resultView");
-		if(error) 
-		{
-			viewMsg.style.color = "#ff0000";
-			localStorage.viewResultColor = "#ff0000";
-//			document.querySelector("#postfixResultView").value = "?";
-			document.querySelector("#resultView").value = "Error! Unlawful Infix Notation! (in " + errorPlace + ": \"" + errorMsg + "\" is not a operator or operand)";
-			localStorage.viewResultPrint = document.querySelector("#resultView").value;
-		}
-		else if(error2)
-		{
-			viewMsg.style.color =
-			localStorage.viewResultColor = "#ff0000";
-//			document.querySelector("#postfixResultView").value =
-//			localStorage.postfixResult = "?";
-			document.querySelector("#resultView").value =
-			localStorage.viewResultPrint = "Operator are too much!";
-		}
-		else if(length !== 1)
-		{
-			viewMsg.style.color =
-			localStorage.viewResultColor = "#ff0000";
-//			document.querySelector("#postfixResultView").value =
-//			localStorage.postfixResult = "?";
-			document.querySelector("#resultView").value =
-			localStorage.viewResultPrint = "Operand are too much!";
-		}
-		else
-		{
-			switch(result)
-			{
-			case "A space between two numbers":
-				document.querySelector("#resultView").style.color =
-				localStorage.viewResultColor = "#ff0000";
-//				document.querySelector("#postfixResultView").value =
-//				localStorage.postfixResult = "?";
-				document.querySelector("#resultView").value = "A space between two numbers is unlawful";
-				localStorage.viewResultPrint = document.querySelector("#resultView").value;
-				break;
-
-			case "Unlawful prefix notation":
-				viewMsg.style.color =
-				localStorage.viewResultColor = "#ff0000";
-				document.querySelector("#resultView").value =
-				localStorage.viewResultPrint = "Unlawful prefix notation";
-				break;
-
-			case "Unlawful exponent":
-				viewMsg.style.color =
-				localStorage.viewResultColor = "#ff0000";
-				document.querySelector("#resultView").value =
-				localStorage.viewResultPrint = "Unlawful exponent, must be a \"INTEGER\" or \"ONE-HALF\"."
-				break;
-
-			case "Unlawful negative exponent":
-				viewMsg.style.color =
-				localStorage.viewResultColor = "#ff0000";
-				document.querySelector("#resultView").value =
-				localStorage.viewResultPrint = "Unlawful exponent, must be a \"INTEGER\" or \"ZERO\".";
-				break;
-
-			case "Division by zero":
-				viewMsg.style.color =
-				localStorage.viewResultColor = "#ff0000";
-				document.querySelector("#resultView").value =
-				localStorage.viewResultPrint = "Division by zero";
-				break;
-
-			default:
-				viewMsg.style.color =
-				localStorage.viewResultColor = "#ffffff";
-				if(result.minus(result.toFixed(0)).toString().length > parseInt(localStorage.ResultMaximumFractional)+2) result = result.toExponential();
-				localStorage.viewResultPrint =
-				document.querySelector("#resultView").value = result.toString();
-				break;
-			}
-		}
 	}
 }
 
