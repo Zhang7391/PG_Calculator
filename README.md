@@ -1,19 +1,18 @@
 # Just a calculator
 
-## now it has those Features:
+## current features:
 
-1. Calculation
-2. Some of the setup
-3. History
-4. Delete  History
-5. Press the enter key will save the equation and answer now in the history
-6. Save the calculation and history on the user personal computer
-7. Press the up key will show the first history, press the twice up key will show the second history, and so on...
-8. Press the down key will show the next history, like the Linux console line
+1. Immediately show the answer after typing
+2. History management
+3. Press the Enter key will keep the formula and answer now
+4. Record the now status and history on the user personal computer
+5. Use Up and Down key to choose the saved formula and answer
+6. Some others options
 
 ## pending new features
 
-- [ ] calculation ln, e, and log
+- [ ] Calculation ln, e, and log
+- [ ] Convert to element
 
 ## pending bugs
 

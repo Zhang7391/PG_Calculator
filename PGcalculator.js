@@ -19,11 +19,15 @@ window.addEventListener("load", () =>
 	if(!localStorage.viewResultColor) localStorage.viewResultColor = "#ffffff";
 	document.querySelector("#resultView").style.color = localStorage.viewResultColor;
 
-	if(!localStorage.viewResultPrint) localStorage.viewResultPrint = "...";
-	document.querySelector("#resultView").value = localStorage.viewResultPrint;
-
 	if(!localStorage.userInputHistory) localStorage.userInputHistory = "";
 	document.querySelector("#enterValue").value = localStorage.userInputHistory;
+	
+	if(!localStorage.viewResultPrint) localStorage.viewResultPrint = "...";
+	let PGcore = new core();
+	let result = PGcore.calculation(localStorage.userInputHistory);
+	PGcore.setResultView(result[0], result.length);
+	document.querySelector("#resultView").value = localStorage.viewResultPrint;
+	document.querySelector("#resultView").style.color = localStorage.viewResultColor;
 	
 	//Settings initialization
 	if(!localStorage.ResultMaximumFractional) localStorage.ResultMaximumFractional = "1000";
@@ -51,7 +55,7 @@ window.addEventListener("load", () =>
 		{
 			let tr = document.createElement("tr"), td = document.createElement("td");
 			td.innerHTML = calculateData[num - now];
-			td.addEventListener("click", (itself) => {localStorage.userInputHistory = document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#resultView").value = localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;});
+			td.addEventListener("click", (itself) => {localStorage.userInputHistory = itself.target.innerHTML.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#enterValue").value = localStorage.userInputHistory;document.querySelector("#resultView").value = localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;});
 			tr.appendChild(td);
 			tr.className = "historyViewer";
 			document.querySelector("#historyShow").appendChild(tr);
@@ -101,7 +105,7 @@ window.addEventListener("load", () =>
 				{
 					let tr = document.createElement("tr"), td = document.createElement("td");
 					td.innerHTML = calculateData[calculateData.length - now - 1];
-					td.addEventListener("click", (itself) => {localStorage.userInputHistory = document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#resultView").value = localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;});
+					td.addEventListener("click", (itself) => {localStorage.userInputHistory = itself.target.innerHTML.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#enterValue").value = localStorage.userInputHistory;document.querySelector("#resultView").value = localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;});
 					tr.appendChild(td);
 					tr.className = "historyViewer";
 					document.querySelector("#historyShow").appendChild(tr);
@@ -112,10 +116,11 @@ window.addEventListener("load", () =>
 			finally {break;}			
 			//History's Event Listener Code. (input: itself[Object])
 			/*
-				localStorage.userInputHistory = document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];
+				localStorage.userInputHistory = itself.target.innerHTML.split('=')[0];
 				let PGcore = new core();
 				let result = PGcore.calculation(localStorage.userInputHistory);
 				PGcore.setResultView(result[0], result.length);
+				document.querySelector("#enterValue").value = localStorage.userInputHistory;
 				document.querySelector("#resultView").value = localStorage.viewResultPrint;
 				document.querySelector("#resultView").style.color = localStorage.viewResultColor;
 			*/
@@ -254,7 +259,7 @@ window.addEventListener("load", () =>
 					{
 						let tr = document.createElement("tr"), td = document.createElement("td");
 						td.innerHTML = calculateData[num - now];
-						td.addEventListener("click", (itself) => {localStorage.userInputHistory = document.querySelector("#enterValue").value = itself.target.innerHTML.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#resultView").value = localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;});
+						td.addEventListener("click", (itself) => {localStorage.userInputHistory = itself.target.innerHTML.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#enterValue").value = localStorage.userInputHistory;document.querySelector("#resultView").value = localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;});
 						tr.appendChild(td);
 						tr.className = "historyViewer";
 						document.querySelector("#historyShow").appendChild(tr);
@@ -328,3 +333,5 @@ window.addEventListener("load", () =>
 		document.querySelector("#license").innerHTML = license[document.querySelector("#license").innerHTML]
 	});
 });
+
+//localStorage.userInputHistory = itself.target.innerHTML.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#enterValue").value = localStorage.userInputHistory;document.querySelector("#resultView").value = localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;

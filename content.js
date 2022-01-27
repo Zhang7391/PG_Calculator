@@ -5,14 +5,14 @@
 //                                                     /
 // License: GNU General Public License v3.0            /
 // Github: https://github.com/Zhang7391/PG_Calculator  /
-//                                                     / 
+//                                                     /
 // Please keep this information if you use this code.  /
 //                                                     /
 //*****************************************************/
 
 class core
 {
-	calculation(algorithm)
+	calculation(formula)
 	{
 		const tool = new toolbox();
 		const weighting =
@@ -29,7 +29,7 @@ class core
 		let needChange = false, endBracket = false;
 		let numStack = [], operStack = [];
 
-		for(let x of tool.plusSplit(tool.Standardization(algorithm).split(/(-\d+\.\d+)|(\d+\.\d+)|(-\d+)|(\d+)/)))
+		for(let x of  )
 		{
 			if(x.trim().length === 0) continue;
 			let nd;
@@ -331,19 +331,19 @@ class localStorageUpdate
 {
 	constructor() {}
 	
-	userInputHistory_Update(algorithm)
+	userInputHistory_Update(formula)
 	{
-		if(localStorage.userInputHistory !== algorithm)
+		if(localStorage.userInputHistory !== formula)
 		{
-			localStorage.userInputHistory = algorithm;
+			localStorage.userInputHistory = formula;
 
-			if(algorithm === "") localStorage.viewResultPrint = "...";
+			if(formula === "") localStorage.viewResultPrint = "...";
 		}
 	}
 	
-	CalculateHistory_Update(algorithm, result, mod = this.SET)
+	CalculateHistory_Update(formula, result, mod = this.SET)
 	{
-		if(mod === this.SET) localStorage.CalculateHistory += (',' + algorithm.replaceAll(',','') + " = " + result.toString());
+		if(mod === this.SET) localStorage.CalculateHistory += (',' + formula.replaceAll(',','') + " = " + result.toString());
 		else if(mod === this.DEL) localStorage.CalculateHistory = "";
 	}
 	
