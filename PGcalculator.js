@@ -10,6 +10,11 @@
 //                                                     /
 //*****************************************************/
 
+
+const PGcore = new core();
+const tool = new toolbox();
+const asari = new localStorageUpdate();
+
 window.addEventListener("load", () =>
 {
 	try {let test = !!localStorage;}
@@ -23,7 +28,6 @@ window.addEventListener("load", () =>
 	document.querySelector("#enterValue").value = localStorage.userInputHistory;
 	
 	if(!localStorage.viewResultPrint) localStorage.viewResultPrint = "...";
-	let PGcore = new core();
 	let result = PGcore.calculation(localStorage.userInputHistory);
 	PGcore.setResultView(result[0], result.length);
 	document.querySelector("#resultView").value = localStorage.viewResultPrint;
@@ -33,7 +37,6 @@ window.addEventListener("load", () =>
 	if(!localStorage.ResultMaximumFractional) localStorage.ResultMaximumFractional = "1000";
 	document.querySelector("#Result_Maximum_Fractional").value = localStorage.ResultMaximumFractional;
 	document.querySelector("#Result_Maximum_Fractional").placeholder = `${localStorage.ResultMaximumFractional} (0~1000)`;
-	Decimal.set({precision: parseInt(localStorage.ResultMaximumFractional)});
 
 	if(!localStorage.HistoryMaximumFractional) localStorage.HistoryMaximumFractional = "10";
 	document.querySelector("#History_Maximum_Fractional").value = localStorage.HistoryMaximumFractional;
@@ -69,8 +72,6 @@ window.addEventListener("load", () =>
 	//Event Listener
 	document.querySelector("#infix").addEventListener("click", () => 
 	{
-		const PGcore = new core();
-		
 		let result = PGcore.calculation(document.querySelector("#enterValue").value);
 		
 		PGcore.setResultView(result[0], result.length);
@@ -81,12 +82,13 @@ window.addEventListener("load", () =>
 	document.addEventListener("keyup", (press) =>
 	{
 		//alert(press.keyCode);
-		const PGcore = new core();
-		const asari = new localStorageUpdate();
-		const tool = new toolbox();
 	
 		asari.userInputHistory_Update(document.querySelector("#enterValue").value);
-		let result = PGcore.calculation(document.querySelector("#enterValue").value);
+
+		let result = PGcore.calculation(localStorage.userInputHistory);
+		PGcore.setResultView(result[0], result.length);
+		document.querySelector("#resultView").value = localStorage.viewResultPrint;
+		document.querySelector("#resultView").style.color = localStorage.viewResultColor;
 	
 		switch(press.keyCode)
 		{
@@ -159,16 +161,10 @@ window.addEventListener("load", () =>
 			break;
 			}
 		}
-		
-		PGcore.setResultView(result[0], result.length);
-		document.querySelector("#resultView").value = localStorage.viewResultPrint;
-		document.querySelector("#resultView").style.color = localStorage.viewResultColor;
 	});
 	
 	document.querySelector("#settingButtom").addEventListener("click", () =>
 	{
-		let asari = new localStorageUpdate();
-		
 		let x = parseInt(document.querySelector("#History_Maximum_Fractional").value);
 		let old = document.querySelector("#History_Maximum_Fractional").placeholder.split(' ')[0];
 		if(!isNaN(x) && 1000 >= x && x >= 0) 
@@ -201,8 +197,6 @@ window.addEventListener("load", () =>
 		{
 			if(parseInt(old) !== x)
 			{
-				let PGcore = new core();
-			
 				asari.ResultMaximumFractional_Update(x);
 				document.querySelector("#Result_Maximum_Fractional").value = x;
 				document.querySelector("#Result_Maximum_Fractional").placeholder = `${x} (0~1000)`;
@@ -289,7 +283,6 @@ window.addEventListener("load", () =>
 	{
 		document.querySelector("#History_Maximum_Fractional").value = document.querySelector("#History_Maximum_Fractional").placeholder.split(' ')[0];
 		document.querySelector("#Result_Maximum_Fractional").value = document.querySelector("#Result_Maximum_Fractional").placeholder.split(' ')[0];
-		document.querySelector("#Result_Maximum_Fractional").value = document.querySelector("#Result_Maximum_Fractional").placeholder.split(' ')[0];
 		
 		document.querySelector("#setting").hidden = !document.querySelector("#setting").hidden;
 		document.querySelector("#Result_Maximum_Fractional_Error").hidden =
@@ -302,16 +295,12 @@ window.addEventListener("load", () =>
 	
 	document.querySelector("#trash").addEventListener("click", () =>
 	{
-		let asari = new localStorageUpdate();
-		
 		asari.CalculateHistory_Update("", "", asari.DEL);
 		for(x of document.querySelectorAll(".historyViewer")) document.querySelector("#historyShow").removeChild(x);
 	});
 	
 	document.querySelector("#trash2").addEventListener("click", () =>
 	{
-		let asari = new localStorageUpdate();
-		
 		asari.viewResultPrint_Update("...");
 		document.querySelector("#resultView").value = "...";
 		
@@ -333,5 +322,3 @@ window.addEventListener("load", () =>
 		document.querySelector("#license").innerHTML = license[document.querySelector("#license").innerHTML]
 	});
 });
-
-//localStorage.userInputHistory = itself.target.innerHTML.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#enterValue").value = localStorage.userInputHistory;document.querySelector("#resultView").value = localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;

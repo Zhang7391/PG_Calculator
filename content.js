@@ -14,8 +14,8 @@ class core
 {
 	calculation(formula)
 	{
-		const tool = new toolbox();
-		const weighting =
+		let tool = new toolbox();
+		let weighting =
 		{
 			"(" : 0,
 			"+" : 1,
@@ -29,7 +29,7 @@ class core
 		let needChange = false, endBracket = false;
 		let numStack = [], operStack = [];
 
-		for(let x of  )
+		for(let x of tool.plusSplit(tool.Standardization(formula).split(/(-\d+\.\d+)|(\d+\.\d+)|(-\d+)|(\d+)/)))
 		{
 			if(x.trim().length === 0) continue;
 			let nd;
@@ -189,7 +189,7 @@ class core
 		let stack = [], fractional = 0;
 		//let error = false, error2 = false, errorMsg = [0, ""];
 		
-		unlawful: for(let x of numStack[0].replace(/undefined|\)/g, "").split(' '))
+		unlawful: for(let x of numStack[0].split(' '))
 		{
 			if(x === " " || /[^\*\^\-\+\/\s\d\.]/.test(x)) continue;
 			let nd;
@@ -257,6 +257,7 @@ class core
 				stack.push(new Decimal(x));
 			}
 		}
+		console.log(stack);
 		
 //		if(stack.length !== 1) return stack;
 //		else if(stack[0].minus(stack[0].toFixed(0)).toString().length > parseInt(localStorage.ResultMaximumFractional)+2) stack[0] = stack[0].toExponential();
@@ -325,11 +326,11 @@ class core
 	get RED_WORDS() {return "red";}
 	get WHILE_WORDS() {return "while"}
 }
-Decimal.set({precision: 1000, toExpNeg: -9e15, toExpPos: 9e15, rounding: Decimal.ROUND_DOWN})
+Decimal.set({precision: 1005, toExpNeg: -9e15, toExpPos: 9e15, rounding: Decimal.ROUND_DOWN})
 
 class localStorageUpdate
 {
-	constructor() {}
+	letructor() {}
 	
 	userInputHistory_Update(formula)
 	{
@@ -415,11 +416,12 @@ class toolbox
 			.replace(/\uff0b/ug, "+")
 			.replace(/\uff0d/ug, "-")
 			.replace(/\ufe3f/ug, "^")
-			.replace(/\uff08/ug, "(")
-			.replace(/\uff09/ug, ")")
 			.replace(/[\uff0f\u00f7]/ug, "/")
 			.replace(/[\u00d7\uff58\uff38]/ug, "*")
-			.replace(/[xX]/g, "*");
+			.replace(/[xX]/g, "*")
+			.replace(/\uff08/ug, "(")
+			.replace(/\uff09/ug, ")")
+			.replace(/\uff0e/ug, ".");
 	}
 
 	plusSplit(strArray)
