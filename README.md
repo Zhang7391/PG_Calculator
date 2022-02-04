@@ -12,13 +12,15 @@
 ## pending new features
 
 - [ ] Calculation of ln, e, log, and so on...
+- [ ] If the current formula matches the latest history, no new formula will be added
 - [ ] Include OOP structures
 
 ## pending bugs
 
-- [ ] Too many decimal digits(To use scientific notation to display)
+- [x] Too many decimal digits(To use scientific notation to display)
 - [ ] Historical result decimal digits are unmatched
-- [ ] Prevent XSS attacks
+- [ ] Conversion result decimal digits are unmatched
+- [x] Prevent XSS attacks
 - [x] Use module of programming
 - [x] Fix incorrect input position(in \#enterValue)
 - [x] Let the input forms more obvious

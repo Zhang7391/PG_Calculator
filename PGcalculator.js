@@ -11,14 +11,14 @@
 //*****************************************************/
 
 
-const PGcore = new core();
-const tool = new toolbox();
-const asari = new localStorageUpdate();
-
 window.addEventListener("load", () =>
 {
 	try {let test = !!localStorage;}
 	catch {localStorage = Object.create(Object.prototype);}
+	
+	const PGcore = new core();
+	const tool = new toolbox();
+	const asari = new localStorageUpdate();
 	
 	//Core initialization
 	if(!localStorage.viewResultColor) localStorage.viewResultColor = "#ffffff";
@@ -57,8 +57,8 @@ window.addEventListener("load", () =>
 		while(parseInt(localStorage.CalculateHistoryMaximum) > now && calculateData.length > now)
 		{
 			let tr = document.createElement("tr"), td = document.createElement("td");
-			td.innerHTML = calculateData[num - now];
-			td.addEventListener("click", (itself) => {localStorage.userInputHistory = itself.target.innerHTML.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#enterValue").value = localStorage.userInputHistory;document.querySelector("#resultView").value = localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;});
+			td.innerText = calculateData[num - now];
+			td.addEventListener("click", (itself) => {localStorage.userInputHistory = itself.target.innerText.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#enterValue").value = localStorage.userInputHistory;document.querySelector("#resultView").value = localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;});
 			tr.appendChild(td);
 			tr.className = "historyViewer";
 			document.querySelector("#historyShow").appendChild(tr);
@@ -83,12 +83,21 @@ window.addEventListener("load", () =>
 	{
 		//alert(press.keyCode);
 	
-		asari.userInputHistory_Update(document.querySelector("#enterValue").value);
+		let result = undefined;
+		if(document.querySelector("#enterValue").value !== localStorage.userInputHistory)
+		{
+			asari.userInputHistory_Update(document.querySelector("#enterValue").value);
 
-		let result = PGcore.calculation(localStorage.userInputHistory);
-		PGcore.setResultView(result[0], result.length);
-		document.querySelector("#resultView").value = localStorage.viewResultPrint;
-		document.querySelector("#resultView").style.color = localStorage.viewResultColor;
+			result = PGcore.calculation(localStorage.userInputHistory);
+			PGcore.setResultView(result[0], result.length);
+			document.querySelector("#resultView").value = localStorage.viewResultPrint;
+			document.querySelector("#resultView").style.color = localStorage.viewResultColor;
+		}
+		else
+		{
+			try {result = [new Decimal(localStorage.viewResultPrint)];}
+			catch(error) {console.log(error);}
+		}
 	
 		switch(press.keyCode)
 		{
@@ -98,7 +107,7 @@ window.addEventListener("load", () =>
 			{
 				if(result[0].minus(result[0].toFixed(0)).toString().length > parseInt(localStorage.HistoryMaximumFractional)+3) result[0] = result[0].toExponential();
 		
-				asari.CalculateHistory_Update(document.querySelector("#enterValue").value, result[0]);
+				asari.CalculateHistory_Update(tool.htmlToText(document.querySelector("#enterValue").value), result[0]);
 
 				for(x of document.querySelectorAll(".historyViewer")) document.querySelector("#historyShow").removeChild(x);
 
@@ -106,19 +115,19 @@ window.addEventListener("load", () =>
 				while(parseInt(localStorage.CalculateHistoryMaximum) > now && calculateData.length > now+1)
 				{
 					let tr = document.createElement("tr"), td = document.createElement("td");
-					td.innerHTML = calculateData[calculateData.length - now - 1];
-					td.addEventListener("click", (itself) => {localStorage.userInputHistory = itself.target.innerHTML.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#enterValue").value = localStorage.userInputHistory;document.querySelector("#resultView").value = localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;});
+					td.innerText = calculateData[calculateData.length - now - 1];
+					td.addEventListener("click", (itself) => {localStorage.userInputHistory = itself.target.innerText.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#enterValue").value = localStorage.userInputHistory;document.querySelector("#resultView").value = localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;});
 					tr.appendChild(td);
 					tr.className = "historyViewer";
 					document.querySelector("#historyShow").appendChild(tr);
 					now += 1;
 				}
 			}
-			catch {;}
+			catch(error) {console.log(error);}
 			finally {break;}			
 			//History's Event Listener Code. (input: itself[Object])
 			/*
-				localStorage.userInputHistory = itself.target.innerHTML.split('=')[0];
+				localStorage.userInputHistory = itself.target.innerText.split('=')[0];
 				let PGcore = new core();
 				let result = PGcore.calculation(localStorage.userInputHistory);
 				PGcore.setResultView(result[0], result.length);
@@ -252,8 +261,8 @@ window.addEventListener("load", () =>
 					while(parseInt(localStorage.CalculateHistoryMaximum) > now && calculateData.length > now)
 					{
 						let tr = document.createElement("tr"), td = document.createElement("td");
-						td.innerHTML = calculateData[num - now];
-						td.addEventListener("click", (itself) => {localStorage.userInputHistory = itself.target.innerHTML.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#enterValue").value = localStorage.userInputHistory;document.querySelector("#resultView").value = localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;});
+						td.innerText = calculateData[num - now];
+						td.addEventListener("click", (itself) => {localStorage.userInputHistory = itself.target.innerText.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#enterValue").value = localStorage.userInputHistory;document.querySelector("#resultView").value = localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;});
 						tr.appendChild(td);
 						tr.className = "historyViewer";
 						document.querySelector("#historyShow").appendChild(tr);
@@ -319,6 +328,6 @@ window.addEventListener("load", () =>
 			"license: GNU General Public License v3.0(click me)": "Copyright (c) 2022 zhang7391 All rights reserved(click me)"
 		}
 		
-		document.querySelector("#license").innerHTML = license[document.querySelector("#license").innerHTML]
+		document.querySelector("#license").innerText = license[document.querySelector("#license").innerText]
 	});
 });

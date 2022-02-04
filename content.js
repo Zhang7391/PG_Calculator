@@ -25,14 +25,19 @@ class core
 			"^" : 3
 		};
 
+		let isSymbol = false;
 		let noMul = false, noMul2 = false;
 		let needChange = false, endBracket = false;
 		let numStack = [], operStack = [];
 
-		for(let x of tool.plusSplit(tool.Standardization(formula).split(/(-\d+\.\d+)|(\d+\.\d+)|(-\d+)|(\d+)/)))
+		for(let x of tool.plusSplit(tool.standardization(formula)))
 		{
-			if(x.trim().length === 0) continue;
+			if(x === " " || !/[\*\^\-\+\/\s\d\.e\(\)]|log|ln/.test(x)) continue;
+			
 			let nd;
+			
+			console.log(x);
+			//continue;
 
 			switch(x)
 			{
@@ -45,14 +50,14 @@ class core
 				}
 				else if(noMul || noMul2) operStack.push("(*");
 				else operStack.push(x);
-				noMul = noMul2 = needChange = false;
+				noMul = noMul2 = needChange = isSymbol = false;
 				break;
 			case "^":
-				noMul = noMul2 = needChange = false;
+				noMul = noMul2 = needChange = isSymbol = false;
 				operStack.push(x);
 				break;
-			case "-":
-			case "*":
+			case "*":			case "-":
+
 			case "/":
 			case "+":
 				if(operStack.length === 0) operStack.push(x);
@@ -64,15 +69,35 @@ class core
 						if(operStack[operStack.length - 1] !== "/" && operStack[operStack.length - 1] !== "-" && operStack[operStack.length - 1] !== "^") numStack.push(`${numStack.pop()} ${numStack.pop()} ${operStack.pop()}`);
 						else
 						{
-							nd = numStack.pop();
-							numStack.push(`${numStack.pop()} ${nd} ${operStack.pop()}`);
+							if(operStack.length === 1 && numStack.length === 1)
+							{
+								switch(operStack[0])
+								{
+								case "-":
+									operStack = new Array();
+									numStack.push("-" + numStack.pop());
+									break;
+								case "+":
+									operStack = new Array();
+									break;
+								default:
+									nd = numStack.pop();
+									numStack.push(`${numStack.pop()} ${nd} ${operStack.pop()}`);
+									break;
+								}
+							}
+							else
+							{
+								nd = numStack.pop();
+								numStack.push(`${numStack.pop()} ${nd} ${operStack.pop()}`);
+							}
 						}
 					}
 					operStack.push(x);
 				}
 				if(x === "-") needChange = true;
 				else needChange = false;
-				noMul = noMul2 = false;
+				noMul = noMul2 = isSymbol = false;
 				break;
 			case ")":
 				if(endBracket) endBracket = false;
@@ -101,16 +126,40 @@ class core
 						numStack.push(`${numStack.pop()} ${nd} -`);
 					}
 				}
-				noMul = needChange = false;
+				noMul = needChange = isSymbol = false;
 				noMul2 = true;
 				break;
 			default:
-				if(isNaN(parseFloat(x)))
+				if(/log/.test(x))
+				{
+					let data = x.slice(x.indexOf('(')+1, -1);
+					
+					if(data === "")
+					{
+						numStack[0] = "no have any value's log()";
+						return numStack;
+					}
+					else
+					{
+						data = this.calculation(data)[0];
+						isSymbol = true;
+					}
+					//console.log(x);
+					//console.log(data?.toString());
+					
+					if(data instanceof Decimal) numStack.push(data.log().toFixed(10).toString());
+					else
+					{
+						numStack[0] = "Unlawful log value";
+						return numStack;
+					}
+				}
+				else if(isNaN(parseFloat(x)))
 				{
 					numStack[0] = "Error! Unlawful Infix Notation!";
 					return numStack;
 				}
-				if(noMul && 0 > x)
+				if(noMul && 0 > x && !isSymbol)
 				{
 					noMul = false;
 					if(operStack.length === 0) operStack.push("+");
@@ -139,9 +188,9 @@ class core
 					if(x >= 0) numStack.push(`${numStack.pop()} ${x} *`);
 					else numStack.push(`${numStack.pop()} ${-x} -`);
 				}
-				else numStack.push(x.toString());
+				else if(!isSymbol) numStack.push(x.toString());
 				noMul = true;
-				noMul2 = needChange = false;
+				noMul2 = needChange = isSymbol = false;
 				break;
 			}
 		}
@@ -177,7 +226,20 @@ class core
 				}
 				endBracket = false;
 			}
-			if(operStack[operStack.length - 1] !== "/" && operStack[operStack.length - 1] !== "-" && operStack[operStack.length - 1] !== "^") numStack.push(`${numStack.pop()} ${numStack.pop()} ${operStack.pop()}`);
+			else if(operStack.length === 1 && numStack.length === 1)
+			{
+				switch(operStack[0])
+				{
+				case "-":
+					operStack = new Array();
+					numStack.push("-" + numStack.pop());
+					break;
+				case "+":
+					operStack = new Array();
+					break;
+				}
+			}
+			else if(operStack[operStack.length - 1] !== "/" && operStack[operStack.length - 1] !== "-" && operStack[operStack.length - 1] !== "^") numStack.push(`${numStack.pop()} ${numStack.pop()} ${operStack.pop()}`);
 			else
 			{
 				nd = numStack.pop();
@@ -191,7 +253,6 @@ class core
 		
 		unlawful: for(let x of numStack[0].split(' '))
 		{
-			if(x === " " || /[^\*\^\-\+\/\s\d\.]/.test(x)) continue;
 			let nd;
 
 			switch(x)
@@ -257,7 +318,6 @@ class core
 				stack.push(new Decimal(x));
 			}
 		}
-		console.log(stack);
 		
 //		if(stack.length !== 1) return stack;
 //		else if(stack[0].minus(stack[0].toFixed(0)).toString().length > parseInt(localStorage.ResultMaximumFractional)+2) stack[0] = stack[0].toExponential();
@@ -288,6 +348,16 @@ class core
 		case "Division by zero":
 			asari.viewResultColor_Update("#ff0000");
 			asari.viewResultPrint_Update("Division by zero");
+			break;
+			
+		case "no have any value's log()":
+			asari.viewResultColor_Update("#ff0000");
+			asari.viewResultPrint_Update("no have any value's log()");
+			break;
+			
+		case "Unlawful log value":
+			asari.viewResultColor_Update("#ff0000");
+			asari.viewResultPrint_Update("Unlawful log value");
 			break;
 
 		default:
@@ -350,7 +420,7 @@ class localStorageUpdate
 	
 	viewResultPrint_Update(result, mod = this.SET)
 	{
-		localStorage.viewResultPrint = result;
+		localStorage.viewResultPrint = result.toString();
 	}
 	
 	viewResultColor_Update(color, mod = this.SET)
@@ -399,7 +469,7 @@ class localStorageUpdate
 
 class toolbox
 {
-	Standardization(userInput) 
+	standardization(userInput) 
 	{
 		return userInput
 			.replace(/\s+/g, " ")
@@ -424,17 +494,92 @@ class toolbox
 			.replace(/\uff0e/ug, ".");
 	}
 
-	plusSplit(strArray)
+	*plusSplit(strArray)
 	{
-		let ans = [];
-		for(let x of strArray)
+		//split(/(-?log\s*\(.*?\))|(-?ln\s*\(.*?\))|(-?\d+\.\d+)|(-?\d+)/)
+		
+		let num = 0;
+		let ln_or_log = "";
+		let block = false;
+		
+		for(let x of strArray.split(/(-?\d+\.\d+)|(-?\d+)/))
 		{
 			if(x === undefined || x.trim().length === 0) continue;
+			
+			//console.log(x)
 
-			if(isNaN(parseFloat(x))) ans.push(...x.split(""))
-			else ans.push(x);
+			if(/log|ln/.test(x) && !block)
+			{
+				let y = x.split(/log|ln/)[0];
+				
+				if(2 > y.length) yield y;
+				else for(let z of y) yield z;
+				
+				x = x.replace(y, "");
+				
+				block = true;
+				ln_or_log += x;
+				num = x.match(/\(/g).length;
+				if(x.indexOf(")") !== -1) num -= x.match(/\)/g).length;
+			}
+			else if(block)
+			{
+				let haveOther = false;
+				let other = "", haveAnother = null;
+				
+				if(/log/.test(x)) haveAnother = "log";
+				else if(/ln/.test(x)) haveAnother = "ln";
+				
+				if(haveAnother !== null)
+				{
+					let twoData = x.split(haveAnother);
+					
+					x = twoData[0];
+					other = haveAnother + twoData[1];
+					
+					haveOther = true;
+				}
+				
+				if(x.indexOf("(") !== -1) num += x.match(/\(/g).length;
+				if(x.indexOf(")") !== -1) num -= x.match(/\)/g).length;
+
+				ln_or_log += x;
+				
+				if(num === 0)
+				{
+					let helf = ln_or_log.lastIndexOf(")")+1;
+					
+					block = haveOther;
+					if(helf === ln_or_log.length) yield ln_or_log;
+					else
+					{
+						yield ln_or_log.slice(0, helf);
+						for(let y of ln_or_log.slice(helf).split('')) yield y;
+					}
+					ln_or_log = other;
+					
+					if(other !== "")
+					{
+						num = other.match(/\(/g).length;
+						if(other.indexOf(")") !== -1) num -= other.match(/\)/g).length;
+					}
+					continue;
+				}
+			}
+			else if(isNaN(parseFloat(x))) for(let y of x.split("")) yield y;
+			else yield x;
 		}
-		return ans;
+	}
+	
+	htmlToText(str)
+	{
+		return str
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/"/g, "&quot;")
+			.replace(/'/g, "&#x27;")
+			.replace(/\//g, "&#x2F;");
 	}
 }
 
