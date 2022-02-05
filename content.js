@@ -14,8 +14,8 @@ class core
 {
 	calculation(formula)
 	{
-		if(/log\s*\(\s*\)/.test(formula)) return ["no have any value's log()"]
-		else if(/ln\s*\(\s*\)/.test(formula)) return ["no have any value's ln()"]
+		if(/log\s*\(\s*\)/.test(formula)) return ["no have any value's log()"];
+		else if(/ln\s*\(\s*\)/.test(formula)) return ["no have any value's ln()"];
 			
 		const tool = new toolbox();
 		const weighting =
@@ -52,12 +52,16 @@ class core
 				else operStack.push(x);
 				noMul = noMul2 = needChange = isSymbol = false;
 				break;
+			case "e":
+				numStack.push("2.71828182")
+				noMul = noMul2 = needChange = isSymbol = false;
+				break;
 			case "^":
 				noMul = noMul2 = needChange = isSymbol = false;
 				operStack.push(x);
 				break;
-			case "*":			case "-":
-
+			case "*":			
+			case "-":
 			case "/":
 			case "+":
 				if(operStack.length === 0) operStack.push(x);
@@ -231,8 +235,14 @@ class core
 					operStack = new Array();
 					numStack.push("-" + numStack.pop());
 					break;
+					
 				case "+":
 					operStack = new Array();
+					break;
+				
+				default:
+					nd = numStack.pop();
+					numStack.push(`${numStack.pop()} ${nd} ${operStack.pop()}`);
 					break;
 				}
 			}
@@ -504,7 +514,8 @@ class toolbox
 				
 				block = true;
 				ln_or_log += x;
-				num = x.match(/\(/g).length;
+				try {num = x.match(/\(/g).length;}
+				catch {return ["Error! Unlawful Infix Notation!"];}
 				if(x.indexOf(")") !== -1) num -= x.match(/\)/g).length;
 			}
 			else if(block)
@@ -554,6 +565,8 @@ class toolbox
 			else if(isNaN(parseFloat(x))) for(let y of x) yield y;
 			else yield x;
 		}
+		
+		yield ln_or_log;
 	}
 	
 	htmlToText(str)

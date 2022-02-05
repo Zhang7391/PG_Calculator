@@ -11,7 +11,7 @@
 
 ## pending new features
 
-- [ ] Calculation of ln, e, log, and so on...
+- [x] Calculation of ln, e, log, and so on...
 - [ ] If the current formula matches the latest history, no new formula will be added
 - [ ] More language
 - [ ] Include OOP structures
