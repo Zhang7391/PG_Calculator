@@ -14,8 +14,11 @@ class core
 {
 	calculation(formula)
 	{
-		let tool = new toolbox();
-		let weighting =
+		if(/log\s*\(\s*\)/.test(formula)) return ["no have any value's log()"]
+		else if(/ln\s*\(\s*\)/.test(formula)) return ["no have any value's ln()"]
+			
+		const tool = new toolbox();
+		const weighting =
 		{
 			"(" : 0,
 			"+" : 1,
@@ -35,9 +38,6 @@ class core
 			if(x === " " || !/[\*\^\-\+\/\s\d\.e\(\)]|log|ln/.test(x)) continue;
 			
 			let nd;
-			
-			console.log(x);
-			//continue;
 
 			switch(x)
 			{
@@ -134,31 +134,32 @@ class core
 				{
 					let data = x.slice(x.indexOf('(')+1, -1);
 					
-					if(data === "")
-					{
-						numStack[0] = "no have any value's log()";
-						return numStack;
-					}
+					if(data === "") return ["no have any value's log()"];
 					else
 					{
 						data = this.calculation(data)[0];
 						isSymbol = true;
 					}
-					//console.log(x);
-					//console.log(data?.toString());
 					
-					if(data instanceof Decimal) numStack.push(data.log().toFixed(10).toString());
+					if(data instanceof Decimal) numStack.push(data.log().toFixed(8).toString());
+					else return ["Unlawful log value"];
+				}
+				else if(/ln/.test(x))
+				{
+					let data = x.slice(x.indexOf('(')+1, -1);
+					
+					if(data === "") return ["no have any value's ln()"];
 					else
 					{
-						numStack[0] = "Unlawful log value";
-						return numStack;
+						data = this.calculation(data)[0];
+						isSymbol = true;
 					}
+					
+					if(data instanceof Decimal) numStack.push(data.ln().toFixed(8).toString());
+					else return ["Unlawful ln value"];
 				}
-				else if(isNaN(parseFloat(x)))
-				{
-					numStack[0] = "Error! Unlawful Infix Notation!";
-					return numStack;
-				}
+				else if(isNaN(parseFloat(x))) return ["Error! Unlawful Infix Notation!"];
+				
 				if(noMul && 0 > x && !isSymbol)
 				{
 					noMul = false;
@@ -178,11 +179,7 @@ class core
 						operStack.push("+");
 					}
 				}
-				if(noMul)	//Reject a space between two numbers.
-				{
-					numStack[0] = "A space between two numbers";
-					return numStack;
-				}
+				if(noMul) return ["A space between two numbers"];	//Reject a space between two numbers.
 				else if(noMul2) 
 				{
 					if(x >= 0) numStack.push(`${numStack.pop()} ${x} *`);
@@ -258,19 +255,12 @@ class core
 			switch(x)
 			{
 			case "+":
-				if(2 > stack.length)
-				{
-					stack[0] = "Operator are too much!";
-					break unlawful;
-				}	
+				if(2 > stack.length) return ["Operator are too much!"];
 				stack.push(stack.pop().plus(stack.pop()));
 				break;
+				
 			case "-":
-				if(stack.length === 0)
-				{
-					stack[0] = "Operator are too much!";
-					break unlawful;
-				}
+				if(stack.length === 0) return ["Operator are too much!"];
 				else if(stack.length === 1) stack.push(stack.pop().times("-1"));
 				else
 				{
@@ -278,44 +268,29 @@ class core
 					stack.push(stack.pop().minus(nd));
 				}
 				break;
+				
 			case "*":
-				if(2 > stack.length)
-				{
-					stack[0] = "Operator are too much!";
-					break unlawful;
-				}
+				if(2 > stack.length) return ["Operator are too much!"];
 				stack.push(stack.pop().times(stack.pop()));
 				break;
+				
 			case "/":
-				if(2 > stack.length)
-				{
-					stack[0] = "Operator are too much!";
-					break unlawful;
-				}
+				if(2 > stack.length) return ["Operator are too much!"];
 				nd = stack.pop();
-				if(nd.eq("0"))
-				{
-					stack[0] = "Division by zero";
-					break unlawful;
-				}
+				if(nd.eq("0")) return ["Division by zero"];
 				stack.push(stack.pop().div(nd));
 				break;
+				
 			case "^":
-				if(2 > stack.length)
-				{
-					stack[0] = "Operator are too much!";
-					break unlawful;
-				}
+				if(2 > stack.length) return ["Operator are too much!"];
 				nd = stack.pop();
 				stack.push(stack.pop().pow(nd));
 				break;
+				
 			default:
-				if(isNaN(parseFloat(x)))
-				{
-					stack[0] = "Error! Unlawful Infix Notation!";
-					break unlawful;
-				}
+				if(isNaN(parseFloat(x))) return ["Error! Unlawful Infix Notation!"];
 				stack.push(new Decimal(x));
+				break;
 			}
 		}
 		
@@ -330,9 +305,14 @@ class core
 
 		switch(result)
 		{
-		case "Operator are too much!":
+		case "A space between two numbers":
 			asari.viewResultColor_Update("#ff0000");
-			asari.viewResultPrint_Update("Operator are too much!");
+			asari.viewResultPrint_Update("A space between two numbers");
+			break;
+			
+		case "Division by zero":
+			asari.viewResultColor_Update("#ff0000");
+			asari.viewResultPrint_Update("Division by zero");
 			break;
 			
 		case "Error! Unlawful Infix Notation!":
@@ -340,19 +320,24 @@ class core
 			asari.viewResultPrint_Update("Error! Unlawful Infix Notation!");
 			break;
 			
-		case "A space between two numbers":
+		case "no have any value's ln()":
 			asari.viewResultColor_Update("#ff0000");
-			asari.viewResultPrint_Update("A space between two numbers");
-			break;
-
-		case "Division by zero":
-			asari.viewResultColor_Update("#ff0000");
-			asari.viewResultPrint_Update("Division by zero");
+			asari.viewResultPrint_Update("No have any value's ln()");
 			break;
 			
 		case "no have any value's log()":
 			asari.viewResultColor_Update("#ff0000");
-			asari.viewResultPrint_Update("no have any value's log()");
+			asari.viewResultPrint_Update("No have any value's log()");
+			break;
+			
+		case "Operator are too much!":
+			asari.viewResultColor_Update("#ff0000");
+			asari.viewResultPrint_Update("Operator are too much!");
+			break;
+		
+		case "Unlawful ln value":
+			asari.viewResultColor_Update("#ff0000");
+			asari.viewResultPrint_Update("Unlawful ln value");
 			break;
 			
 		case "Unlawful log value":
@@ -506,11 +491,11 @@ class toolbox
 		{
 			if(x === undefined || x.trim().length === 0) continue;
 			
-			//console.log(x)
+			//console.log(x);
 
 			if(/log|ln/.test(x) && !block)
 			{
-				let y = x.split(/log|ln/)[0];
+				let y = x.split(/log|ln/, 1)[0];
 				
 				if(2 > y.length) yield y;
 				else for(let z of y) yield z;
@@ -523,23 +508,7 @@ class toolbox
 				if(x.indexOf(")") !== -1) num -= x.match(/\)/g).length;
 			}
 			else if(block)
-			{
-				let haveOther = false;
-				let other = "", haveAnother = null;
-				
-				if(/log/.test(x)) haveAnother = "log";
-				else if(/ln/.test(x)) haveAnother = "ln";
-				
-				if(haveAnother !== null)
-				{
-					let twoData = x.split(haveAnother);
-					
-					x = twoData[0];
-					other = haveAnother + twoData[1];
-					
-					haveOther = true;
-				}
-				
+			{	
 				if(x.indexOf("(") !== -1) num += x.match(/\(/g).length;
 				if(x.indexOf(")") !== -1) num -= x.match(/\)/g).length;
 
@@ -547,6 +516,22 @@ class toolbox
 				
 				if(num === 0)
 				{
+					let haveOther = false;
+					let other = "", haveAnother = null;
+				
+					if(/log/.test(x)) haveAnother = "log";
+					else if(/ln/.test(x)) haveAnother = "ln";
+				
+					if(haveAnother !== null)
+					{
+						let twoData = x.split(haveAnother, 1);
+					
+						x = twoData[0];
+						other = haveAnother + twoData[1];
+					
+						haveOther = true;
+					}
+				
 					let helf = ln_or_log.lastIndexOf(")")+1;
 					
 					block = haveOther;
@@ -554,7 +539,7 @@ class toolbox
 					else
 					{
 						yield ln_or_log.slice(0, helf);
-						for(let y of ln_or_log.slice(helf).split('')) yield y;
+						for(let y of ln_or_log.slice(helf)) yield y;
 					}
 					ln_or_log = other;
 					
@@ -566,7 +551,7 @@ class toolbox
 					continue;
 				}
 			}
-			else if(isNaN(parseFloat(x))) for(let y of x.split("")) yield y;
+			else if(isNaN(parseFloat(x))) for(let y of x) yield y;
 			else yield x;
 		}
 	}
@@ -582,81 +567,3 @@ class toolbox
 			.replace(/\//g, "&#x2F;");
 	}
 }
-
-// DEPRECATED
-//window.addEventListener("load", () =>
-//{
-	/*document.querySelector("#calculatorMod").addEventListener("change", () =>
-	{
-		localStorage.nowMod = document.querySelector("#calculatorMod").value;
-
-		for(let page of Object.keys(haveBottom))
-		{
-			if(page === localStorage.nowMod)
-			{
-				document.querySelector(`#${haveBottom[page].toLowerCase()}`).hidden = false;
-				document.querySelector("#topTitle").innerHTML = `${haveBottom[page]} Notation Calculator`;
-			}
-			else document.querySelector(`#${haveBottom[page].toLowerCase()}`).hidden = true;
-		}
-
-		if(/Infix|Prefix/.test(haveBottom[localStorage.nowMod]))
-		{
-			localStorage.postfixResultView = "false";
-			document.querySelector("#infixToPostfix").hidden = false;
-		}
-		else 
-		{
-			localStorage.postfixResult = "...";
-			localStorage.postfixResultView = "true";
-			document.querySelector("#infixToPostfix").hidden = true;
-			document.querySelector("#postfixResultView").value = "...";
-		}
-	});*/
-
-//	document.querySelector("#postfix").addEventListener("click", () => {});
-
-/*	document.querySelector("#prefix").addEventListener("click", () =>
-	{
-		let  tool = new toolbox();
-		let x = tool.plusSplit(localStorage.userInputHistory.split(/(\d+\.\d+)|(-\d+)|(\d+)/)).filter(y => /[\*\^\-\+\/\d\.]/.test(y));
-
-		let oper = ["+", "-", "*", "/", "^"], memory = Array.from(x);
-		while(x.length !== 1)
-		{
-			let num = 0;
-			for(let y = 0;x.length > y; y++)
-			{
-				if(!oper.includes(x[y])) num += 1;
-				else num = 0;
-
-				if(num === 2)
-				{
-					num = 0;
-					let postfix = `${x[y-1]} ${x[y]} ${x[y-2]}`;
-					x.splice(y-2, 3, postfix);
-				}
-			}
-			if(JSON.stringify(x) === JSON.stringify(memory) || x.some(y => /undefined/.test(y))) 
-			{
-				tool.setResultView(false, false, 1, "Unlawful prefix notation", 0, 0, 0);
-				return false;
-			}
-			memory = Array.from(x);
-		}
-
-		localStorage.postfixResult =
-		document.querySelector("#enterValue").value =
-		document.querySelector("#postfixResultView").value = x[0];
-
-		document.querySelector("#postfix").click();
-
-		document.querySelector("#enterValue").value = localStorage.userInputHistory;
-	});*/
-
-//	if(!localStorage.postfixResult) localStorage.postfixResult = "...";
-//	document.querySelector("#infixToPostfix").value = localStorage.postfixResult;
-
-//	if(!localStorage.postfixResultView) localStorage.postfixResultView = "false";
-//	document.querySelector("#infixToPostfix").hidden = (localStorage.postfixResultView === "true");
-//});
