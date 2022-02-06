@@ -11,18 +11,7 @@
 //*****************************************************/
 
 
-/*window.addEventListener("DOMContentLoaded", () =>
-{
-	const language = (navigator.language || navigator.browserLanguage).toLowerCase();
-	
-	const reader = new FileReader();
-	reader.addEventListener("load", (data) => {console.log(JSON.parse(data));})
-	reader.readAsDataURL("./language/zn-tw.json");
-	
-	//const print = require("./language/" + language + ".json");
-	//console.log(print);
-})*/
-
+let translation = undefined;
 window.addEventListener("load", () =>
 {
 	try {let test = !!localStorage;}
@@ -80,6 +69,32 @@ window.addEventListener("load", () =>
 
 	if(!localStorage.historyReview) asari.historyReview_Update("-1", asari.SET);
 	
+	//Load other language
+	const language = (navigator.language || navigator.browserLanguage).toLowerCase();
+
+    const client = new XMLHttpRequest();
+
+    client.addEventListener("error", (error) => {console.log(error);});
+    client.addEventListener("loadend", (data) => 
+	{
+		if(data.currentTarget.status === 200)
+		{
+			translation = JSON.parse(data.currentTarget.response);
+			
+			//translation HTML
+			document.querySelector("title").innerText = translation[document.querySelector("title").innerText];
+			document.querySelector("#topTitle").innerText = translation[document.querySelector("#topTitle").innerText];
+			document.querySelector("#enterValue").placeholder = translation[document.querySelector("#enterValue").placeholder];
+			document.querySelector("#infix").value = translation[document.querySelector("#infix").value];
+			document.querySelector("#calculateHistory").innerText = translation[document.querySelector("#calculateHistory").innerText];
+			document.querySelector("#userOptions").innerText = translation[document.querySelector("#userOptions").innerText];
+			document.querySelector("#Result_Maximum_Fractional_Text").innerText = translation[document.querySelector("#Result_Maximum_Fractional_Text").innerText];
+		}
+	});
+
+    client.open("GET", "/koyori/language/" + language + ".json");
+
+    client.send();
 	
 	//Event Listener
 	document.querySelector("#infix").addEventListener("click", () => 

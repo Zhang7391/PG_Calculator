@@ -250,6 +250,7 @@ input[type="text"]
 .red{color: #ff0000;}
 .green{color: #00ff00;}
 
+.px150 {width: 150px}
 
 @font-face
 {

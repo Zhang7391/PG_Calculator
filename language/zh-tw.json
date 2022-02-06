@@ -1,4 +1,18 @@
 {
+	"PG Calculator" : "PG\u8a08\u7b97\u6a5f\u7db2\u9801\u7248",
+	"Rapid Calculator" : "\u8d85\u5feb\u8a08\u7b97\u6a5f",
+    "Please enter your infix notation." : "\u8acb\u8f38\u5165\u5f85\u8a08\u7b97\u7684\u7b97\u5f0f",
+    "Calculation" : "\u8a08\u7b97",
+    "calculate history" : "\u6b77\u53f2\u7d00\u9304",
+    "Options" : "\u8a2d\u5b9a",
+    "Result maximum fractional digits" : "\u8a08\u7b97\u7d50\u679c\u986f\u793a\u81f3\u5c0f\u6578\u9ede\u4e0b\u4f4d\u6578",
+    "History maximum fractional digits" : "\u6b77\u53f2\u7d00\u9304\u986f\u793a\u81f3\u5c0f\u6578\u9ede\u4e0b\u4f4d\u6578",
+    "Calculate history maximum record" : "\u756b\u9762\u4e0a\u6700\u591a\u986f\u793a\u5e7e\u7b46\u6b77\u53f2\u7d00\u9304",
+	"Error! Number range: 0~1000" : "\u6578\u5b57\u5fc5\u9808\u4ecb\u65bc 0 \u548c 1000 \u4e4b\u9593",
+	"Error! Number range: >= 0" : "\u6578\u5b57\u5fc5\u9808\u5927\u65bc\u6216\u662f\u7b49\u65bc 0",
+    "success" : "\u8a2d\u7f6e\u6210\u529f",
+    "conversion result" : "\u8a08\u7b97\u7d50\u679c",
+
 	"A space between two numbers" : "\u542b\u6709\u4e0d\u660e\u78ba\u7684\u7a7a\u683c",
 	"Division by zero" : "\u9664\u4ee50\u7121\u610f\u7fa9",
 	"Error! Unlawful Infix Notation!" : "\u932f\u8aa4\u7684\u7b97\u5f0f",
@@ -6,5 +20,8 @@
 	"no have any value's log()" : "\u542b\u6709\u5e36\u6709\u7a7a\u503c\u7684log()",
 	"Operator are too much!" : "\u904b\u7b97\u5b50\u904e\u591a",
 	"Unlawful ln value" : "\u7121\u610f\u7fa9\u7684ln\u6578\u503c",
-	"Unlawful log value" : "\u7121\u610f\u7fa9\u7684log\u6578\u503c"
+	"Unlawful log value" : "\u7121\u610f\u7fa9\u7684log\u6578\u503c",
+
+	"Copyright (c) 2022 zhang7391 All rights reserved(click me)" : "\u7248\u6b0a\u6240\u6709 (c) 2022 zhang7391 [\u9ede\u6211]",
+	"license: GNU General Public License v3.0(click me)" : "\u63a1\u300cGNU \u901a\u7528\u516c\u773e\u6388\u6b0a\u689d\u6b3e\u7b2c\u4e09\u7248\u300d\u6388\u6b0a [\u9ede\u6211]"
 }

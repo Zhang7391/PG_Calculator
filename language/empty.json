@@ -1,4 +1,17 @@
 {
+	"PG Calculator" : "",
+	"Rapid Calculator" : "",
+	"Please enter your Postfix Notation." : "",
+	"Calculation" : "",
+	"calculate history" : "",
+	"Options" : "",
+	"Result maximum fractional digits" : "",
+	"History maximum fractional digits" : "",
+	"Calculate history maximum record" : "",
+	"Error! Number range: 0~1000" : "",
+	"success" : "",
+	"conversion result" : "",
+
 	"A space between two numbers" : "",
 	"Division by zero" : "",
 	"Error! Unlawful Infix Notation!" : "",
@@ -6,5 +19,8 @@
 	"no have any value's log()" : "",
 	"Operator are too much!" : "",
 	"Unlawful ln value" : "",
-	"Unlawful log value" : ""
+	"Unlawful log value" : "",
+
+	"Copyright (c) 2022 zhang7391 All rights reserved(click me)" : "",
+	"license: GNU General Public License v3.0(click me)" : ""
 }
