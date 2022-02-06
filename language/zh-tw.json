@@ -1,0 +1,10 @@
+{
+	"A space between two numbers" : "\u542b\u6709\u4e0d\u660e\u78ba\u7684\u7a7a\u683c",
+	"Division by zero" : "\u9664\u4ee50\u7121\u610f\u7fa9",
+	"Error! Unlawful Infix Notation!" : "\u932f\u8aa4\u7684\u7b97\u5f0f",
+	"no have any value's ln()" : "\u542b\u6709\u5e36\u6709\u7a7a\u503c\u7684ln()",
+	"no have any value's log()" : "\u542b\u6709\u5e36\u6709\u7a7a\u503c\u7684log()",
+	"Operator are too much!" : "\u904b\u7b97\u5b50\u904e\u591a",
+	"Unlawful ln value" : "\u7121\u610f\u7fa9\u7684ln\u6578\u503c",
+	"Unlawful log value" : "\u7121\u610f\u7fa9\u7684log\u6578\u503c"
+}

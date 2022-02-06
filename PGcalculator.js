@@ -11,6 +11,18 @@
 //*****************************************************/
 
 
+/*window.addEventListener("DOMContentLoaded", () =>
+{
+	const language = (navigator.language || navigator.browserLanguage).toLowerCase();
+	
+	const reader = new FileReader();
+	reader.addEventListener("load", (data) => {console.log(JSON.parse(data));})
+	reader.readAsDataURL("./language/zn-tw.json");
+	
+	//const print = require("./language/" + language + ".json");
+	//console.log(print);
+})*/
+
 window.addEventListener("load", () =>
 {
 	try {let test = !!localStorage;}
