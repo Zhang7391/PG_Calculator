@@ -6,7 +6,7 @@
 // License: GNU General Public License v3.0            /
 // Github: https://github.com/Zhang7391/PG_Calculator  /
 //                                                     / 
-// Please keep this information if you use this code.  /
+// Keep this information if you use this code, please. /
 //                                                     /
 //*****************************************************/
 
