@@ -21,33 +21,33 @@ window.addEventListener("load", () =>
 	const asari = new localStorageUpdate();
 	
 	//Core initialization
-	if(!localStorage.viewResultColor) localStorage.viewResultColor = "#ffffff";
+	if(!localStorage.viewResultColor) asari.viewResultColor_Update("#ffffff");
 	document.querySelector("#resultView").style.color = localStorage.viewResultColor;
 
-	if(!localStorage.userInputHistory) localStorage.userInputHistory = "";
+	if(!localStorage.userInputHistory) asari.userInputHistory_Update();
 	document.querySelector("#enterValue").value = localStorage.userInputHistory;
 	
-	if(!localStorage.viewResultPrint) localStorage.viewResultPrint = "...";
+	if(!localStorage.viewResultPrint) /*asari.viewResultPrint_Update("...")*/;
 	let result = PGcore.calculation(localStorage.userInputHistory);
 	PGcore.setResultView(result[0], result.length);
 	document.querySelector("#resultView").value = localStorage.viewResultPrint;
 	document.querySelector("#resultView").style.color = localStorage.viewResultColor;
 	
 	//Settings initialization
-	if(!localStorage.ResultMaximumFractional) localStorage.ResultMaximumFractional = "1000";
+	if(!localStorage.ResultMaximumFractional) asari.ResultMaximumFractional_Update("1000");
 	document.querySelector("#Result_Maximum_Fractional").value = localStorage.ResultMaximumFractional;
 	document.querySelector("#Result_Maximum_Fractional").placeholder = `${localStorage.ResultMaximumFractional} (0~1000)`;
 
-	if(!localStorage.HistoryMaximumFractional) localStorage.HistoryMaximumFractional = "10";
+	if(!localStorage.HistoryMaximumFractional) asari.HistoryMaximumFractional_Update("10");
 	document.querySelector("#History_Maximum_Fractional").value = localStorage.HistoryMaximumFractional;
 	document.querySelector("#History_Maximum_Fractional").placeholder = `${localStorage.HistoryMaximumFractional} (0~1000)`;
 
-	if(!localStorage.CalculateHistoryMaximum) localStorage.CalculateHistoryMaximum = "5";
+	if(!localStorage.CalculateHistoryMaximum) asari.CalculateHistoryMaximum_Update("5");
 	document.querySelector("#Calculate_History_Maximum").value = localStorage.CalculateHistoryMaximum;
 	document.querySelector("#Calculate_History_Maximum").placeholder = `${localStorage.CalculateHistoryMaximum} (>=0)`;
 
 	//History initialization
-	if(!localStorage.CalculateHistory) localStorage.CalculateHistory = "";
+	if(!localStorage.CalculateHistory) asari.CalculateHistory_Update("", "", asari.DEL);
 	if(localStorage.CalculateHistory !== "")
 	{
 		let calculateData = localStorage.CalculateHistory.split(',');
@@ -66,7 +66,7 @@ window.addEventListener("load", () =>
 		}
 	}
 
-	if(!localStorage.historyReview) localStorage.historyReview = "-1";
+	if(!localStorage.historyReview) asari.historyReview_Update("-1", asari.SET);
 	
 	
 	//Event Listener
@@ -96,22 +96,38 @@ window.addEventListener("load", () =>
 		else
 		{
 			try {result = [new Decimal(localStorage.viewResultPrint)];}
-			catch(error) {console.log(error);}
+			catch(error) {result = ["Error"]}
 		}
 	
 		switch(press.keyCode)
 		{
 		case 13:		//enter
+			{
+			if(!(result[0] instanceof Decimal)) break;
+				
 			asari.historyReview_Update("-1", asari.SET)
+			
+			let formula = document.querySelector("#enterValue").value;
+			let calculateData = localStorage.CalculateHistory.split(',');
+			
+			let zn = calculateData[calculateData.length-1].replace(/\s/g, "");
+			if(zn !== "") 
+			{
+				if(zn.split("=")[0] === formula.replace(/\s/g, "")) break;
+				else
+				{
+					asari.CalculateHistory_Update(tool.htmlToText(document.querySelector("#enterValue").value), result[0]);
+					calculateData.push(formula.replaceAll(',','') + " = " + result.toString())
+				}					
+			}
+			
 			try
 			{
 				if(result[0].minus(result[0].toFixed(0)).toString().length > parseInt(localStorage.HistoryMaximumFractional)+3) result[0] = result[0].toExponential();
-		
-				asari.CalculateHistory_Update(tool.htmlToText(document.querySelector("#enterValue").value), result[0]);
-
+				
 				for(x of document.querySelectorAll(".historyViewer")) document.querySelector("#historyShow").removeChild(x);
-
-				let calculateData = localStorage.CalculateHistory.split(','), now = 0;
+				
+				let now = 0;
 				while(parseInt(localStorage.CalculateHistoryMaximum) > now && calculateData.length > now+1)
 				{
 					let tr = document.createElement("tr"), td = document.createElement("td");
@@ -135,7 +151,7 @@ window.addEventListener("load", () =>
 				document.querySelector("#resultView").value = localStorage.viewResultPrint;
 				document.querySelector("#resultView").style.color = localStorage.viewResultColor;
 			*/
-			
+			}
 		case 38:		//up arrow
 			{
 			let calculateData = localStorage.CalculateHistory.split(',');
@@ -149,8 +165,10 @@ window.addEventListener("load", () =>
 			asari.userInputHistory_Update(algorithm);
 			document.querySelector("#enterValue").value = algorithm;
 			
-			asari.viewResultPrint_Update(result);
-			document.querySelector("#enterValue").value = algorithm;
+			result = PGcore.calculation(algorithm);
+			PGcore.setResultView(result[0], result.length);
+			document.querySelector("#resultView").value = localStorage.viewResultPrint;
+			document.querySelector("#resultView").style.color = localStorage.viewResultColor;
 			break;
 			}
 			
@@ -165,8 +183,10 @@ window.addEventListener("load", () =>
 			asari.userInputHistory_Update(algorithm);
 			document.querySelector("#enterValue").value = algorithm;
 			
-			asari.viewResultPrint_Update(result);
-			document.querySelector("#enterValue").value = algorithm;
+			result = PGcore.calculation(algorithm);
+			PGcore.setResultView(result[0], result.length);
+			document.querySelector("#resultView").value = localStorage.viewResultPrint;
+			document.querySelector("#resultView").style.color = localStorage.viewResultColor;
 			break;
 			}
 		}
@@ -316,7 +336,7 @@ window.addEventListener("load", () =>
 		asari.viewResultColor_Update("#ffffff");
 		document.querySelector("#resultView").style.color = "#ffffff";
 
-		asari.userInputHistory_Update("");
+		asari.userInputHistory_Update();
 		document.querySelector("#enterValue").value = "";
 	});
 	

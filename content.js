@@ -397,11 +397,11 @@ class localStorageUpdate
 {
 	letructor() {}
 	
-	userInputHistory_Update(formula)
+	userInputHistory_Update(formula = "")
 	{
 		if(localStorage.userInputHistory !== formula)
 		{
-			localStorage.userInputHistory = formula;
+			localStorage.userInputHistory = formula.toString();
 
 			if(formula === "") localStorage.viewResultPrint = "...";
 		}
@@ -420,7 +420,7 @@ class localStorageUpdate
 	
 	viewResultColor_Update(color, mod = this.SET)
 	{
-		localStorage.viewResultColor = color;
+		localStorage.viewResultColor = color.toString();
 	}
 	
 	historyReview_Update(num, mod)
@@ -576,7 +576,7 @@ class toolbox
 			.replace(/</g, "&lt;")
 			.replace(/>/g, "&gt;")
 			.replace(/"/g, "&quot;")
-			.replace(/'/g, "&#x27;")
-			.replace(/\//g, "&#x2F;");
+			.replace(/'/g, "&#39;");
+			//.replace(/\//g, "&frasl;");
 	}
 }
