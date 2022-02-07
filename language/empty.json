@@ -11,12 +11,12 @@
 	"Error! Number range: 0~1000" : "",
 	"success" : "",
 	"conversion result" : "",
-
+	
 	"A space between two numbers" : "",
 	"Division by zero" : "",
 	"Error! Unlawful Infix Notation!" : "",
-	"no have any value's ln()" : "",
-	"no have any value's log()" : "",
+	"No have any value's ln()" : "",
+	"No have any value's log()" : "",
 	"Operator are too much!" : "",
 	"Unlawful ln value" : "",
 	"Unlawful log value" : "",

@@ -12,12 +12,12 @@
 	"Error! Number range: >= 0" : "\u6578\u5b57\u5fc5\u9808\u5927\u65bc\u6216\u662f\u7b49\u65bc 0",
     "success" : "\u8a2d\u7f6e\u6210\u529f",
     "conversion result" : "\u8a08\u7b97\u7d50\u679c",
-
+	
 	"A space between two numbers" : "\u542b\u6709\u4e0d\u660e\u78ba\u7684\u7a7a\u683c",
 	"Division by zero" : "\u9664\u4ee50\u7121\u610f\u7fa9",
 	"Error! Unlawful Infix Notation!" : "\u932f\u8aa4\u7684\u7b97\u5f0f",
-	"no have any value's ln()" : "\u542b\u6709\u5e36\u6709\u7a7a\u503c\u7684ln()",
-	"no have any value's log()" : "\u542b\u6709\u5e36\u6709\u7a7a\u503c\u7684log()",
+	"No have any value's ln()" : "\u542b\u6709\u5e36\u6709\u7a7a\u503c\u7684ln()",
+	"No have any value's log()" : "\u542b\u6709\u5e36\u6709\u7a7a\u503c\u7684log()",
 	"Operator are too much!" : "\u904b\u7b97\u5b50\u904e\u591a",
 	"Unlawful ln value" : "\u7121\u610f\u7fa9\u7684ln\u6578\u503c",
 	"Unlawful log value" : "\u7121\u610f\u7fa9\u7684log\u6578\u503c",

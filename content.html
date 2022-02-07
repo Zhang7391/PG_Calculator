@@ -1,3 +1,6 @@
+<!doctype html>
+<html>
+
 <!--***************************************************/
 //                                                     /
 // Copyright (c) 2021 zhang7391 All rights reserved    /
@@ -10,8 +13,6 @@
 //                                                     /
 //************************************************** -->
 
-<!doctype html>
-<html>
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="./lib/content.css" type="text/css" />
@@ -74,35 +75,35 @@
 						<td><input id="Result_Maximum_Fractional" type="number" /></td>
 					</tr>
 					<tr id="Result_Maximum_Fractional_Error" hidden>
-						<td class="red center">Error! Number range: 0~1000</td>
+						<td class="red center Num0to1000">Error! Number range: 0~1000</td>
 						<td></td>
 					</tr>
 					<tr id="Result_Maximum_Fractional_Success" hidden>
-						<td class="green center">success</td>
+						<td class="green center setupSuccess">success</td>
 						<td></td>
 					</tr>
 					<tr>
-						<td>History maximum fractional digits</td>
+						<td id="History_Maximum_Fractional_Text">History maximum fractional digits</td>
 						<td><input id="History_Maximum_Fractional" type="number" /></td>
 					</tr>
 					<tr id="History_Maximum_Fractional_Error" hidden>
-						<td class="red center">Error! Number range: 0~1000</td>
+						<td class="red center Num0to1000">Error! Number range: 0~1000</td>
 						<td></td>
 					</tr>
 					<tr id="History_Maximum_Fractional_Success" hidden>
-						<td class="green center">success</td>
+						<td class="green center setupSuccess">success</td>
 						<td></td>
 					</tr>
 					<tr>
-						<td>Calculate history maximum record</td>
+						<td id="Calculate_History_Maximum_Text">Calculate history maximum record</td>
 						<td><input id="Calculate_History_Maximum" type="number" /></td>
 					</tr>
 					<tr id="Calculate_History_Maximum_Error" hidden>
-						<td class="red center">Error! Number range: >= 0</td>
+						<td id="number0up" class="red center">Error! Number range: >= 0</td>
 						<td></td>
 					</tr>
 					<tr id="Calculate_History_Maximum_Success" hidden>
-						<td class="green center">success</td>
+						<td class="green center setupSuccess">success</td>
 						<td></td>
 					</tr>
 					<tr>
@@ -115,7 +116,7 @@
 			<p>&nbsp;</p>
 
 			<div class="alert-success alert2">
-				<h2>conversion result</h2>
+				<h2 id="conversion_result_text">conversion result</h2>
 
 				<textarea id="resultView" readonly>...</textarea>
 			</div>

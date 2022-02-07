@@ -11,9 +11,9 @@
 //*****************************************************/
 
 
-let translation = undefined;
 window.addEventListener("load", () =>
 {
+	let translation = undefined;
 	try {let test = !!localStorage;}
 	catch {localStorage = Object.create(Object.prototype);}
 	
@@ -80,36 +80,47 @@ window.addEventListener("load", () =>
 		if(data.currentTarget.status === 200)
 		{
 			translation = JSON.parse(data.currentTarget.response);
-			
+
+			let result = PGcore.calculation(document.querySelector("#enterValue").value);
+    		PGcore.setResultView(result[0], result.length);
+    		document.querySelector("#resultView").value = localStorage.viewResultPrint;
+    		document.querySelector("#resultView").style.color = localStorage.viewResultColor;
+
 			//translation HTML
-			document.querySelector("title").innerText = translation[document.querySelector("title").innerText];
-			document.querySelector("#topTitle").innerText = translation[document.querySelector("#topTitle").innerText];
-			document.querySelector("#enterValue").placeholder = translation[document.querySelector("#enterValue").placeholder];
-			document.querySelector("#infix").value = translation[document.querySelector("#infix").value];
-			document.querySelector("#calculateHistory").innerText = translation[document.querySelector("#calculateHistory").innerText];
-			document.querySelector("#userOptions").innerText = translation[document.querySelector("#userOptions").innerText];
-			document.querySelector("#Result_Maximum_Fractional_Text").innerText = translation[document.querySelector("#Result_Maximum_Fractional_Text").innerText];
+			if(translation[document.querySelector("title").innerText] !== "") document.querySelector("title").innerText = translation[document.querySelector("title").innerText];
+			if(translation[document.querySelector("#topTitle").innerText] !== "") document.querySelector("#topTitle").innerText = translation[document.querySelector("#topTitle").innerText];
+			if(translation[document.querySelector("#enterValue").placeholder] !== "") document.querySelector("#enterValue").placeholder = translation[document.querySelector("#enterValue").placeholder];
+			if(translation[document.querySelector("#infix").value] !== "") document.querySelector("#infix").value = translation[document.querySelector("#infix").value];
+			if(translation[document.querySelector("#resultView").value] !== "" && translation[document.querySelector("#resultView").value] !== undefined) document.querySelector("#resultView").value = translation[document.querySelector("#resultView").value];
+			if(translation[document.querySelector("#conversion_result_text").innerText] !== "") document.querySelector("#conversion_result_text").innerText = translation[document.querySelector("#conversion_result_text").innerText];
+			if(translation[document.querySelector("#calculateHistory").innerText] !== "") document.querySelector("#calculateHistory").innerText = translation[document.querySelector("#calculateHistory").innerText];
+			if(translation[document.querySelector("#userOptions").innerText] !== "") document.querySelector("#userOptions").innerText = translation[document.querySelector("#userOptions").innerText];
+			if(translation[document.querySelector("#Result_Maximum_Fractional_Text").innerText] !== "") document.querySelector("#Result_Maximum_Fractional_Text").innerText = translation[document.querySelector("#Result_Maximum_Fractional_Text").innerText];
+			if(translation[document.querySelector("#History_Maximum_Fractional_Text").innerText] !== "") document.querySelector("#History_Maximum_Fractional_Text").innerText = translation[document.querySelector("#History_Maximum_Fractional_Text").innerText];
+			if(translation[document.querySelector("#Calculate_History_Maximum_Text").innerText] !== "") document.querySelector("#Calculate_History_Maximum_Text").innerText = translation[document.querySelector("#Calculate_History_Maximum_Text").innerText];
+			if(translation[document.querySelector("#number0up").innerText] !== "") document.querySelector("#number0up").innerText = translation[document.querySelector("#number0up").innerText];
+			if(translation[document.querySelector("#license").innerText] !== "") document.querySelector("#license").innerText = translation[document.querySelector("#license").innerText];
+			for(let x of document.querySelectorAll(".Num0to1000")) if(translation[x.innerText] !== "") x.innerText = translation[x.innerText];
+			for(let x of document.querySelectorAll(".setupSuccess")) if(translation[x.innerText] !== "") x.innerText = translation[x.innerText];
 		}
 	});
 
-    client.open("GET", "/koyori/language/" + language + ".json");
+    client.open("GET", location.pathname.slice(0, location.pathname.lastIndexOf("/")+1) + "language/" + language + ".json");
 
     client.send();
-	
+
 	//Event Listener
 	document.querySelector("#infix").addEventListener("click", () => 
 	{
 		let result = PGcore.calculation(document.querySelector("#enterValue").value);
 		
 		PGcore.setResultView(result[0], result.length);
-		document.querySelector("#resultView").value = localStorage.viewResultPrint;
+		document.querySelector("#resultView").value = (translation !== undefined && translation[localStorage.viewResultPrint] !== "" && translation[localStorage.viewResultPrint] !== undefined)? translation[localStorage.viewResultPrint] : localStorage.viewResultPrint;
 		document.querySelector("#resultView").style.color = localStorage.viewResultColor;
 	});
 	
 	document.addEventListener("keyup", (press) =>
 	{
-		//alert(press.keyCode);
-	
 		let result = undefined;
 		if(document.querySelector("#enterValue").value !== localStorage.userInputHistory)
 		{
@@ -117,7 +128,7 @@ window.addEventListener("load", () =>
 
 			result = PGcore.calculation(localStorage.userInputHistory);
 			PGcore.setResultView(result[0], result.length);
-			document.querySelector("#resultView").value = localStorage.viewResultPrint;
+			document.querySelector("#resultView").value = (translation !== undefined && translation[localStorage.viewResultPrint] !== "" && translation[localStorage.viewResultPrint] !== undefined)? translation[localStorage.viewResultPrint] : localStorage.viewResultPrint;
 			document.querySelector("#resultView").style.color = localStorage.viewResultColor;
 		}
 		else
@@ -159,7 +170,7 @@ window.addEventListener("load", () =>
 				{
 					let tr = document.createElement("tr"), td = document.createElement("td");
 					td.innerText = calculateData[calculateData.length - now - 1];
-					td.addEventListener("click", (itself) => {localStorage.userInputHistory = itself.target.innerText.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#enterValue").value = localStorage.userInputHistory;document.querySelector("#resultView").value = localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;});
+					td.addEventListener("click", (itself) => {localStorage.userInputHistory = itself.target.innerText.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#enterValue").value = localStorage.userInputHistory;document.querySelector("#resultView").value = (translation !== undefined && translation[localStorage.viewResultPrint] !== "" && translation[localStorage.viewResultPrint] !== undefined)? translation[localStorage.viewResultPrint] : localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;});
 					tr.appendChild(td);
 					tr.className = "historyViewer";
 					document.querySelector("#historyShow").appendChild(tr);
@@ -175,7 +186,7 @@ window.addEventListener("load", () =>
 				let result = PGcore.calculation(localStorage.userInputHistory);
 				PGcore.setResultView(result[0], result.length);
 				document.querySelector("#enterValue").value = localStorage.userInputHistory;
-				document.querySelector("#resultView").value = localStorage.viewResultPrint;
+				document.querySelector("#resultView").value = (translation !== undefined && translation[localStorage.viewResultPrint] !== "" && translation[localStorage.viewResultPrint] !== undefined)? translation[localStorage.viewResultPrint] : localStorage.viewResultPrint;
 				document.querySelector("#resultView").style.color = localStorage.viewResultColor;
 			*/
 			}
@@ -194,7 +205,7 @@ window.addEventListener("load", () =>
 			
 			result = PGcore.calculation(algorithm);
 			PGcore.setResultView(result[0], result.length);
-			document.querySelector("#resultView").value = localStorage.viewResultPrint;
+			document.querySelector("#resultView").value = (translation !== undefined && translation[localStorage.viewResultPrint] !== "" && translation[localStorage.viewResultPrint] !== undefined)? translation[localStorage.viewResultPrint] : localStorage.viewResultPrint;
 			document.querySelector("#resultView").style.color = localStorage.viewResultColor;
 			break;
 			}
@@ -212,7 +223,7 @@ window.addEventListener("load", () =>
 			
 			result = PGcore.calculation(algorithm);
 			PGcore.setResultView(result[0], result.length);
-			document.querySelector("#resultView").value = localStorage.viewResultPrint;
+			document.querySelector("#resultView").value = (translation !== undefined && translation[localStorage.viewResultPrint] !== "" && translation[localStorage.viewResultPrint] !== undefined)? translation[localStorage.viewResultPrint] : localStorage.viewResultPrint;
 			document.querySelector("#resultView").style.color = localStorage.viewResultColor;
 			break;
 			}
@@ -309,7 +320,7 @@ window.addEventListener("load", () =>
 					{
 						let tr = document.createElement("tr"), td = document.createElement("td");
 						td.innerText = calculateData[num - now];
-						td.addEventListener("click", (itself) => {localStorage.userInputHistory = itself.target.innerText.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#enterValue").value = localStorage.userInputHistory;document.querySelector("#resultView").value = localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;});
+						td.addEventListener("click", (itself) => {localStorage.userInputHistory = itself.target.innerText.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#enterValue").value = localStorage.userInputHistory;document.querySelector("#resultView").value = (translation !== undefined && translation[localStorage.viewResultPrint] !== "" && translation[localStorage.viewResultPrint] !== undefined)? translation[localStorage.viewResultPrint] : localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;});
 						tr.appendChild(td);
 						tr.className = "historyViewer";
 						document.querySelector("#historyShow").appendChild(tr);
@@ -332,8 +343,7 @@ window.addEventListener("load", () =>
 	});
 	
 	document.querySelector("#historyInput").addEventListener("click", () => {
-		document.querySelector("#historyMod").hidden = !document.querySelector("#historyMod").hidden;
-	});
+		document.querySelector("#historyMod").hidden = !document.querySelector("#historyMod").hidden;});
 	
 	document.querySelector("#gear").addEventListener("click", () => 
 	{
@@ -369,11 +379,17 @@ window.addEventListener("load", () =>
 	
 	document.querySelector("#license").addEventListener("click", () =>
 	{
-		const license =
+		const license = (translation === undefined 
+							&& translation["Copyright (c) 2022 zhang7391 All rights reserved(click me)"] !== ""
+							&& translation["license: GNU General Public License v3.0(click me)"] !== "")?
 		{
 			"Copyright (c) 2022 zhang7391 All rights reserved(click me)": "license: GNU General Public License v3.0(click me)",
 			"license: GNU General Public License v3.0(click me)": "Copyright (c) 2022 zhang7391 All rights reserved(click me)"
-		}
+		} :
+		{
+			[translation["Copyright (c) 2022 zhang7391 All rights reserved(click me)"]]: translation["license: GNU General Public License v3.0(click me)"],
+			[translation["license: GNU General Public License v3.0(click me)"]]: translation["Copyright (c) 2022 zhang7391 All rights reserved(click me)"]
+		};
 		
 		document.querySelector("#license").innerText = license[document.querySelector("#license").innerText]
 	});
