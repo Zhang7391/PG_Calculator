@@ -35,7 +35,7 @@ window.addEventListener("load", () =>
 	document.querySelector("#resultView").style.color = localStorage.viewResultColor;
 	
 	//Settings initialization
-	if(!localStorage.MaximumFractional) asari.MaximumFractional_Update("10");
+	if(!localStorage.MaximumFractional) asari.MaximumFractional_Update("8");
 	document.querySelector("#Maximum_Fractional").value = localStorage.MaximumFractional;
 	document.querySelector("#Maximum_Fractional").placeholder = `${localStorage.MaximumFractional} (0~1000)`;
 	
@@ -100,6 +100,7 @@ window.addEventListener("load", () =>
 			if(translation[document.querySelector("#calculateHistory").innerText] !== "") document.querySelector("#calculateHistory").innerText = translation[document.querySelector("#calculateHistory").innerText];
 			if(translation[document.querySelector("#userOptions").innerText] !== "") document.querySelector("#userOptions").innerText = translation[document.querySelector("#userOptions").innerText];
 			if(translation[document.querySelector("#Maximum_Fractional_Text").innerText] !== "") document.querySelector("#Maximum_Fractional_Text").innerText = translation[document.querySelector("#Maximum_Fractional_Text").innerText];
+			if(translation[document.querySelector("#settingButtom").value] !== "") document.querySelector("#settingButtom").value = translation[document.querySelector("#settingButtom").value];
 /*			if(translation[document.querySelector("#Result_Maximum_Fractional_Text").innerText] !== "") document.querySelector("#Result_Maximum_Fractional_Text").innerText = translation[document.querySelector("#Result_Maximum_Fractional_Text").innerText];
 			if(translation[document.querySelector("#History_Maximum_Fractional_Text").innerText] !== "") document.querySelector("#History_Maximum_Fractional_Text").innerText = translation[document.querySelector("#History_Maximum_Fractional_Text").innerText];
 			if(translation[document.querySelector("#Calculate_History_Maximum_Text").innerText] !== "") document.querySelector("#Calculate_History_Maximum_Text").innerText = translation[document.querySelector("#Calculate_History_Maximum_Text").innerText];
@@ -250,6 +251,11 @@ window.addEventListener("load", () =>
 			
 				document.querySelector("#Maximum_Fractional_Error").hidden = true;
 				document.querySelector("#Maximum_Fractional_Success").hidden = false;
+
+				let result = PGcore.calculation(localStorage.userInputHistory);
+				PGcore.setResultView(result[0], result.length);
+				document.querySelector("#resultView").value = (translation !== undefined && translation[localStorage.viewResultPrint] !== "" && translation[localStorage.viewResultPrint] !== undefined)? translation[localStorage.viewResultPrint] : localStorage.viewResultPrint;
+				document.querySelector("#resultView").style.color = localStorage.viewResultColor;
 			}
 			else 
 			{

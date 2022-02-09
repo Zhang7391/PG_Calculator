@@ -12,16 +12,17 @@
 
 ## pending new features
 
-- [x] Calculation of ln, e, log, and so on...
+- [ ] Calculation of pi(&#960;)
+- [x] Calculation of ln, e, log
 - [x] If the current formula matches the latest history, no new formula will be added
-- [x] More language
+- [x] More languages
 - [ ] Include OOP structures
 
 ## pending bugs
 
 - [x] Too many decimal digits(To use scientific notation to display)
 - [ ] Historical result decimal digits are unmatched
-- [ ] Conversion result decimal digits are unmatched
+- [x] Conversion result decimal digits are unmatched
 - [x] Prevent XSS attacks
 - [x] Use module of programming
 - [x] Fix incorrect input position(in \#enterValue)

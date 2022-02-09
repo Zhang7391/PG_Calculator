@@ -12,6 +12,8 @@
 
 class core
 {
+	constructor() {;}
+	
 	calculation(formula)
 	{
 		if(/log\s*\(\s*\)/.test(formula)) return ["no have any value's log()"];
@@ -53,7 +55,7 @@ class core
 				noMul = noMul2 = needChange = isSymbol = false;
 				break;
 			case "e":
-				numStack.push("2.71828182")
+				numStack.push(this.e.slice(0, parseInt(localStorage.MaximumFractional) + 2));
 				noMul = noMul2 = needChange = isSymbol = false;
 				break;
 			case "^":
@@ -145,7 +147,12 @@ class core
 						isSymbol = true;
 					}
 					
-					if(data instanceof Decimal) numStack.push(data.log().toFixed(8).toString());
+					if(data instanceof Decimal) 
+					{
+						let decimalPlaces = parseInt(localStorage.MaximumFractional);
+						if(decimalPlaces > data.dp()) numStack.push(data.log().toFixed(decimalPlaces).toString());
+						else numStack.push(data.log().toString());
+					}
 					else return ["Unlawful log value"];
 				}
 				else if(/ln/.test(x))
@@ -159,7 +166,12 @@ class core
 						isSymbol = true;
 					}
 					
-					if(data instanceof Decimal) numStack.push(data.ln().toFixed(8).toString());
+					if(data instanceof Decimal) 
+					{
+						let decimalPlaces = parseInt(localStorage.MaximumFractional);
+						if(decimalPlaces > data.dp()) numStack.push(data.ln().toFixed(decimalPlaces).toString());
+						else numStack.push(data.ln().toString());
+					}
 					else return ["Unlawful ln value"];
 				}
 				else if(isNaN(parseFloat(x))) return ["Error! Unlawful Infix Notation!"];
@@ -374,11 +386,17 @@ class core
 				break;
 				
 			case 1:
+				if(result.dp() > parseInt(localStorage.MaximumFractional)) 
+				{
+					result = result.toFixed(parseInt(localStorage.MaximumFractional));
+				
+					if(result.endsWith("0")) result = new Decimal(result.toString());
+				}
+				
 				asari.viewResultColor_Update("#ffffff");
-				if(result.minus(result.toFixed(0)).toString().length > parseInt(localStorage.ResultMaximumFractional)+2) result = result.toExponential();
 				asari.viewResultPrint_Update(result.toString());
 				break;
-			
+				
 			default:
 				asari.viewResultColor_Update("#ff0000");
 				asari.viewResultPrint_Update("Operand are too much!");
@@ -389,7 +407,9 @@ class core
 	}
 	
 	get RED_WORDS() {return "red";}
-	get WHILE_WORDS() {return "while"}
+	get WHILE_WORDS() {return "while";}
+	get e() {return "2.71828182845904523536028747135266249775724709369995957496696762772407663035354759457138217852516642742746639193200305992181741359662904357290033429526059563073813232862794349076323382988075319525101901157383418793070215408914993488416750924476146066808226480016847741185374234544243710753907774499206955170276183860626133138458300075204493382656029760673711320070932870912744374704723069697720931014169283681902551510865746377211125238978442505695369677078544996996794686445490598793163688923009879312773617821542499922957635148220826989519366803318252886939849646510582093923982948879332036250944311730123819706841614039701983767932068328237646480429531180232878250981945581530175671736133206981125099618188159304169035159888851934580727386673858942287922849989208680582574927961048419844436346324496848756023362482704197862320900216099023530436994184914631409343173814364054625315209618369088870701676839642437814059271456354906130310720851038375051011574770417189861068739696552126715468895703503540212340784";}
+	get pi() {return "3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384460955058223172535940812848111745028410270193852110555964462294895493038196442881097566593344612847564823378678316527120190914564856692346034861045432664821339360726024914127372458700660631558817488152092096282925409171536436789259036001133053054882046652138414695194151160943305727036575959195309218611738193261179310511854807446237996274956735188575272489122793818301194912983367336244065664308602139494639522473719070217986094370277053921717629317675238467481846766940513200056812714526356082778577134275778960917363717872146844090122495343014654958537105079227968925892354201995611212902196086403441815981362977477130996051870721134999999837297804995105973173281609631859502445945534690830264252230825334468503526193118817101000313783875288658753320838142061717766914730359825349042875546873115956286388235378759375195778185778053217122680661300192787661119590921642019893809525720";}
 }
 Decimal.set({precision: 1005, toExpNeg: -9e15, toExpPos: 9e15, rounding: Decimal.ROUND_DOWN})
 
@@ -502,7 +522,7 @@ class toolbox
 		let ln_or_log = "";
 		let block = false;
 		
-		for(let x of strArray.split(/(-?\d+\.\d+)|(-?\d+)/))
+		for(let x of strArray.toLowerCase().split(/(-?\d+\.\d+)|(-?\d+)/))
 		{
 			if(x === undefined || x.trim().length === 0) continue;
 			

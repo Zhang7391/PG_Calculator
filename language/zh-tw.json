@@ -10,6 +10,7 @@
 	"Error! Number range: >= 0" : "\u6578\u5b57\u5fc5\u9808\u5927\u65bc\u6216\u662f\u7b49\u65bc 0",
     "success" : "\u8a2d\u7f6e\u6210\u529f",
     "conversion result" : "\u8a08\u7b97\u7d50\u679c",
+	"Update" : "\u78ba\u8a8d",
 	
 	"Result maximum fractional digits" : "\u8a08\u7b97\u7d50\u679c\u986f\u793a\u81f3\u5c0f\u6578\u9ede\u4e0b\u4f4d\u6578",
     "History maximum fractional digits" : "\u6b77\u53f2\u7d00\u9304\u986f\u793a\u81f3\u5c0f\u6578\u9ede\u4e0b\u4f4d\u6578",

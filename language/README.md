@@ -10,3 +10,7 @@
 4. Write your name and information in this list!
 5. Sent pull requests.
 6. Thanks you for your help~
+
+P.S. Use Unicode like "\\u304b\\u307f\\u306a\\u308a" this, please.  
+
+Because maybe someone can't see the text, if its computer didn't install that font or language.
