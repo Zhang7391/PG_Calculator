@@ -35,7 +35,11 @@ window.addEventListener("load", () =>
 	document.querySelector("#resultView").style.color = localStorage.viewResultColor;
 	
 	//Settings initialization
-	if(!localStorage.ResultMaximumFractional) asari.ResultMaximumFractional_Update("1000");
+	if(!localStorage.MaximumFractional) asari.MaximumFractional_Update("10");
+	document.querySelector("#Maximum_Fractional").value = localStorage.MaximumFractional;
+	document.querySelector("#Maximum_Fractional").placeholder = `${localStorage.MaximumFractional} (0~1000)`;
+	
+/*	if(!localStorage.ResultMaximumFractional) asari.ResultMaximumFractional_Update("10");
 	document.querySelector("#Result_Maximum_Fractional").value = localStorage.ResultMaximumFractional;
 	document.querySelector("#Result_Maximum_Fractional").placeholder = `${localStorage.ResultMaximumFractional} (0~1000)`;
 
@@ -46,7 +50,7 @@ window.addEventListener("load", () =>
 	if(!localStorage.CalculateHistoryMaximum) asari.CalculateHistoryMaximum_Update("5");
 	document.querySelector("#Calculate_History_Maximum").value = localStorage.CalculateHistoryMaximum;
 	document.querySelector("#Calculate_History_Maximum").placeholder = `${localStorage.CalculateHistoryMaximum} (>=0)`;
-
+*/
 	//History initialization
 	if(!localStorage.CalculateHistory) asari.CalculateHistory_Update("", "", asari.DEL);
 	if(localStorage.CalculateHistory !== "")
@@ -82,9 +86,9 @@ window.addEventListener("load", () =>
 			translation = JSON.parse(data.currentTarget.response);
 
 			let result = PGcore.calculation(document.querySelector("#enterValue").value);
-    		PGcore.setResultView(result[0], result.length);
-    		document.querySelector("#resultView").value = localStorage.viewResultPrint;
-    		document.querySelector("#resultView").style.color = localStorage.viewResultColor;
+			PGcore.setResultView(result[0], result.length);
+			document.querySelector("#resultView").value = localStorage.viewResultPrint;
+			document.querySelector("#resultView").style.color = localStorage.viewResultColor;
 
 			//translation HTML
 			if(translation[document.querySelector("title").innerText] !== "") document.querySelector("title").innerText = translation[document.querySelector("title").innerText];
@@ -95,9 +99,11 @@ window.addEventListener("load", () =>
 			if(translation[document.querySelector("#conversion_result_text").innerText] !== "") document.querySelector("#conversion_result_text").innerText = translation[document.querySelector("#conversion_result_text").innerText];
 			if(translation[document.querySelector("#calculateHistory").innerText] !== "") document.querySelector("#calculateHistory").innerText = translation[document.querySelector("#calculateHistory").innerText];
 			if(translation[document.querySelector("#userOptions").innerText] !== "") document.querySelector("#userOptions").innerText = translation[document.querySelector("#userOptions").innerText];
-			if(translation[document.querySelector("#Result_Maximum_Fractional_Text").innerText] !== "") document.querySelector("#Result_Maximum_Fractional_Text").innerText = translation[document.querySelector("#Result_Maximum_Fractional_Text").innerText];
+			if(translation[document.querySelector("#Maximum_Fractional_Text").innerText] !== "") document.querySelector("#Maximum_Fractional_Text").innerText = translation[document.querySelector("#Maximum_Fractional_Text").innerText];
+/*			if(translation[document.querySelector("#Result_Maximum_Fractional_Text").innerText] !== "") document.querySelector("#Result_Maximum_Fractional_Text").innerText = translation[document.querySelector("#Result_Maximum_Fractional_Text").innerText];
 			if(translation[document.querySelector("#History_Maximum_Fractional_Text").innerText] !== "") document.querySelector("#History_Maximum_Fractional_Text").innerText = translation[document.querySelector("#History_Maximum_Fractional_Text").innerText];
 			if(translation[document.querySelector("#Calculate_History_Maximum_Text").innerText] !== "") document.querySelector("#Calculate_History_Maximum_Text").innerText = translation[document.querySelector("#Calculate_History_Maximum_Text").innerText];
+*/
 			if(translation[document.querySelector("#number0up").innerText] !== "") document.querySelector("#number0up").innerText = translation[document.querySelector("#number0up").innerText];
 			if(translation[document.querySelector("#license").innerText] !== "") document.querySelector("#license").innerText = translation[document.querySelector("#license").innerText];
 			for(let x of document.querySelectorAll(".Num0to1000")) if(translation[x.innerText] !== "") x.innerText = translation[x.innerText];
@@ -232,7 +238,33 @@ window.addEventListener("load", () =>
 	
 	document.querySelector("#settingButtom").addEventListener("click", () =>
 	{
-		let x = parseInt(document.querySelector("#History_Maximum_Fractional").value);
+		let x = parseInt(document.querySelector("#Maximum_Fractional").value);
+		let old = document.querySelector("#Maximum_Fractional").placeholder.split(' ')[0];
+		if(!isNaN(x) && 1000 >= x && x >= 0) 
+		{
+			if(parseInt(old) !== x)
+			{
+				asari.MaximumFractional_Update(x);
+				document.querySelector("#Maximum_Fractional").value = x;
+				document.querySelector("#Maximum_Fractional").placeholder = `${x} (0~1000)`;
+			
+				document.querySelector("#Maximum_Fractional_Error").hidden = true;
+				document.querySelector("#Maximum_Fractional_Success").hidden = false;
+			}
+			else 
+			{
+				document.querySelector("#Maximum_Fractional_Error").hidden = true;
+				document.querySelector("#Maximum_Fractional_Success").hidden = true;
+			}
+		}
+		else
+		{
+			document.querySelector("#Maximum_Fractional").value = old;
+			document.querySelector("#Maximum_Fractional_Error").hidden = false;
+			document.querySelector("#Maximum_Fractional_Success").hidden = true;
+		}
+		
+/*		let x = parseInt(document.querySelector("#History_Maximum_Fractional").value);
 		let old = document.querySelector("#History_Maximum_Fractional").placeholder.split(' ')[0];
 		if(!isNaN(x) && 1000 >= x && x >= 0) 
 		{
@@ -339,7 +371,7 @@ window.addEventListener("load", () =>
 			document.querySelector("#Calculate_History_Maximum").value = old;
 			document.querySelector("#Calculate_History_Maximum_Error").hidden = false;
 			document.querySelector("#Calculate_History_Maximum_Success").hidden = true;
-		}
+		}*/
 	});
 	
 	document.querySelector("#historyInput").addEventListener("click", () => {
@@ -347,16 +379,18 @@ window.addEventListener("load", () =>
 	
 	document.querySelector("#gear").addEventListener("click", () => 
 	{
-		document.querySelector("#History_Maximum_Fractional").value = document.querySelector("#History_Maximum_Fractional").placeholder.split(' ')[0];
-		document.querySelector("#Result_Maximum_Fractional").value = document.querySelector("#Result_Maximum_Fractional").placeholder.split(' ')[0];
+		//document.querySelector("#History_Maximum_Fractional").value = document.querySelector("#History_Maximum_Fractional").placeholder.split(' ')[0];
+		//document.querySelector("#Result_Maximum_Fractional").value = document.querySelector("#Result_Maximum_Fractional").placeholder.split(' ')[0];
 		
 		document.querySelector("#setting").hidden = !document.querySelector("#setting").hidden;
-		document.querySelector("#Result_Maximum_Fractional_Error").hidden =
+/*		document.querySelector("#Result_Maximum_Fractional_Error").hidden =
 		document.querySelector("#Result_Maximum_Fractional_Success").hidden =
 		document.querySelector("#History_Maximum_Fractional_Error").hidden =
 		document.querySelector("#History_Maximum_Fractional_Success").hidden = 
 		document.querySelector("#Calculate_History_Maximum_Error").hidden =
-		document.querySelector("#Calculate_History_Maximum_Success").hidden = true;
+		document.querySelector("#Calculate_History_Maximum_Success").hidden = */
+		document.querySelector("#Maximum_Fractional_Error").hidden =
+		document.querySelector("#Maximum_Fractional_Success").hidden = true;
 	});
 	
 	document.querySelector("#trash").addEventListener("click", () =>

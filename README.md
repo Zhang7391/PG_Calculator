@@ -14,7 +14,7 @@
 
 - [x] Calculation of ln, e, log, and so on...
 - [x] If the current formula matches the latest history, no new formula will be added
-- [ ] More language
+- [x] More language
 - [ ] Include OOP structures
 
 ## pending bugs

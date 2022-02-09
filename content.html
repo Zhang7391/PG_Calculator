@@ -69,8 +69,20 @@
 
 				<table id="setting" hidden>
 					<caption style="color:#228b22;font-size:1.1em"><b id="userOptions">Options</b></caption>
-
+					
 					<tr>
+						<td id="Maximum_Fractional_Text">Maximum fractional digits</td>
+						<td><input id="Maximum_Fractional" type="number" /></td>
+					</tr>
+					<tr id="Maximum_Fractional_Error" hidden>
+						<td class="red center Num0to1000">Error! Number range: 0~1000</td>
+						<td></td>
+					</tr>
+					<tr id="Maximum_Fractional_Success" hidden>
+						<td class="green center setupSuccess">success</td>
+						<td></td>
+					</tr>
+<!--					<tr>
 						<td id="Result_Maximum_Fractional_Text">Result maximum fractional digits</td>
 						<td><input id="Result_Maximum_Fractional" type="number" /></td>
 					</tr>
@@ -105,7 +117,7 @@
 					<tr id="Calculate_History_Maximum_Success" hidden>
 						<td class="green center setupSuccess">success</td>
 						<td></td>
-					</tr>
+					</tr>	-->
 					<tr>
 						<td>&nbsp;</td>
 						<td style="text-align:center;"><input id="settingButtom" type="submit" value="Update" /></td>

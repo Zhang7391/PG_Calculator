@@ -441,7 +441,12 @@ class localStorageUpdate
 		}
 	}
 	
-	HistoryMaximumFractional_Update(num, mod = this.SET)
+	MaximumFractional_Update(num, mod = this.SET)
+	{
+		localStorage.MaximumFractional = num.toString();
+	}
+	
+/*	HistoryMaximumFractional_Update(num, mod = this.SET)
 	{
 		localStorage.HistoryMaximumFractional = num.toString();
 	}
@@ -454,7 +459,7 @@ class localStorageUpdate
 	CalculateHistoryMaximum_Update(num, mod = this.SET)
 	{
 		localStorage.CalculateHistoryMaximum = num.toString();
-	}
+	}*/
 	
 	get SET() {return "set";}
 	get ADD() {return "add";}
