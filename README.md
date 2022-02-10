@@ -21,11 +21,11 @@
 ## pending bugs
 
 - [x] Too many decimal digits(To use scientific notation to display)
-- [ ] Historical result decimal digits are unmatched
+- [x] Historical result decimal digits are unmatched
 - [x] Conversion result decimal digits are unmatched
 - [x] Prevent XSS attacks
 - [x] Use module of programming
 - [x] Fix incorrect input position(in \#enterValue)
 - [x] Let the input forms more obvious
 - [ ] 10/3*3 = 9.999... &ne; 10
-- [ ] 3+3-2/2-8* = -40 ???
+- [x] 3+3-2/2-8* = -40 ???

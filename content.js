@@ -16,10 +16,19 @@ class core
 	
 	calculation(formula)
 	{
+		const tool = new toolbox();
+		formula = tool.standardization(formula);
+		
 		if(/log\s*\(\s*\)/.test(formula)) return ["no have any value's log()"];
 		else if(/ln\s*\(\s*\)/.test(formula)) return ["no have any value's ln()"];
-			
-		const tool = new toolbox();
+		
+		for(let x = formula.length -1;x > 0; x--)
+		{
+			if(/\d/.test(formula[x])) break;
+			else if(/\s|\)/.test(formula[x])) continue;
+			else return ["Error! Unlawful Infix Notation!"];
+		}
+		
 		const weighting =
 		{
 			"(" : 0,
@@ -35,7 +44,7 @@ class core
 		let needChange = false, endBracket = false;
 		let numStack = [], operStack = [];
 
-		for(let x of tool.plusSplit(tool.standardization(formula)))
+		for(let x of tool.plusSplit(formula))
 		{
 			if(x === " " || !/[\*\^\-\+\/\s\d\.e\(\)]|log|ln/.test(x)) continue;
 			
@@ -506,7 +515,10 @@ class toolbox
 			.replace(/[xX]/g, "*")
 			.replace(/\uff08/ug, "(")
 			.replace(/\uff09/ug, ")")
-			.replace(/\uff0e/ug, ".");
+			.replace(/\uff0e/ug, ".")
+			.replace(/[\uff45\uff25]/ug, "e")
+			.replace(/[\uff49\uff29]/ug, "i")
+			.replace(/[\uff50\uff30]/ug, "p");
 	}
 
 	*plusSplit(strArray)
