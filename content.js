@@ -150,7 +150,7 @@ class core
 					if(data instanceof Decimal) 
 					{
 						let decimalPlaces = parseInt(localStorage.MaximumFractional);
-						if(decimalPlaces > data.dp()) numStack.push(data.log().toFixed(decimalPlaces).toString());
+						if(data.dp() > decimalPlaces) numStack.push(data.log().toFixed(decimalPlaces).toString());
 						else numStack.push(data.log().toString());
 					}
 					else return ["Unlawful log value"];
@@ -166,12 +166,7 @@ class core
 						isSymbol = true;
 					}
 					
-					if(data instanceof Decimal) 
-					{
-						let decimalPlaces = parseInt(localStorage.MaximumFractional);
-						if(decimalPlaces > data.dp()) numStack.push(data.ln().toFixed(decimalPlaces).toString());
-						else numStack.push(data.ln().toString());
-					}
+					if(data instanceof Decimal) numStack.push(data.ln().toFixed(parseInt(localStorage.MaximumFractional)).toString());
 					else return ["Unlawful ln value"];
 				}
 				else if(isNaN(parseFloat(x))) return ["Error! Unlawful Infix Notation!"];
@@ -474,12 +469,12 @@ class localStorageUpdate
 	ResultMaximumFractional_Update(num, mod = this.SET)
 	{
 		localStorage.ResultMaximumFractional = num.toString();
-	}
+	}*/
 	
 	CalculateHistoryMaximum_Update(num, mod = this.SET)
 	{
 		localStorage.CalculateHistoryMaximum = num.toString();
-	}*/
+	}
 	
 	get SET() {return "set";}
 	get ADD() {return "add";}

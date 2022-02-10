@@ -28,3 +28,4 @@
 - [x] Fix incorrect input position(in \#enterValue)
 - [x] Let the input forms more obvious
 - [ ] 10/3*3 = 9.999... &ne; 10
+- [ ] 3+3-2/2-8* = -40 ???

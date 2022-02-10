@@ -46,11 +46,11 @@ window.addEventListener("load", () =>
 	if(!localStorage.HistoryMaximumFractional) asari.HistoryMaximumFractional_Update("10");
 	document.querySelector("#History_Maximum_Fractional").value = localStorage.HistoryMaximumFractional;
 	document.querySelector("#History_Maximum_Fractional").placeholder = `${localStorage.HistoryMaximumFractional} (0~1000)`;
-
-	if(!localStorage.CalculateHistoryMaximum) asari.CalculateHistoryMaximum_Update("5");
-	document.querySelector("#Calculate_History_Maximum").value = localStorage.CalculateHistoryMaximum;
-	document.querySelector("#Calculate_History_Maximum").placeholder = `${localStorage.CalculateHistoryMaximum} (>=0)`;
 */
+	if(!localStorage.CalculateHistoryMaximum) asari.CalculateHistoryMaximum_Update("20");
+	//document.querySelector("#Calculate_History_Maximum").value = localStorage.CalculateHistoryMaximum;
+	//document.querySelector("#Calculate_History_Maximum").placeholder = `${localStorage.CalculateHistoryMaximum} (>=0)`;
+
 	//History initialization
 	if(!localStorage.CalculateHistory) asari.CalculateHistory_Update("", "", asari.DEL);
 	if(localStorage.CalculateHistory !== "")
@@ -149,43 +149,37 @@ window.addEventListener("load", () =>
 		case 13:		//enter
 			{
 			if(!(result[0] instanceof Decimal)) break;
-				
-			asari.historyReview_Update("-1", asari.SET)
 			
+			result = result[0];
+			asari.historyReview_Update("-1", asari.SET)
 			let formula = document.querySelector("#enterValue").value;
 			let calculateData = localStorage.CalculateHistory.split(',');
 			
 			let zn = calculateData[calculateData.length-1].replace(/\s/g, "");
-			if(zn !== "") 
+			if(zn !== "" && zn.split("=")[0] !== formula.replace(/\s/g, "")) 
 			{
-				if(zn.split("=")[0] === formula.replace(/\s/g, "")) break;
-				else
-				{
-					asari.CalculateHistory_Update(tool.htmlToText(document.querySelector("#enterValue").value), result[0]);
-					calculateData.push(formula.replaceAll(',','') + " = " + result.toString())
-				}					
+				asari.CalculateHistory_Update(tool.htmlToText(formula), result);
+				calculateData.push(formula.replaceAll(',','') + " = " + result.toString());			
 			}
 			
-			try
+			let decimalPlaces = parseInt(localStorage.MaximumFractional);
+			if(result.dp() > decimalPlaces) result = result.toFixed(decimalPlaces).toString();
+			else result = result.toString();
+				
+			for(x of document.querySelectorAll(".historyViewer")) document.querySelector("#historyShow").removeChild(x);
+				
+			let now = 0;
+			while(parseInt(localStorage.CalculateHistoryMaximum) > now && calculateData.length > now+1)
 			{
-				if(result[0].minus(result[0].toFixed(0)).toString().length > parseInt(localStorage.HistoryMaximumFractional)+3) result[0] = result[0].toExponential();
-				
-				for(x of document.querySelectorAll(".historyViewer")) document.querySelector("#historyShow").removeChild(x);
-				
-				let now = 0;
-				while(parseInt(localStorage.CalculateHistoryMaximum) > now && calculateData.length > now+1)
-				{
-					let tr = document.createElement("tr"), td = document.createElement("td");
-					td.innerText = calculateData[calculateData.length - now - 1];
-					td.addEventListener("click", (itself) => {localStorage.userInputHistory = itself.target.innerText.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#enterValue").value = localStorage.userInputHistory;document.querySelector("#resultView").value = (translation !== undefined && translation[localStorage.viewResultPrint] !== "" && translation[localStorage.viewResultPrint] !== undefined)? translation[localStorage.viewResultPrint] : localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;});
-					tr.appendChild(td);
-					tr.className = "historyViewer";
-					document.querySelector("#historyShow").appendChild(tr);
-					now += 1;
-				}
+				let tr = document.createElement("tr"), td = document.createElement("td");
+				td.innerText = calculateData[calculateData.length - now - 1];
+				td.addEventListener("click", (itself) => {localStorage.userInputHistory = itself.target.innerText.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector("#enterValue").value = localStorage.userInputHistory;document.querySelector("#resultView").value = (translation !== undefined && translation[localStorage.viewResultPrint] !== "" && translation[localStorage.viewResultPrint] !== undefined)? translation[localStorage.viewResultPrint] : localStorage.viewResultPrint;document.querySelector("#resultView").style.color = localStorage.viewResultColor;});
+				tr.appendChild(td);
+				tr.className = "historyViewer";
+				document.querySelector("#historyShow").appendChild(tr);
+				now += 1;
 			}
-			catch(error) {console.log(error);}
-			finally {break;}			
+			break;
 			//History's Event Listener Code. (input: itself[Object])
 			/*
 				localStorage.userInputHistory = itself.target.innerText.split('=')[0];
