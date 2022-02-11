@@ -12,8 +12,8 @@
 
 ## pending new features
 
-- [ ] Calculation of pi(&#960;)
-- [x] Calculation of ln, e, log
+- [x] Calculation of pi(&#960;)
+- [x] Calculation of ln, e, and log
 - [x] If the current formula matches the latest history, no new formula will be added
 - [x] More languages
 - [ ] Include OOP structures

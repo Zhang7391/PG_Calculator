@@ -22,9 +22,11 @@ class core
 		if(/log\s*\(\s*\)/.test(formula)) return ["no have any value's log()"];
 		else if(/ln\s*\(\s*\)/.test(formula)) return ["no have any value's ln()"];
 		
-		for(let x = formula.length -1;x > 0; x--)
+		if(/pi/.test(formula)) formula = formula.replace(/pi/g, this.pi.slice(0, parseInt(localStorage.MaximumFractional) + 7));
+
+		for(let x = formula.length -1;x >= 0; x--)
 		{
-			if(/\d/.test(formula[x])) break;
+			if(/\d|e/.test(formula[x])) break;
 			else if(/\s|\)/.test(formula[x])) continue;
 			else return ["Error! Unlawful Infix Notation!"];
 		}
@@ -64,7 +66,7 @@ class core
 				noMul = noMul2 = needChange = isSymbol = false;
 				break;
 			case "e":
-				numStack.push(this.e.slice(0, parseInt(localStorage.MaximumFractional) + 2));
+				numStack.push(this.e.slice(0, parseInt(localStorage.MaximumFractional) + 7));
 				noMul = noMul2 = needChange = isSymbol = false;
 				break;
 			case "^":
@@ -145,7 +147,21 @@ class core
 				noMul2 = true;
 				break;
 			default:
-				if(/log/.test(x))
+				if(x.startsWith("ln"))
+				{
+					let data = x.slice(x.indexOf('(')+1, -1);
+					
+					if(data === "") return ["no have any value's ln()"];
+					else
+					{
+						data = this.calculation(data)[0];
+						isSymbol = true;
+					}
+					
+					if(data instanceof Decimal) numStack.push(data.ln().toFixed(parseInt(localStorage.MaximumFractional)).toString());
+					else return ["Unlawful ln value"];
+				}
+				else if(x.startsWith("log"))
 				{
 					let data = x.slice(x.indexOf('(')+1, -1);
 					
@@ -163,20 +179,6 @@ class core
 						else numStack.push(data.log().toString());
 					}
 					else return ["Unlawful log value"];
-				}
-				else if(/ln/.test(x))
-				{
-					let data = x.slice(x.indexOf('(')+1, -1);
-					
-					if(data === "") return ["no have any value's ln()"];
-					else
-					{
-						data = this.calculation(data)[0];
-						isSymbol = true;
-					}
-					
-					if(data instanceof Decimal) numStack.push(data.ln().toFixed(parseInt(localStorage.MaximumFractional)).toString());
-					else return ["Unlawful ln value"];
 				}
 				else if(isNaN(parseFloat(x))) return ["Error! Unlawful Infix Notation!"];
 				
@@ -495,7 +497,9 @@ class toolbox
 {
 	standardization(userInput) 
 	{
-		return userInput
+		if(/\W/.test(userInput))
+		{
+			return userInput
 			.replace(/\s+/g, " ")
 			.replace(/\uff10/ug, "0")
 			.replace(/\uff11/ug, "1")
@@ -507,18 +511,43 @@ class toolbox
 			.replace(/\uff17/ug, "7")
 			.replace(/\uff18/ug, "8")
 			.replace(/\uff19/ug, "9")
-			.replace(/\uff0b/ug, "+")
-			.replace(/\uff0d/ug, "-")
+			.replace(/[\uff0b\u271a\ufe62\uff0b]/ug, "+")
+			.replace(/[\ufe63\uff0d\u02cd\u2010\u23af\u2012\u2015\u2500\u2501\u2504\u2505\u2508\u2509\u254c\u254d\u2574\u2576\u2578\u257a\u257c\u257e\u2013\u2014]/ug, "-")
 			.replace(/\ufe3f/ug, "^")
 			.replace(/[\uff0f\u00f7]/ug, "/")
-			.replace(/[\u00d7\uff58\uff38]/ug, "*")
-			.replace(/[xX]/g, "*")
+			.replace(/[\u2573\u2715\u2716\u22a0\u00d7\uff58\uff38\u2217\u066d\u204e\u2055\u20f0\u229b\u2638\u274b\u2731\u2732\u2733\u273a\u273d\u29c6\uff0a\ufe61]/ug, "*")
 			.replace(/\uff08/ug, "(")
 			.replace(/\uff09/ug, ")")
 			.replace(/\uff0e/ug, ".")
+			.replace(/\u215f/ug, "1/")
+			.replace(/\u00bd/ug, "1/2")
+			.replace(/\u2189/ug, "0/3")
+			.replace(/\u2153/ug, "1/3")
+			.replace(/\u2154/ug, "2/3")
+			.replace(/\u00bc/ug, "1/4")
+			.replace(/\u00be/ug, "3/4")
+			.replace(/\u2155/ug, "1/5")
+			.replace(/\u2156/ug, "2/5")
+			.replace(/\u2157/ug, "3/5")
+			.replace(/\u2158/ug, "4/5")
+			.replace(/\u2159/ug, "1/6")
+			.replace(/\u215a/ug, "5/6")
+			.replace(/\u2150/ug, "1/7")
+			.replace(/\u215b/ug, "1/8")
+			.replace(/\u215c/ug, "3/8")
+			.replace(/\u215d/ug, "5/8")
+			.replace(/\u215e/ug, "7/8")
+			.replace(/\u2151/ug, "1/9")
+			.replace(/\u2152/ug, "1/10")
 			.replace(/[\uff45\uff25]/ug, "e")
 			.replace(/[\uff49\uff29]/ug, "i")
-			.replace(/[\uff50\uff30]/ug, "p");
+			.replace(/[\uff50\uff30]/ug, "p")
+			.replace(/[\u33d1]/ug, "ln")
+			.replace(/[\u33d2]/ug, "log")
+			.replace(/[\u03c0\u03a0\ud835\udf45\ud835\udf7f\ud835\udfb9\u041f\u043f\u03d6\u213c\u5140\u3107]/ug, "pi");
+		}
+		
+		return userInput.replace(/xX/g, "*").toLowerCase();
 	}
 
 	*plusSplit(strArray)
@@ -527,13 +556,11 @@ class toolbox
 		
 		let num = 0;
 		let ln_or_log = "";
-		let block = false;
+		let block = false, isPi = false;
 		
-		for(let x of strArray.toLowerCase().split(/(-?\d+\.\d+)|(-?\d+)/))
+		for(let x of strArray.split(/(-?\d+\.\d+)|(-?\d+)/))
 		{
 			if(x === undefined || x.trim().length === 0) continue;
-			
-			//console.log(x);
 
 			if(/log|ln/.test(x) && !block)
 			{
@@ -598,6 +625,7 @@ class toolbox
 			else yield x;
 		}
 		
+		if(/log\s*\(|ln\s*\(/.test(ln_or_log)) ln_or_log += ")";
 		yield ln_or_log;
 	}
 	

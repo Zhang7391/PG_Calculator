@@ -156,7 +156,7 @@ window.addEventListener("load", () =>
 			let calculateData = localStorage.CalculateHistory.split(',');
 			
 			let zn = calculateData[calculateData.length-1].replace(/\s/g, "");
-			if(zn !== "" && zn.split("=")[0] !== formula.replace(/\s/g, "")) 
+			if(zn === "" || (zn !== "" && zn.split("=")[0] !== formula.replace(/\s/g, ""))) 
 			{
 				asari.CalculateHistory_Update(tool.htmlToText(formula), result);
 				calculateData.push(formula.replaceAll(',','') + " = " + result.toString());			
