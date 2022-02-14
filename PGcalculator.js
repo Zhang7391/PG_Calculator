@@ -11,6 +11,24 @@
 //*****************************************************/
 
 
+(function (){
+    const file = ["free.min.css",
+				  "free-v4-shims.min.css", 
+				  "free-v4-font-face.min.css", 
+				  "free-v5-font-face.min.css"];
+
+    for(let css of file)
+    {
+        let link = document.createElement("link");
+
+        link.setAttribute("type", "text/css");
+        link.setAttribute("rel", "stylesheet");
+        link.setAttribute("href", "./lib/" + css);
+
+        document.head.appendChild(link);
+    }
+}());
+
 window.addEventListener("load", () =>
 {
 	let translation = undefined;
@@ -66,14 +84,11 @@ window.addEventListener("load", () =>
 	//Load other language
 	const language = (navigator.language || navigator.browserLanguage).toLowerCase();
 
-    const client = new XMLHttpRequest();
-
-    client.addEventListener("error", (error) => {console.log(error);});
-    client.addEventListener("loadend", (data) => 
-	{
-		if(data.currentTarget.status === 200)
+	fetch(location.pathname.slice(0, location.pathname.lastIndexOf("/")+1) + "language/" + language + ".json")
+		.then(response => response.json())
+		.then(data => 
 		{
-			translation = JSON.parse(data.currentTarget.response);
+			translation = data;
 
 			let result = PGcore.calculation(document.querySelector("#enterValue").value);
 			PGcore.setResultView(result[0], result.length);
@@ -91,20 +106,11 @@ window.addEventListener("load", () =>
 			if(translation[document.querySelector("#userOptions").innerText] !== "") document.querySelector("#userOptions").innerText = translation[document.querySelector("#userOptions").innerText];
 			if(translation[document.querySelector("#Maximum_Fractional_Text").innerText] !== "") document.querySelector("#Maximum_Fractional_Text").innerText = translation[document.querySelector("#Maximum_Fractional_Text").innerText];
 			if(translation[document.querySelector("#settingButtom").value] !== "") document.querySelector("#settingButtom").value = translation[document.querySelector("#settingButtom").value];
-/*			if(translation[document.querySelector("#Result_Maximum_Fractional_Text").innerText] !== "") document.querySelector("#Result_Maximum_Fractional_Text").innerText = translation[document.querySelector("#Result_Maximum_Fractional_Text").innerText];
-			if(translation[document.querySelector("#History_Maximum_Fractional_Text").innerText] !== "") document.querySelector("#History_Maximum_Fractional_Text").innerText = translation[document.querySelector("#History_Maximum_Fractional_Text").innerText];
-			if(translation[document.querySelector("#Calculate_History_Maximum_Text").innerText] !== "") document.querySelector("#Calculate_History_Maximum_Text").innerText = translation[document.querySelector("#Calculate_History_Maximum_Text").innerText];
-*/
-			if(translation[document.querySelector("#number0up").innerText] !== "") document.querySelector("#number0up").innerText = translation[document.querySelector("#number0up").innerText];
 			if(translation[document.querySelector("#license").innerText] !== "") document.querySelector("#license").innerText = translation[document.querySelector("#license").innerText];
 			for(let x of document.querySelectorAll(".Num0to1000")) if(translation[x.innerText] !== "") x.innerText = translation[x.innerText];
 			for(let x of document.querySelectorAll(".setupSuccess")) if(translation[x.innerText] !== "") x.innerText = translation[x.innerText];
-		}
-	});
-
-    client.open("GET", location.pathname.slice(0, location.pathname.lastIndexOf("/")+1) + "language/" + language + ".json");
-
-    client.send();
+		})
+		.catch(error => console.log("No support for local language"));
 
 	//Event Listener
 	document.querySelector("#infix").addEventListener("click", () => 
@@ -300,3 +306,4 @@ window.addEventListener("load", () =>
 		document.querySelector("#license").innerText = license[document.querySelector("#license").innerText]
 	});
 });
+
