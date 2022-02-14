@@ -11,11 +11,7 @@
     "success" : "\u8a2d\u7f6e\u6210\u529f",
     "conversion result" : "\u8a08\u7b97\u7d50\u679c",
 	"Update" : "\u78ba\u8a8d",
-	
-	"Result maximum fractional digits" : "\u8a08\u7b97\u7d50\u679c\u986f\u793a\u81f3\u5c0f\u6578\u9ede\u4e0b\u4f4d\u6578",
-    "History maximum fractional digits" : "\u6b77\u53f2\u7d00\u9304\u986f\u793a\u81f3\u5c0f\u6578\u9ede\u4e0b\u4f4d\u6578",
-    "Calculate history maximum record" : "\u756b\u9762\u4e0a\u6700\u591a\u986f\u793a\u5e7e\u7b46\u6b77\u53f2\u7d00\u9304",
-	
+		
 	"A space between two numbers" : "\u542b\u6709\u4e0d\u660e\u78ba\u7684\u7a7a\u683c",
 	"Division by zero" : "\u9664\u4ee50\u7121\u610f\u7fa9",
 	"Error! Unlawful Infix Notation!" : "\u932f\u8aa4\u7684\u7b97\u5f0f",

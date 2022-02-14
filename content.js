@@ -276,7 +276,7 @@ class core
 		let stack = [], fractional = 0;
 		//let error = false, error2 = false, errorMsg = [0, ""];
 		
-		unlawful: for(let x of numStack[0].split(' '))
+		for(let x of numStack[0].split(' '))
 		{
 			let nd;
 
@@ -472,16 +472,6 @@ class localStorageUpdate
 		localStorage.MaximumFractional = num.toString();
 	}
 	
-/*	HistoryMaximumFractional_Update(num, mod = this.SET)
-	{
-		localStorage.HistoryMaximumFractional = num.toString();
-	}
-	
-	ResultMaximumFractional_Update(num, mod = this.SET)
-	{
-		localStorage.ResultMaximumFractional = num.toString();
-	}*/
-	
 	CalculateHistoryMaximum_Update(num, mod = this.SET)
 	{
 		localStorage.CalculateHistoryMaximum = num.toString();
@@ -497,7 +487,15 @@ class toolbox
 {
 	standardization(userInput) 
 	{
-		if(/\W/.test(userInput))
+		let key = false;
+		for(let x of userInput) 
+			if(/[^\*\^\-\+\/\s\d\.\(\)]/.test(x))
+			{
+				key = true;
+				break;
+			}
+		
+		if(key)
 		{
 			return userInput
 			.replace(/\s+/g, " ")
@@ -542,21 +540,19 @@ class toolbox
 			.replace(/[\uff45\uff25]/ug, "e")
 			.replace(/[\uff49\uff29]/ug, "i")
 			.replace(/[\uff50\uff30]/ug, "p")
-			.replace(/[\u33d1]/ug, "ln")
-			.replace(/[\u33d2]/ug, "log")
+			.replace(/\u33d1/ug, "ln")
+			.replace(/\u33d2/ug, "log")
 			.replace(/[\u03c0\u03a0\ud835\udf45\ud835\udf7f\ud835\udfb9\u041f\u043f\u03d6\u213c\u5140\u3107]/ug, "pi");
 		}
-		
-		return userInput.replace(/xX/g, "*").toLowerCase();
+
+		return userInput.replace(/[xX]/g, "*").toLowerCase();
 	}
 
 	*plusSplit(strArray)
-	{
-		//split(/(-?log\s*\(.*?\))|(-?ln\s*\(.*?\))|(-?\d+\.\d+)|(-?\d+)/)
-		
+	{	
 		let num = 0;
+		let block = false;
 		let ln_or_log = "";
-		let block = false, isPi = false;
 		
 		for(let x of strArray.split(/(-?\d+\.\d+)|(-?\d+)/))
 		{
