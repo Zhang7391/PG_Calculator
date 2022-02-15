@@ -306,4 +306,3 @@ window.addEventListener("load", () =>
 		document.querySelector("#license").innerText = license[document.querySelector("#license").innerText]
 	});
 });
-
