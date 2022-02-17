@@ -50,12 +50,14 @@
 				"trash": id(),
 				"trash2": id(),
 				"history": id(),
+				"titleBar": id(),
 				"fakeTable": id(),
 				"enterValue": id(),
 				"resultView": id(),
 				"historyBar": id(),
 				"historyShow": id(),
 				"block_bottom": id(),
+				"bufferBlock" : id(),
 				"calculateHistory": id(),
 				"PGcalculator_container": id()
 			}
@@ -86,6 +88,7 @@
 				cssDiff.fakeTable_td_width = ["0", "0", "84%", "8%", "8%"];
 				cssDiff.fakeTable_top = `${71 + set.viewBox.getBoundingClientRect().top}px`;
 			}
+			this.width = set.viewBox.offsetWidth;
 			
 			//PGcalculator root
 			let div = document.createElement("div");
@@ -101,6 +104,7 @@
 			
 			//title and button
 			div = document.createElement("div");
+			div.id = randomID["titleBar"];
 			let h1 = document.createElement("h1");
 			
 			h1.innerText = "Rapid Calculator";
@@ -260,10 +264,71 @@
 			table.style.width = "100%";
 			table.style.textAlign = "left";
 			div.appendChild(table);
+			
+			window.addEventListener("resize", () =>
+			{
+				if(this.width !== set.viewBox.offsetWidth)
+				{
+					let key = false;	//false: small, true: big
+					this.width = set.viewBox.offsetWidth;
+					
+					if(set.viewBox.offsetWidth >= 590)
+					{
+						key = true;
+						cssDiff.enterValue_width = "93%";
+						cssDiff.fakeTable_td_width = ["65%", "6%", "15%", "7%", "7%"];
+						cssDiff.trash2_position = cssDiff.trash2_top = cssDiff.trash2_right = cssDiff.textarea_margin_top = cssDiff.fakeTable_top = "";
+					}
+					else
+					{
+						cssDiff.trash2_right = "0";
+						cssDiff.trash2_top = "-37px";
+						cssDiff.trash2_position = "absolute";
+						cssDiff.enterValue_width = "90%";
+						cssDiff.textarea_margin_top = "40px";
+						cssDiff.fakeTable_td_width = ["0", "0", "84%", "8%", "8%"];
+						cssDiff.fakeTable_top = `${71 + set.viewBox.getBoundingClientRect().top}px`;
+					}
+					
+					let target = document.querySelector(`#${randomID["trash2"]}`);
+					target.style.top = cssDiff.trash2_top;
+					target.style.right = cssDiff.trash2_right;
+					target.style.position = cssDiff.trash2_position;
+					
+					if(key === true && document.querySelector(`#${randomID["bufferBlock"]}`) === null)
+					{
+						target = document.querySelector(`#${randomID["titleBar"]}`);
+						target.removeChild(document.querySelector(`#${randomID["enterValue"]}`));
+						target.appendChild(this.createEnterValue(cssDiff.enterValue_width));
+					}
+					if(key === false && document.querySelector(`#${randomID["bufferBlock"]}`) !== null)
+					{
+						target = document.querySelector(`#${randomID["titleBar"]}`);
+						target.removeChild(document.querySelector(`#${randomID["bufferBlock"]}`));
+						target.appendChild(this.createEnterValue(cssDiff.enterValue_width));
+						
+						document.querySelector(`#${randomID["fakeTable"]}`).style.top = set.viewBox.getBoundingClientRect().top + "px";
+					}
+					
+					document.querySelector(`#${randomID["resultView"]}`).style.marginTop = cssDiff.textarea_margin_top;
+					
+					target = 0;
+					for(let x of document.querySelector(`#${randomID["fakeTable"]}`).childNodes[0].childNodes)
+					{
+						x.style.width = cssDiff.fakeTable_td_width[target];
+						target += 1;
+					}
+					
+					document.querySelector(`#${randomID["fakeTable"]}`).style.top = cssDiff.fakeTable_top;
+					
+					document.querySelector(`#${randomID["block_bottom"]}`).style.height = (set.viewBox.offsetHeight - 170).toString() + "px";
+					document.querySelector(`#${randomID["fakeTable"]}`).style.width = ((set.viewBox.offsetWidth >= 600)? "600" : set.viewBox.offsetWidth.toString()) + "px";
+				}
+			});
 		}
 		
 		createEnterValue(width)
-		{
+		{	//"bufferBlock" : id(),
 			let block = undefined;
 			
 			let input = document.createElement("input");
@@ -283,6 +348,7 @@
 				block = document.createElement("table");
 				block.style.width = "100%";
 				block.style.backgroundColor ="#ffffff";
+				block.setAttribute("id", this.#randomID["bufferBlock"]);
 				
 				let tr = document.createElement("tr"), td = document.createElement("td");
 				td.style.width = "70%";
@@ -296,7 +362,7 @@
 				
 				block.appendChild(tr);
 			}
-			else block = input;
+			else return input;
 			
 			return block;
 		}
