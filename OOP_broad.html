@@ -24,12 +24,12 @@
 </head>
 
 <body>
-	<div id="PGcalculator" style="width:600px;height:169px;">	<!-- height min:169px	width min: 590px -->
-		<div id="PGcalculator_container">	<!-- only this id truth -->
+	<div id="PGcalculator" style="width:1200px;height:169px;">	<!-- height min:169px	width min: 590px -->
+		<div id="PGcalculator_container" style="max-width:600px">	<!-- only this id truth -->
 			<div>
 				<h1>Rapid Calculator</h1>
 				
-				<table id="fakeTable" style="position: absolute;height:0">
+				<table id="fakeTable">
 					<tr>
 						<td style="width:65%">&nbsp;</td>
 						<td style="width:6%;"><button id="trash2"><i class="fa fa-trash"></i></button></td>
@@ -86,7 +86,7 @@
 const id = () => Math.random().toString(36).substr(2, 9) + Math.random().toString(36).substr(4, 11);
 //console.log(id())
 
-document.querySelector("#fakeTable").style.width = document.querySelector("#PGcalculator").offsetWidth + "px";
+document.querySelector("#fakeTable").style.width = ((document.querySelector("#PGcalculator").offsetWidth >= 600)? "600":document.querySelector("#PGcalculator").offsetWidth.toString()) + "px";
 document.querySelector("#block_bottom").style.height = (parseInt(document.querySelector("#PGcalculator").offsetHeight) - 135).toString() + "px";
 </script>
 
@@ -116,6 +116,12 @@ textarea
 	background-color: #000000;
 }
 
+#fakeTable
+{
+	position: absolute;
+	height:0
+}
+
 #enterValue
 {
 	width: 92.3%;
@@ -123,9 +129,9 @@ textarea
 	padding: 4px 0 4px 9px; 
 	border:2px black solid;
 	cursor:pointer;
-	border-radius: 5px;
-    -moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
+	border-radius: 5px 20px 20px 5px;
+    -moz-border-radius: 5px 20px 20px 5px;
+	-webkit-border-radius: 5px 20px 20px 5px;
 	margin:0.05em 0 0.5em;
 }
 

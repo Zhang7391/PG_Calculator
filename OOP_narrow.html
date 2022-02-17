@@ -24,17 +24,18 @@
 </head>
 
 <body>
-	<div id="PGcalculator" style="width:207px;height: 205px;">	<!-- height min:204px	width min: 207px -->
+	<div id="PGcalculator" style="width:300px;height: 205px;">	<!-- height min:204px	width min: 207px -->
 		<div id="PGcalculator_container">	<!-- only this id truth -->
 			<div>
 				<h1>Rapid Calculator</h1>
 				
-				<table id="fakeTable" style="position: absolute;height:0">
+				<table id="fakeTable">
 					<tr>
+						<td style="width:0">&nbsp;</td>
+						<td style="width:0"><button id="trash2"><i class="fa fa-trash"></i></button></td>
 						<td style="width:84%"><input id="infix" class="check" type="submit" value="Calculate" /></td>
 						<td style="width:8%"><button id="history"><i class="fas fa-history"></i></button></td>
 						<td style="width:8%"><button id="gear"><i class="fa fa-gear fa-spin-hover"></i></button></td>
-						<td style="width:0"><button id="trash2"><i class="fa fa-trash"></i></button></td>
 					</tr>
 				</table>
 		
@@ -48,8 +49,8 @@
 			<p id="historyBar"><b id="calculateHistory">history of calculation</b>&nbsp;&nbsp;
 			<button id="trash"><i class="fa fa-trash"></i></button></p>
 		
-			<div id="block_bottom" style="overflow:auto;">
-				<table style="width:100%;text-align:left;">
+			<div id="block_bottom" style="overflow-x:hidden;overflow-y:auto;word-break: break-all;">
+				<table id="historyShow" style="width:100%;text-align:left;">
 					<tr><td>hello1</td></tr>
 					<tr><td>hello2</td></tr>
 					<tr><td>hello3</td></tr>
@@ -104,7 +105,7 @@ h1
 
 textarea
 {
-	resize:none;
+	resize: none;
 	width: 95%;
 	color: #ffffff;
 	height: 24px;
@@ -116,6 +117,9 @@ textarea
 
 #fakeTable
 {
+	position: absolute;
+	height:0;
+	
 	top: 71px;
 }
 
@@ -125,9 +129,9 @@ textarea
 	padding: 4px 0 4px 9px; 
 	border:2px black solid;
 	cursor:pointer;
-	border-radius: 5px;
-    -moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
+	border-radius: 5px 20px 20px 5px;
+    -moz-border-radius: 5px 20px 20px 5px;
+	-webkit-border-radius: 5px 20px 20px 5px;
 	margin:0.05em 0 0.5em;
 	
 	width: 90%;
@@ -210,19 +214,5 @@ textarea
 	background-color: #7e12e3;
 	padding: 8px 12px;
 	margin-bottom:6px;
-}
-
-.alert-success
-{
-    color: #3c763d;
-    border-color: #d6e9c6;
-    background-color: #dff0d8;
-}
-
-.alert2 
-{
-	border: 1px solid transparent;
-	border-radius: 6px;
-	padding: 3px;
 }
 </style>
