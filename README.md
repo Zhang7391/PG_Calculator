@@ -1,5 +1,7 @@
 # Just a calculator
 
+Version: PG-1.0.6
+
 ## current features:
 
 1. Immediately show the answer after typing

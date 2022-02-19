@@ -1,3 +1,16 @@
+/******************************************************|
+//                                                     /
+// Copyright (c) 2021 zhang7391 All rights reserved    /
+//             <zhang7391@protonmail.com>              /
+//                                                     /
+// Version: PG-1.0.6                                   /
+// License: GNU General Public License v3.0            /
+// Github: https://github.com/Zhang7391/PG_Calculator  /
+//                                                     / 
+// Keep this information if you use this code, please. /
+//                                                     /
+//*****************************************************/
+
 html, body
 {
 	margin: 0;
@@ -220,4 +233,23 @@ textarea
 	-webkit-border-radius: 5px 20px 20px 5px;
 	margin:0.05em 0 0.5em;
 	width: 90%;
+}
+
+#gear3
+{
+	font-size:18px;
+	color:#ceffce;
+	background-color: #228b22;
+	border-radius: 15px;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+}
+#settingButtom5
+{
+	color: #ffffff;
+	background-color: #228b22;
+	padding: 3px 4px;
+	border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
 }

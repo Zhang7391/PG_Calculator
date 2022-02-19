@@ -3,12 +3,14 @@
 // Copyright (c) 2021 zhang7391 All rights reserved    /
 //             <zhang7391@protonmail.com>              /
 //                                                     /
+// Version: PG-1.0.6                                   /
 // License: GNU General Public License v3.0            /
 // Github: https://github.com/Zhang7391/PG_Calculator  /
 //                                                     /
 // Keep this information if you use this code, please. /
 //                                                     /
 //*****************************************************/
+
 
 class core
 {
@@ -421,7 +423,7 @@ Decimal.set({precision: 1005, toExpNeg: -9e15, toExpPos: 9e15, rounding: Decimal
 
 class localStorageUpdate
 {
-	letructor() {}
+	constructor() {;}
 	
 	userInputHistory_Update(formula = "")
 	{

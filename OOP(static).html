@@ -6,6 +6,7 @@
 // Copyright (c) 2021 zhang7391 All rights reserved    /
 //             <zhang7391@protonmail.com>              /
 //                                                     /
+// Version: PG-1.0.6                                   /
 // License: GNU General Public License v3.0            /
 // Github: https://github.com/Zhang7391/PG_Calculator  /
 //                                                     / 
@@ -135,6 +136,39 @@
 	</div>
 	
 	<hr />
+	
+	<div id="PGcalculator" style="width:300px;height: 300px;">
+		<div id="PGcalculator_container7" style="max-width:600px;height:100%;width:100%;">
+			<table>
+				<tr>
+					<td style="width:95%;padding-left: 40px;color:#228b22;font-size:24px;font-weight:700">Options</td>
+					<td style="width:5%;"><button id="gear3"><i class="fa fa-gear fa-spin-hover"></i></button></td>
+				</tr>
+			</table>
+			
+			<table style="margin: 0 auto;">
+				<tr>
+					<td id="Maximum_Fractional_Text">Maximum fractional digits</td>
+					<td><input id="Maximum_Fractional" type="number" /></td>
+				</tr>
+				<tr id="Maximum_Fractional_Error" hidden>
+					<td class="red center Num0to1000">Error! Number range: 0~1000</td>
+					<td></td>
+				</tr>
+				<tr id="Maximum_Fractional_Success" hidden>
+					<td class="green center setupSuccess">success</td>
+					<td></td>
+				</tr>
+			</table>
+			
+			<p style="text-align:center;"><input id="settingButtom5" type="submit" value="Update" /></p>
+
+			<p id="license_block" style="position:relative;font-size:12px;color:#888888;"><span id="license">License: GNU General Public License v3.0</span><br />
+			<span id="license2">Copyright (c) 2022 zhang7391 All rights reserved</span></p>
+		</div>
+	</div>
+	
+	<hr />
 </body>
 
 <script>
@@ -146,4 +180,6 @@ document.querySelector("#block_bottom").style.height = (parseInt(document.queryS
 
 document.querySelector("#fakeTable2").style.width = document.querySelector("#PGcalculator2").offsetWidth + "px";
 document.querySelector("#block_bottom2").style.height = (parseInt(document.querySelector("#PGcalculator2").offsetHeight) - 170).toString() + "px";
+
+document.querySelector("#license_block").style.top = (document.querySelector("#PGcalculator_container7").getBoundingClientRect().height - ((document.querySelector("#PGcalculator_container7").offsetWidth >= 340)? 145 : 158)).toString() + "px";
 </script>

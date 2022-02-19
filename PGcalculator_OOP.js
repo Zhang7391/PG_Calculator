@@ -1,8 +1,9 @@
-/*****************************************************/
+/******************************************************/
 //                                                     /
 // Copyright (c) 2021 zhang7391 All rights reserved    /
 //             <zhang7391@protonmail.com>              /
 //                                                     /
+// Version: PG-1.0.6                                   /
 // License: GNU General Public License v3.0            /
 // Github: https://github.com/Zhang7391/PG_Calculator  /
 //                                                     / 
@@ -11,11 +12,28 @@
 //*****************************************************/
 
 
-(function (){
-    const file = ["free.min.css",
-				  "free-v4-shims.min.css", 
-				  "free-v4-font-face.min.css", 
-				  "free-v5-font-face.min.css"];
+(function(globalScope) 
+{
+	try {let test = !!localStorage;}
+	catch {localStorage = Object.create(Object.prototype);}
+			
+	let script = document.createElement("script");
+	script.setAttribute("src", "./decimal.js");
+	script.setAttribute("id", "PGallThingBewareBeginning");
+	document.head.appendChild(script);
+	
+	script.addEventListener("load", () =>
+	{
+		let script = document.createElement("script");
+		script.setAttribute("src", "./PGcontent.js");
+		script.setAttribute("id", "PGallThingBewareBeginning2");
+		document.head.appendChild(script);
+	});
+	
+    file = ["free.min.css",
+			"free-v4-shims.min.css", 
+			"free-v4-font-face.min.css", 
+			"free-v5-font-face.min.css"];
 
     for(let css of file)
     {
@@ -27,15 +45,14 @@
 
         document.head.appendChild(link);
     }
-}());
 
-(function(globalScope) 
-{
-    class PGcalculator
+	class PGcalculator
 	{
 		#set; #randomID;
 		
-		constructor(set = {})
+		constructor(set = {}) {window.addEventListener("load", this.initialization(set));}
+		
+		initialization(set)
 		{
 			if(set["viewBox"] === undefined) throw this.PGcalculator_Error + "Can't find the view box.";
 			if(set.viewBox.nodeName !== "DIV") throw this.PGcalculator_Error + "View box must be a div.";
@@ -46,20 +63,34 @@
 			const randomID = 
 			{
 				"gear": id(),
+				"gear2": id(),
 				"infix": id(),
 				"trash": id(),
 				"trash2": id(),
 				"history": id(),
+				"license": id(),
+				"license2": id(),
+				"topTitle": id(),
 				"titleBar": id(),
 				"fakeTable": id(),
+				"Num0to1000": id(),
 				"enterValue": id(),
 				"resultView": id(),
 				"historyBar": id(),
 				"historyShow": id(),
+				"userOptions": id(),
+				"setupSuccess": id(),
 				"block_bottom": id(),
 				"bufferBlock" : id(),
+				"license_block": id(),
+				"settingButtom": id(),
 				"calculateHistory": id(),
-				"PGcalculator_container": id()
+				"Maximum_Fractional": id(),
+				"PGcalculator_container": id(),
+				"PGcalculator_container2": id(),
+				"Maximum_Fractional_Text": id(),
+				"Maximum_Fractional_Error": id(),
+				"Maximum_Fractional_Success": id()
 			}
 			this.#randomID = randomID;
 
@@ -76,6 +107,7 @@
 			if(set.viewBox.offsetWidth >= 590)
 			{
 				cssDiff.enterValue_width = "93%";
+				cssDiff.trash2_position = "relative";
 				cssDiff.fakeTable_td_width = ["65%", "6%", "15%", "7%", "7%"];
 			}
 			else
@@ -107,6 +139,7 @@
 			div.id = randomID["titleBar"];
 			let h1 = document.createElement("h1");
 			
+			h1.id = randomID["topTitle"];
 			h1.innerText = "Rapid Calculator";
 			h1.style.textIndent = "0";
 			h1.style.color = "#6c2dc7";
@@ -129,6 +162,7 @@
 			tr.appendChild(td);
 			
 			td = document.createElement("td");
+			
 			td.style.width = cssDiff.fakeTable_td_width[1];
 			tr.appendChild(td);
 			
@@ -136,15 +170,16 @@
 			td.appendChild(button);
 			
 			button.setAttribute("id", randomID["trash2"]);
+			button.style.zIndex = "20";
 			button.style.color = "#ff0000";
 			button.style.fontSize = "25px";
 			button.style.padding = "1px 6px";
 			button.style.marginBottom = "6px";
 			button.style.borderRadius = "23px";
 			button.style.backgroundColor = "#fbc0c0";
+			button.style.position = cssDiff.trash2_position;
 			button.style.top = (cssDiff.trash2_top === undefined)? "" : cssDiff.trash2_top;
-			button.style.right = (cssDiff.trash2_right === undefined)? "" : cssDiff.trash2_right;
-			button.style.position = (cssDiff.trash2_position === undefined)? "" : cssDiff.trash2_position;	
+			button.style.right = (cssDiff.trash2_right === undefined)? "" : cssDiff.trash2_right;	
 			td.appendChild(button);
 			
 			let i = document.createElement("i");
@@ -227,8 +262,10 @@
 			
 			let p = document.createElement("p");
 			p.setAttribute("id", randomID["historyBar"]);
+			p.hidden = true;
 			p.style.margin = "0";
 			p.style.textAlign = "left";
+			p.style.textIndent = "10px";
 			document.querySelector("html").appendChild(style);
 			
 			let b = document.createElement("b");
@@ -253,6 +290,8 @@
 			
 			div = document.createElement("div");
 			div.setAttribute("id", randomID["block_bottom"]);
+			div.hidden = true;
+			div.style.marginLeft = "8px";
 			div.style.overflowY = "auto";
 			div.style.overflowX = "hidden";
 			div.style.wordBreak = "break-all";
@@ -265,6 +304,117 @@
 			table.style.textAlign = "left";
 			div.appendChild(table);
 			
+			div = document.createElement("div");
+			div.hidden = true;
+			div.id = randomID["PGcalculator_container2"];
+			div.style.width = "100%";
+			div.style.height = "100%";
+			div.style.maxWidth = "600px";
+			
+			set.viewBox.appendChild(div);
+			
+			table = document.createElement("table"), tr = document.createElement("tr"), td = document.createElement("td");
+			td.style.width = "95%";
+			td.style.color = "#228b22";
+			td.style.fontSize = "24px";
+			td.style.fontWeight = "700";
+			td.style.paddingLeft = "40px";
+			td.style.textAlign = "center";
+			td.innerText = "Options";
+			td.id = randomID["userOptions"];
+			
+			div.appendChild(table);
+			table.appendChild(tr);
+			tr.appendChild(td);
+			
+			td = document.createElement("td");
+			td.style.width = "5%";
+			tr.appendChild(td);
+			
+			button = document.createElement("button");
+			button.setAttribute("id", randomID["gear2"]);
+			button.style.color = "#ceffce";
+			button.style.fontSize = "22px";
+			button.style.borderRadius = "16px";
+			button.style.backgroundColor = "#228b22";
+			td.appendChild(button);
+			
+			i = document.createElement("i");
+			i.className = "fa fa-gear";
+			button.appendChild(i);
+			
+			table = document.createElement("table"), tr = document.createElement("tr"), td = document.createElement("td");
+			td.id = randomID["Maximum_Fractional_Text"];
+			td.innerText = "Maximum fractional digits";
+			
+			div.appendChild(table);
+			table.appendChild(tr);
+			tr.appendChild(td);
+			
+			td = document.createElement("td"), input = document.createElement("input");
+			input.id = randomID["Maximum_Fractional"];
+			input.setAttribute("type", "number");
+			tr.appendChild(td);
+			td.appendChild(input);
+			
+			tr = document.createElement("tr"), td = document.createElement("td");
+			tr.hidden = true;
+			tr.id = randomID["Maximum_Fractional_Error"];
+			td.style.color = "#ff0000";
+			td.style.textAlign = "center";
+			td.id = randomID["Num0to1000"];
+			td.innerText = "Error! Number range: 0~1000";
+			
+			table.appendChild(tr);
+			tr.appendChild(td);
+			tr.appendChild(document.createElement("td"));
+			
+			tr = document.createElement("tr"), td = document.createElement("td");
+			tr.hidden = true;
+			tr.id = randomID["Maximum_Fractional_Success"];
+			td.style.color = "#00ff00";
+			td.style.textAlign = "center";
+			td.id = randomID["setupSuccess"];
+			td.innerText = "success";
+			
+			table.appendChild(tr);
+			tr.appendChild(td);
+			tr.appendChild(document.createElement("td"));
+			
+			p = document.createElement("p"), input = document.createElement("input");
+			p.style.textAlign = "center";
+			input.id = randomID["settingButtom"];
+			input.style.color = "#ffffff";
+			input.style.padding = "3px 4px";
+			input.style.borderRadius = "4px";
+			input.style.backgroundColor = "#228b22";
+			input.setAttribute("type", "submit");
+			input.setAttribute("value", "Update");
+			
+			div.appendChild(p);
+			p.appendChild(input);
+			
+			let span = document.createElement("span");
+			p = document.createElement("p");
+			p.id = randomID["license_block"];
+			p.style.fontSize = "12px";
+			p.style.color = "#888888";
+			p.style.textAlign = "center";
+			p.style.position = "relative";
+			span.id = randomID["license"];
+			span.innerText = "License: GNU General Public License v3.0";
+			
+			div.appendChild(p);
+			p.appendChild(span);
+			p.appendChild(document.createElement("br"));
+			
+			span = document.createElement("span");
+			span.id = randomID["license2"];
+			span.innerText = "Copyright (c) 2022 zhang7391 All rights reserved";
+			
+			p.appendChild(span);
+			document.querySelector(`#${randomID["license_block"]}`).style.top = (set.viewBox.getBoundingClientRect().height - ((set.viewBox.offsetWidth >= 340)? 154 : 167)).toString() + "px";
+			
 			window.addEventListener("resize", () =>
 			{
 				if(this.width !== set.viewBox.offsetWidth)
@@ -276,8 +426,9 @@
 					{
 						key = true;
 						cssDiff.enterValue_width = "93%";
+						cssDiff.trash2_position = "relative";
 						cssDiff.fakeTable_td_width = ["65%", "6%", "15%", "7%", "7%"];
-						cssDiff.trash2_position = cssDiff.trash2_top = cssDiff.trash2_right = cssDiff.textarea_margin_top = cssDiff.fakeTable_top = "";
+						cssDiff.trash2_top = cssDiff.trash2_right = cssDiff.textarea_margin_top = cssDiff.fakeTable_top = "";
 					}
 					else
 					{
@@ -325,10 +476,12 @@
 					document.querySelector(`#${randomID["fakeTable"]}`).style.width = ((set.viewBox.offsetWidth >= 600)? "600" : set.viewBox.offsetWidth.toString()) + "px";
 				}
 			});
+			
+			document.querySelector("#PGallThingBewareBeginning").addEventListener("load", () => {document.querySelector("#PGallThingBewareBeginning2").addEventListener("load", () => {this.#setEventListener();});}, {once: true});
 		}
 		
 		createEnterValue(width)
-		{	//"bufferBlock" : id(),
+		{	
 			let block = undefined;
 			
 			let input = document.createElement("input");
@@ -339,6 +492,7 @@
 			input.style.padding = "4px 0 4px 9px";
 			input.style.border = "2px black soild";
 			input.style.cursor = "pointer";
+			input.style.position = "relative";
 			input.style.margin = "0.05em 0 0.5em";
 			input.style.borderRadius = "5px 20px 20px 5px";
 			input.style.width = width;
@@ -366,12 +520,294 @@
 			
 			return block;
 		}
+		
+		#setEventListener()
+		{
+			let translation = undefined;
+			
+			const PGcore = new core();
+			const tool = new toolbox();
+			const asari = new localStorageUpdate();
+			
+			//Core initialization
+			if(!localStorage.viewResultColor) asari.viewResultColor_Update("#ffffff");
+			document.querySelector(`#${this.#randomID["resultView"]}`).style.color = localStorage.viewResultColor;
+
+			if(!localStorage.userInputHistory) asari.userInputHistory_Update();
+			document.querySelector(`#${this.#randomID["enterValue"]}`).value = localStorage.userInputHistory;
+			
+			if(!localStorage.viewResultPrint) /*asari.viewResultPrint_Update("...")*/;
+			let result = PGcore.calculation(localStorage.userInputHistory);
+			PGcore.setResultView(result[0], result.length);
+			document.querySelector(`#${this.#randomID["resultView"]}`).value = localStorage.viewResultPrint;
+			document.querySelector(`#${this.#randomID["resultView"]}`).style.color = localStorage.viewResultColor;
+			
+			//Settings initialization
+			if(!localStorage.MaximumFractional) asari.MaximumFractional_Update("8");
+			document.querySelector(`#${this.#randomID["Maximum_Fractional"]}`).value = localStorage.MaximumFractional;
+			document.querySelector(`#${this.#randomID["Maximum_Fractional"]}`).placeholder = `${localStorage.MaximumFractional} (0~1000)`;
+			
+			if(!localStorage.CalculateHistoryMaximum) asari.CalculateHistoryMaximum_Update("20");
+			
+			//History initialization
+			if(!localStorage.CalculateHistory) asari.CalculateHistory_Update("", "", asari.DEL);
+			if(localStorage.CalculateHistory !== "")
+			{
+				let calculateData = localStorage.CalculateHistory.split(',');
+				calculateData.shift();
+
+				let now = 0, num = calculateData.length - 1;
+				while(parseInt(localStorage.CalculateHistoryMaximum) > now && calculateData.length > now)
+				{
+					let tr = document.createElement("tr"), td = document.createElement("td");
+					td.innerText = calculateData[num - now];
+					td.addEventListener("click", (itself) => {localStorage.userInputHistory = itself.target.innerText.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector(`#${this.#randomID["enterValue"]}`).value = localStorage.userInputHistory;document.querySelector(`#${this.#randomID["resultView"]}`).value = localStorage.viewResultPrint;document.querySelector(`#${this.#randomID["resultView"]}`).style.color = localStorage.viewResultColor;});
+					tr.appendChild(td);
+					tr.style.cursor = "pointer";
+					tr.className = "historyViewer";
+					document.querySelector(`#${this.#randomID["historyShow"]}`).appendChild(tr);
+					now += 1;
+				}
+			}
+			
+			if(!localStorage.historyReview) asari.historyReview_Update("-1", asari.SET);
+			
+			//Load other language
+			const language = (navigator.language || navigator.browserLanguage).toLowerCase();
+
+			fetch(location.pathname.slice(0, location.pathname.lastIndexOf("/")+1) + "language/" + language + ".json")
+				.then(response => response.json())
+				.then(data => 
+				{
+					translation = data;
+
+					let result = PGcore.calculation(document.querySelector(`#${this.#randomID["enterValue"]}`).value);
+					PGcore.setResultView(result[0], result.length);
+					document.querySelector(`#${this.#randomID["resultView"]}`).value = localStorage.viewResultPrint;
+					document.querySelector(`#${this.#randomID["resultView"]}`).style.color = localStorage.viewResultColor;
+
+					//translation HTML`#${this.#randomID["license"]}`
+					if(translation[document.querySelector(`#${this.#randomID["topTitle"]}`).innerText] !== "") document.querySelector(`#${this.#randomID["topTitle"]}`).innerText = translation[document.querySelector(`#${this.#randomID["topTitle"]}`).innerText];
+					if(translation[document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder] !== "") document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder = translation[document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder];
+					if(translation[document.querySelector(`#${this.#randomID["infix"]}`).value] !== "") document.querySelector(`#${this.#randomID["infix"]}`).value = translation[document.querySelector(`#${this.#randomID["infix"]}`).value];
+					if(translation[document.querySelector(`#${this.#randomID["resultView"]}`).value] !== "" && translation[document.querySelector(`#${this.#randomID["resultView"]}`).value] !== undefined) document.querySelector(`#${this.#randomID["resultView"]}`).value = translation[document.querySelector("#resultView").value];
+					if(translation[document.querySelector(`#${this.#randomID["calculateHistory"]}`).innerText] !== "") document.querySelector(`#${this.#randomID["calculateHistory"]}`).innerText = translation[document.querySelector(`#${this.#randomID["calculateHistory"]}`).innerText];
+					if(translation[document.querySelector(`#${this.#randomID["userOptions"]}`).innerText] !== "") document.querySelector(`#${this.#randomID["userOptions"]}`).innerText = translation[document.querySelector(`#${this.#randomID["userOptions"]}`).innerText];
+					if(translation[document.querySelector(`#${this.#randomID["Maximum_Fractional_Text"]}`).innerText] !== "") document.querySelector(`#${this.#randomID["Maximum_Fractional_Text"]}`).innerText = translation[document.querySelector(`#${this.#randomID["Maximum_Fractional_Text"]}`).innerText];
+					if(translation[document.querySelector(`#${this.#randomID["settingButtom"]}`).value] !== "") document.querySelector(`#${this.#randomID["settingButtom"]}`).value = translation[document.querySelector(`#${this.#randomID["settingButtom"]}`).value];
+					if(translation[document.querySelector(`#${this.#randomID["license"]}`).innerText] !== "") document.querySelector(`#${this.#randomID["license"]}`).innerText = translation[document.querySelector(`#${this.#randomID["license"]}`).innerText];
+					if(translation[document.querySelector(`#${this.#randomID["license2"]}`).innerText] !== "") document.querySelector(`#${this.#randomID["license2"]}`).innerText = translation[document.querySelector(`#${this.#randomID["license2"]}`).innerText];
+					if(translation[document.querySelector(`#${this.#randomID["Num0to1000"]}`).innerText] !== "") document.querySelector(`#${this.#randomID["setupSuccess"]}`).innerText = translation[document.querySelector(`#${this.#randomID["setupSuccess"]}`).innerText];
+					if(translation[document.querySelector(`#${this.#randomID["setupSuccess"]}`).innerText] !== "") document.querySelector(`#${this.#randomID["Num0to1000"]}`).innerText = translation[document.querySelector(`#${this.#randomID["Num0to1000"]}`).innerText];
+				})
+				.catch(error => console.log("No support for local language"));
+				
+			//Event Listener
+			document.querySelector(`#${this.#randomID["infix"]}`).addEventListener("click", () => 
+			{
+				let result = PGcore.calculation(document.querySelector(`#${this.#randomID["enterValue"]}`).value);
+				
+				PGcore.setResultView(result[0], result.length);
+				document.querySelector(`#${this.#randomID["resultView"]}`).value = (translation !== undefined && translation[localStorage.viewResultPrint] !== "" && translation[localStorage.viewResultPrint] !== undefined)? translation[localStorage.viewResultPrint] : localStorage.viewResultPrint;
+				document.querySelector(`#${this.#randomID["resultView"]}`).style.color = localStorage.viewResultColor;
+			});
+			
+			document.querySelector(`#${this.#randomID["enterValue"]}`).addEventListener("keydown", () => 
+			{
+				document.querySelector(`#${this.#randomID["historyBar"]}`).hidden = false;
+				document.querySelector(`#${this.#randomID["block_bottom"]}`).hidden = false;
+			}, {once: true});
+			
+			document.addEventListener("keyup", (press) =>
+			{
+				let result = undefined;
+				if(document.querySelector(`#${this.#randomID["enterValue"]}`).value !== localStorage.userInputHistory)
+				{
+					asari.userInputHistory_Update(document.querySelector(`#${this.#randomID["enterValue"]}`).value);
+
+					result = PGcore.calculation(localStorage.userInputHistory);
+					PGcore.setResultView(result[0], result.length);
+					document.querySelector(`#${this.#randomID["resultView"]}`).value = (translation !== undefined && translation[localStorage.viewResultPrint] !== "" && translation[localStorage.viewResultPrint] !== undefined)? translation[localStorage.viewResultPrint] : localStorage.viewResultPrint;
+					document.querySelector(`#${this.#randomID["resultView"]}`).style.color = localStorage.viewResultColor;
+				}
+				else
+				{
+					try {result = [new Decimal(localStorage.viewResultPrint)];}
+					catch(error) {result = ["Error"]}
+				}
+			
+				switch(press.keyCode)
+				{
+				case 13:		//enter
+					{
+					if(!(result[0] instanceof Decimal)) break;
+					
+					result = result[0];
+					asari.historyReview_Update("-1", asari.SET)
+					let formula = document.querySelector(`#${this.#randomID["enterValue"]}`).value;
+					let calculateData = localStorage.CalculateHistory.split(',');
+					
+					let zn = calculateData[calculateData.length-1].replace(/\s/g, "");
+					if(zn === "" || (zn !== "" && zn.split("=")[0] !== formula.replace(/\s/g, ""))) 
+					{
+						asari.CalculateHistory_Update(tool.htmlToText(formula), result);
+						calculateData.push(formula.replaceAll(',','') + " = " + result.toString());			
+					}
+					
+					let decimalPlaces = parseInt(localStorage.MaximumFractional);
+					if(result.dp() > decimalPlaces) result = result.toFixed(decimalPlaces).toString();
+					else result = result.toString();
+						
+					for(let x of document.querySelectorAll(".historyViewer")) document.querySelector(`#${this.#randomID["historyShow"]}`).removeChild(x);
+						
+					let now = 0;
+					while(parseInt(localStorage.CalculateHistoryMaximum) > now && calculateData.length > now+1)
+					{
+						let tr = document.createElement("tr"), td = document.createElement("td");
+						td.innerText = calculateData[calculateData.length - now - 1];
+						td.addEventListener("click", (itself) => {localStorage.userInputHistory = itself.target.innerText.split('=')[0];let PGcore = new core();let result = PGcore.calculation(localStorage.userInputHistory);PGcore.setResultView(result[0], result.length);document.querySelector(`#${this.#randomID["enterValue"]}`).value = localStorage.userInputHistory;document.querySelector(`#${this.#randomID["resultView"]}`).value = (translation !== undefined && translation[localStorage.viewResultPrint] !== "" && translation[localStorage.viewResultPrint] !== undefined)? translation[localStorage.viewResultPrint] : localStorage.viewResultPrint;document.querySelector(`#${this.#randomID["resultView"]}`).style.color = localStorage.viewResultColor;});
+						tr.appendChild(td);
+						tr.style.cursor = "pointer";
+						tr.className = "historyViewer";
+						document.querySelector(`#${this.#randomID["historyShow"]}`).appendChild(tr);
+						now += 1;
+					}
+					break;
+					//History's Event Listener Code. (input: itself[Object])
+					/*
+						localStorage.userInputHistory = itself.target.innerText.split('=')[0];
+						let PGcore = new core();
+						let result = PGcore.calculation(localStorage.userInputHistory);
+						PGcore.setResultView(result[0], result.length);
+						document.querySelector(`#${this.#randomID["enterValue"]}`).value = localStorage.userInputHistory;
+						document.querySelector(`#${this.#randomID["resultView"]}`).value = (translation !== undefined && translation[localStorage.viewResultPrint] !== "" && translation[localStorage.viewResultPrint] !== undefined)? translation[localStorage.viewResultPrint] : localStorage.viewResultPrint;
+						document.querySelector(`#${this.#randomID["resultView"]}`).style.color = localStorage.viewResultColor;
+					*/
+					}
+				case 38:		//up arrow
+					{
+					let calculateData = localStorage.CalculateHistory.split(',');
+
+					if(localStorage.historyReview === "1") ;
+					else if(localStorage.historyReview === "-1") asari.historyReview_Update(calculateData.length-1, asari.SET);
+					else asari.historyReview_Update(1, asari.MINUS);
+					
+					let algorithm = calculateData[parseInt(localStorage.historyReview)].split('=')[0];
+
+					asari.userInputHistory_Update(algorithm);
+					document.querySelector(`#${this.#randomID["enterValue"]}`).value = algorithm;
+					
+					result = PGcore.calculation(algorithm);
+					PGcore.setResultView(result[0], result.length);
+					document.querySelector(`#${this.#randomID["resultView"]}`).value = (translation !== undefined && translation[localStorage.viewResultPrint] !== "" && translation[localStorage.viewResultPrint] !== undefined)? translation[localStorage.viewResultPrint] : localStorage.viewResultPrint;
+					document.querySelector(`#${this.#randomID["resultView"]}`).style.color = localStorage.viewResultColor;
+					break;
+					}
+					
+				case 40:		//down arrow
+					{
+					let calculateData = localStorage.CalculateHistory.split(',');
+
+					if(calculateData.length-1 > parseInt(localStorage.historyReview)) asari.historyReview_Update(1, asari.ADD);
+
+					let algorithm = calculateData[parseInt(localStorage.historyReview)].split('=')[0];
+					
+					asari.userInputHistory_Update(algorithm);
+					document.querySelector(`#${this.#randomID["enterValue"]}`).value = algorithm;
+					
+					result = PGcore.calculation(algorithm);
+					PGcore.setResultView(result[0], result.length);
+					document.querySelector(`#${this.#randomID["resultView"]}`).value = (translation !== undefined && translation[localStorage.viewResultPrint] !== "" && translation[localStorage.viewResultPrint] !== undefined)? translation[localStorage.viewResultPrint] : localStorage.viewResultPrint;
+					document.querySelector(`#${this.#randomID["resultView"]}`).style.color = localStorage.viewResultColor;
+					break;
+					}
+				}
+			});
+			
+		document.querySelector(`#${this.#randomID["settingButtom"]}`).addEventListener("click", () =>
+			{
+				let x = parseInt(document.querySelector(`#${this.#randomID["Maximum_Fractional"]}`).value);
+				let old = document.querySelector(`#${this.#randomID["Maximum_Fractional"]}`).placeholder.split(' ')[0];
+				if(!isNaN(x) && 1000 >= x && x >= 0) 
+				{
+					if(parseInt(old) !== x)
+					{
+						asari.MaximumFractional_Update(x);
+						document.querySelector(`#${this.#randomID["Maximum_Fractional"]}`).value = x;
+						document.querySelector(`#${this.#randomID["Maximum_Fractional"]}`).placeholder = `${x} (0~1000)`;
+					
+						document.querySelector(`#${this.#randomID["Maximum_Fractional_Error"]}`).hidden = true;
+						document.querySelector(`#${this.#randomID["Maximum_Fractional_Success"]}`).hidden = false;
+
+						let result = PGcore.calculation(localStorage.userInputHistory);
+						PGcore.setResultView(result[0], result.length);
+						document.querySelector(`#${this.#randomID["resultView"]}`).value = (translation !== undefined && translation[localStorage.viewResultPrint] !== "" && translation[localStorage.viewResultPrint] !== undefined)? translation[localStorage.viewResultPrint] : localStorage.viewResultPrint;
+						document.querySelector(`#${this.#randomID["resultView"]}`).style.color = localStorage.viewResultColor;
+					
+						document.querySelector(`#${this.#randomID["license_block"]}`).style.top = (this.#set.viewBox.getBoundingClientRect().height - ((this.#set.viewBox.offsetWidth >= 340)? 177 : 190)).toString() + "px";
+					}
+					else 
+					{
+						document.querySelector(`#${this.#randomID["Maximum_Fractional_Error"]}`).hidden = true;
+						document.querySelector(`#${this.#randomID["Maximum_Fractional_Success"]}`).hidden = true;
+						document.querySelector(`#${this.#randomID["license_block"]}`).style.top = (this.#set.viewBox.getBoundingClientRect().height - ((this.#set.viewBox.offsetWidth >= 340)? 154 : 167)).toString() + "px";
+					}
+				}
+				else
+				{
+					document.querySelector(`#${this.#randomID["Maximum_Fractional"]}`).value = old;
+					document.querySelector(`#${this.#randomID["Maximum_Fractional_Error"]}`).hidden = false;
+					document.querySelector(`#${this.#randomID["Maximum_Fractional_Success"]}`).hidden = true;
+				
+					document.querySelector(`#${this.#randomID["license_block"]}`).style.top = (this.#set.viewBox.getBoundingClientRect().height - ((this.#set.viewBox.offsetWidth >= 340)? 177 : 190)).toString() + "px";
+				}
+			});
+			
+			document.querySelector(`#${this.#randomID["history"]}`).addEventListener("click", () => 
+			{
+				document.querySelector(`#${this.#randomID["historyBar"]}`).hidden = !document.querySelector(`#${this.#randomID["historyBar"]}`).hidden;
+				document.querySelector(`#${this.#randomID["block_bottom"]}`).hidden = !document.querySelector(`#${this.#randomID["block_bottom"]}`).hidden;
+			});
+				
+			document.querySelector(`#${this.#randomID["gear"]}`).addEventListener("click", () => 
+			{	
+				document.querySelector(`#${this.#randomID["PGcalculator_container"]}`).hidden = true;
+				document.querySelector(`#${this.#randomID["PGcalculator_container2"]}`).hidden = false;
+				document.querySelector(`#${this.#randomID["Maximum_Fractional_Error"]}`).hidden =
+				document.querySelector(`#${this.#randomID["Maximum_Fractional_Success"]}`).hidden = true;
+			});
+			
+			document.querySelector(`#${this.#randomID["gear2"]}`).addEventListener("click", () => 
+			{
+				document.querySelector(`#${this.#randomID["PGcalculator_container"]}`).hidden = false;
+				document.querySelector(`#${this.#randomID["PGcalculator_container2"]}`).hidden = true;
+			});
+			
+			document.querySelector(`#${this.#randomID["trash"]}`).addEventListener("click", () =>
+			{
+				asari.CalculateHistory_Update("", "", asari.DEL);
+				for(let x of document.querySelectorAll(".historyViewer")) document.querySelector(`#${this.#randomID["historyShow"]}`).removeChild(x);
+			});
+			
+			document.querySelector(`#${this.#randomID["trash2"]}`).addEventListener("click", () =>
+			{
+				asari.viewResultPrint_Update("...");
+				document.querySelector(`#${this.#randomID["resultView"]}`).value = "...";
+				
+				asari.viewResultColor_Update("#ffffff");
+				document.querySelector(`#${this.#randomID["resultView"]}`).style.color = "#ffffff";
+
+				asari.userInputHistory_Update();
+				document.querySelector(`#${this.#randomID["enterValue"]}`).value = "";
+			});
+		}
 
 		get set() {return this.#set;}
 		get idList() {return this.#randomID;}
 		get [Symbol.toStringTag]() {return "PGcalculator";}
 		get PGcalculator_Error() {return "[PGcalculator Error]: ";}
 	}
+
 	
 	// Export
 	// Node and other environments that support module.exports
