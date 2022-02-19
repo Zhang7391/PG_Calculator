@@ -18,7 +18,7 @@ Version: PG-1.0.6
 - [x] Calculation of ln, e, and log
 - [x] If the current formula matches the latest history, no new formula will be added
 - [x] More languages
-- [ ] Include OOP structures
+- [x] Include OOP structures
 
 ## pending bugs
 
