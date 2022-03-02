@@ -580,17 +580,10 @@
 					document.querySelector(`#${this.#randomID["resultView"]}`).value = localStorage.viewResultPrint;
 					document.querySelector(`#${this.#randomID["resultView"]}`).style.color = localStorage.viewResultColor;
 
-<<<<<<< HEAD
-					//translation HTML
-					if(translation[document.querySelector(`#${this.#randomID["topTitle"]}`).innerText] !== "") document.querySelector(`#${this.#randomID["topTitle"]}`).innerText = translation[document.querySelector(`#${this.#randomID["topTitle"]}`).innerText];
-					if(translation[document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder] !== "") document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder = translation[document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder];
-					if(translation[document.querySelector(`#${this.#randomID["infix"]}`).value] !== "") document.querySelector(`#${this.#randomID["infix"]}`).value = translation[document.querySelector(`#${this.#randomID["infix"]}`).value];
-=======
-					//translation HTML`#${this.#randomID["license"]}`
+					//translation
 					if(translation[document.querySelector(`#${this.#randomID["topTitle"]}`).innerText] !== "" && translation[document.querySelector(`#${this.#randomID["topTitle"]}`).innerText] !== undefined) document.querySelector(`#${this.#randomID["topTitle"]}`).innerText = translation[document.querySelector(`#${this.#randomID["topTitle"]}`).innerText];
 					if(translation[document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder] !== "" && translation[document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder] !== undefined) document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder = translation[document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder];
 					if(translation[document.querySelector(`#${this.#randomID["infix"]}`).value] !== "" && translation[document.querySelector(`#${this.#randomID["infix"]}`).value] !== undefined) document.querySelector(`#${this.#randomID["infix"]}`).value = translation[document.querySelector(`#${this.#randomID["infix"]}`).value];
->>>>>>> 13cb1225c78caa4f76d5f86cfacaeb9dd9c7c821
 					if(translation[document.querySelector(`#${this.#randomID["resultView"]}`).value] !== "" && translation[document.querySelector(`#${this.#randomID["resultView"]}`).value] !== undefined) document.querySelector(`#${this.#randomID["resultView"]}`).value = translation[document.querySelector("#resultView").value];
 					if(translation[document.querySelector(`#${this.#randomID["calculateHistory"]}`).innerText] !== "" && translation[document.querySelector(`#${this.#randomID["calculateHistory"]}`).innerText] !== undefined) document.querySelector(`#${this.#randomID["calculateHistory"]}`).innerText = translation[document.querySelector(`#${this.#randomID["calculateHistory"]}`).innerText];
 					if(translation[document.querySelector(`#${this.#randomID["userOptions"]}`).innerText] !== "" && translation[document.querySelector(`#${this.#randomID["userOptions"]}`).innerText] !== undefined) document.querySelector(`#${this.#randomID["userOptions"]}`).innerText = translation[document.querySelector(`#${this.#randomID["userOptions"]}`).innerText];
