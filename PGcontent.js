@@ -51,7 +51,8 @@ class core
 		for(let x of tool.plusSplit(formula))
 		{
 			if(x === " " || !/[\*\^\-\+\/\s\d\.e\(\)]|log|ln/.test(x)) continue;
-			
+			if(x === "Error! Unlawful Infix Notation!") return ["Error! Unlawful Infix Notation!"];
+
 			let nd;
 
 			switch(x)
@@ -160,7 +161,16 @@ class core
 						isSymbol = true;
 					}
 					
-					if(data instanceof Decimal) numStack.push(data.ln().toFixed(parseInt(localStorage.MaximumFractional)).toString());
+					if(data instanceof Decimal) 
+					{
+						if(data.isPositive()) 
+						{
+							let decimalPlaces = parseInt(localStorage.MaximumFractional);
+							if(data.dp() > decimalPlaces) numStack.push(data.ln().toFixed(parseInt(localStorage.MaximumFractional)).toString());
+							else numStack.push(data.log().toString());
+						}
+						else return ["ln() is imaginary number"];
+					}
 					else return ["Unlawful ln value"];
 				}
 				else if(x.startsWith("log"))
@@ -176,9 +186,13 @@ class core
 					
 					if(data instanceof Decimal) 
 					{
-						let decimalPlaces = parseInt(localStorage.MaximumFractional);
-						if(data.dp() > decimalPlaces) numStack.push(data.log().toFixed(decimalPlaces).toString());
-						else numStack.push(data.log().toString());
+						if(data.isPositive())
+						{
+							let decimalPlaces = parseInt(localStorage.MaximumFractional);
+							if(data.dp() > decimalPlaces) numStack.push(data.log().toFixed(decimalPlaces).toString());
+							else numStack.push(data.log().toString());
+						}
+						else return ["log() is imaginary number"];
 					}
 					else return ["Unlawful log value"];
 				}
@@ -373,6 +387,16 @@ class core
 		case "Unlawful log value":
 			asari.viewResultColor_Update("#ff0000");
 			asari.viewResultPrint_Update("Unlawful log value");
+			break;
+			
+		case "ln() is imaginary number":
+			asari.viewResultColor_Update("#ff0000");
+			asari.viewResultPrint_Update("ln() is imaginary number");
+			break;
+			
+		case "log() is imaginary number":
+			asari.viewResultColor_Update("#ff0000");
+			asari.viewResultPrint_Update("log() is imaginary number");
 			break;
 
 		default:
@@ -619,7 +643,11 @@ class toolbox
 					continue;
 				}
 			}
-			else if(isNaN(parseFloat(x))) for(let y of x) yield y;
+			else if(isNaN(parseFloat(x))) 
+			{
+				if(/-\D*?[\*+\-\/]|\+\D*?[\*+\-\/]|\([\*+\-\/]/.test(x)) yield "Error! Unlawful Infix Notation!";
+				for(let y of x) yield y;
+			}
 			else yield x;
 		}
 		

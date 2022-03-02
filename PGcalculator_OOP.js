@@ -295,8 +295,9 @@
 			div.style.overflowY = "auto";
 			div.style.overflowX = "hidden";
 			div.style.wordBreak = "break-all";
+			div.style.maxHeight = "100px";
 			document.querySelector(`#${randomID["PGcalculator_container"]}`).appendChild(div);
-			document.querySelector(`#${randomID["block_bottom"]}`).style.height = ((set.viewBox.offsetHeight) - 170).toString() + "px";
+			//document.querySelector(`#${randomID["block_bottom"]}`).style.height = ((set.viewBox.offsetHeight) - 170).toString() + "px";
 			
 			table = document.createElement("table");
 			table.id = randomID["historyShow"];
@@ -394,6 +395,29 @@
 			div.appendChild(p);
 			p.appendChild(input);
 			
+			table = document.createElement("table");
+			table.style.textAlign = "left";
+			
+			let caption = document.createElement("caption");
+			caption.style.textAlign = "left";
+			
+			b = document.createElement("b");
+			b.innerText = "Document";
+			
+			table.appendChild(caption);
+			caption.appendChild(b);
+			
+			let teach = ["pi: Calculate pi", "ln(x): Calculate ln x", "log(x): Calculate log x"];
+			for(let x of teach)
+			{
+				tr = document.createElement("tr"), td = document.createElement("td");
+				td.style.textIndent = "2em";
+				td.innerText = x;
+				table.appendChild(tr);
+				tr.appendChild(td);
+			}
+			div.appendChild(table);
+		
 			let span = document.createElement("span");
 			p = document.createElement("p");
 			p.id = randomID["license_block"];
@@ -413,7 +437,6 @@
 			span.innerText = "Copyright (c) 2022 zhang7391 All rights reserved";
 			
 			p.appendChild(span);
-			document.querySelector(`#${randomID["license_block"]}`).style.top = (set.viewBox.getBoundingClientRect().height - ((set.viewBox.offsetWidth >= 340)? 154 : 167)).toString() + "px";
 			
 			window.addEventListener("resize", () =>
 			{
@@ -472,7 +495,7 @@
 					
 					document.querySelector(`#${randomID["fakeTable"]}`).style.top = cssDiff.fakeTable_top;
 					
-					document.querySelector(`#${randomID["block_bottom"]}`).style.height = (set.viewBox.offsetHeight - 170).toString() + "px";
+					//document.querySelector(`#${randomID["block_bottom"]}`).style.height = set.viewBox.offsetHeight - 170).toString() + "100px";
 					document.querySelector(`#${randomID["fakeTable"]}`).style.width = ((set.viewBox.offsetWidth >= 600)? "600" : set.viewBox.offsetWidth.toString()) + "px";
 				}
 			});
@@ -586,7 +609,7 @@
 					document.querySelector(`#${this.#randomID["resultView"]}`).value = localStorage.viewResultPrint;
 					document.querySelector(`#${this.#randomID["resultView"]}`).style.color = localStorage.viewResultColor;
 
-					//translation HTML`#${this.#randomID["license"]}`
+					//translation HTML
 					if(translation[document.querySelector(`#${this.#randomID["topTitle"]}`).innerText] !== "") document.querySelector(`#${this.#randomID["topTitle"]}`).innerText = translation[document.querySelector(`#${this.#randomID["topTitle"]}`).innerText];
 					if(translation[document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder] !== "") document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder = translation[document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder];
 					if(translation[document.querySelector(`#${this.#randomID["infix"]}`).value] !== "") document.querySelector(`#${this.#randomID["infix"]}`).value = translation[document.querySelector(`#${this.#randomID["infix"]}`).value];
@@ -750,7 +773,7 @@
 					{
 						document.querySelector(`#${this.#randomID["Maximum_Fractional_Error"]}`).hidden = true;
 						document.querySelector(`#${this.#randomID["Maximum_Fractional_Success"]}`).hidden = true;
-						document.querySelector(`#${this.#randomID["license_block"]}`).style.top = (this.#set.viewBox.getBoundingClientRect().height - ((this.#set.viewBox.offsetWidth >= 340)? 154 : 167)).toString() + "px";
+						//document.querySelector(`#${this.#randomID["license_block"]}`).style.top = (this.#set.viewBox.getBoundingClientRect().height - ((this.#set.viewBox.offsetWidth >= 340)? 154 : 167)).toString() + "px";
 					}
 				}
 				else

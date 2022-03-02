@@ -253,3 +253,22 @@ textarea
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
 }
+
+#gear4
+{
+	font-size: 18px;
+	color: #ceffce;
+	background-color: #228b22;
+	border-radius: 15px;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+}
+#settingButtom6
+{
+	color: #ffffff;
+	background-color: #228b22;
+	padding: 3px 4px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}

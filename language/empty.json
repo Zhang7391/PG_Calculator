@@ -2,14 +2,20 @@
 	"PG Calculator" : "",
 	"Rapid Calculator" : "",
 	"Please enter your postfix Notation." : "",
-	"Calculation" : "",
+	"Calculats" : "",
 	"calculate history" : "",
+	
 	"Options" : "",
 	"Maximum fractional digits" : "",
 	"Error! Number range: 0~1000" : "",
 	"success" : "",
 	"conversion result" : "",
 	"Update" : "",
+	
+	"Document" : "",
+	"pi: Calculate pi" : "",
+	"ln(x): Calculate ln x" : "",
+	"log(x): Calculate log x" : "",
 	
 	"A space between two numbers" : "",
 	"Division by zero" : "",
@@ -19,6 +25,8 @@
 	"Operator are too much!" : "",
 	"Unlawful ln value" : "",
 	"Unlawful log value" : "",
+	"ln() is imaginary number" : "",
+	"log() is imaginary number" : "",
 
 	"Copyright (c) 2022 zhang7391 All rights reserved" : "",
 	"License: GNU General Public License v3.0" : ""

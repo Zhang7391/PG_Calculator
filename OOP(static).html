@@ -108,7 +108,7 @@
 			<p id="historyBar"><b id="calculateHistory">history of calculation</b>&nbsp;&nbsp;
 			<button id="trash"><i class="fa fa-trash"></i></button></p>
 		
-			<div id="block_bottom" style="overflow:auto;">
+			<div id="block_bottom" style="overflow:auto;max-height:60%;">
 				<table style="width:100%;text-align:left;">
 					<tr><td>hello1</td></tr>
 					<tr><td>hello2</td></tr>
@@ -169,6 +169,45 @@
 	</div>
 	
 	<hr />
+	
+	<div id="PGcalculator" style="width:600px;height:600px">
+		<div id="PGcalculator_container8" style="max-width:600px;height:100%;widht:100%">
+			<table>
+				<tr>
+					<td style="width:95%;padding-left: 40px;color: #228b22; font-size:24px;font-weight: 700">Options</td>
+					<td style="width:5%;"><button id="gear4"><i class="fa fa-gear"></i></button></td>
+				</tr>
+			</table>
+			
+			<table>
+				<tr>
+					<td id="Maximum_Fractional_Text">Maximum fractional digits</td>
+					<td><input id="Maximum_Fractional" type="number" /></td>
+				</tr>
+				<tr id="Maximum_Fractional_Error" hidden>
+					<td class="red center Num0to1000">Error! Number range: 0~1000</td>
+					<td></td>
+				</tr>
+				<tr id="Maximum_Fractional_Success" hidden>
+					<td class="green center setupSuccess">success</td>
+					<td></td>
+				</tr>
+			</table>
+			
+			<p style="text-align:center;"><input id="settingButtom6" type="submit" value="Update" /></p>
+		
+			<table style="text-align: left;">
+				<caption style="text-align: left;"><b>Document</b></caption>
+				
+				<tr><td style="text-indent: 2em;">pi: Calculate pi(&#960;)</td></tr>
+				<tr><td style="text-indent: 2em;">ln(x): Calculate ln x</td></tr>
+				<tr><td style="text-indent: 2em;">log(x): Calculate log x</td></tr>
+			</table>
+			
+			<p id="license_block" style="font-size:12px;color:#888888;padding-top: 10px"><span id="license">License: GNU General Public License v3.0</span><br />
+			<span id="license2">Copyright (c) 2022 zhang7391 All rights reserved</span></p>
+		</div>
+	</div>
 </body>
 
 <script>
@@ -176,7 +215,7 @@ const id = () => Math.random().toString(36).substr(2, 9) + Math.random().toStrin
 //console.log(id())
 
 document.querySelector("#fakeTable").style.width = ((document.querySelector("#PGcalculator").offsetWidth >= 600)? "600":document.querySelector("#PGcalculator").offsetWidth.toString()) + "px";
-document.querySelector("#block_bottom").style.height = (parseInt(document.querySelector("#PGcalculator").offsetHeight) - 135).toString() + "px";
+//document.querySelector("#block_bottom").style.height = (parseInt(document.querySelector("#PGcalculator").offsetHeight) - 135).toString() + "px";
 
 document.querySelector("#fakeTable2").style.width = document.querySelector("#PGcalculator2").offsetWidth + "px";
 document.querySelector("#block_bottom2").style.height = (parseInt(document.querySelector("#PGcalculator2").offsetHeight) - 170).toString() + "px";
