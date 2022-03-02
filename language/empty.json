@@ -2,7 +2,11 @@
 	"PG Calculator" : "",
 	"Rapid Calculator" : "",
 	"Please enter your postfix Notation." : "",
+<<<<<<< HEAD
 	"Calculats" : "",
+=======
+	"Calculate" : "",
+>>>>>>> 13cb1225c78caa4f76d5f86cfacaeb9dd9c7c821
 	"calculate history" : "",
 	
 	"Options" : "",

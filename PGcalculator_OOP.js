@@ -60,38 +60,8 @@
 			this.#set = set;
 			
 			const id = () => "PG_" + Math.random().toString(36).substr(2, 8) + Math.random().toString(36).substr(4, 10);	
-			const randomID = 
-			{
-				"gear": id(),
-				"gear2": id(),
-				"infix": id(),
-				"trash": id(),
-				"trash2": id(),
-				"history": id(),
-				"license": id(),
-				"license2": id(),
-				"topTitle": id(),
-				"titleBar": id(),
-				"fakeTable": id(),
-				"Num0to1000": id(),
-				"enterValue": id(),
-				"resultView": id(),
-				"historyBar": id(),
-				"historyShow": id(),
-				"userOptions": id(),
-				"setupSuccess": id(),
-				"block_bottom": id(),
-				"bufferBlock" : id(),
-				"license_block": id(),
-				"settingButtom": id(),
-				"calculateHistory": id(),
-				"Maximum_Fractional": id(),
-				"PGcalculator_container": id(),
-				"PGcalculator_container2": id(),
-				"Maximum_Fractional_Text": id(),
-				"Maximum_Fractional_Error": id(),
-				"Maximum_Fractional_Success": id()
-			}
+			const randomID = {};
+			for(let tag of ["gear", "gear2", "infix", "trash", "trash2", "history", "license", "license2", "topTitle", "titleBar", "fakeTable", "Num0to1000", "enterValue", "resultView", "historyBar", "historyShow", "userOptions", "setupSuccess", "block_bottom", "bufferBlock", "license_block", "settingButtom", "calculateHistory", "Maximum_Fractional", "PGcalculator_container", "PGcalculator_container2", "Maximum_Fractional_Text", "Maximum_Fractional_Error", "Maximum_Fractional_Success"]) randomID[tag] = id();
 			this.#randomID = randomID;
 
 			const cssDiff = 
@@ -346,6 +316,7 @@
 			
 			table = document.createElement("table"), tr = document.createElement("tr"), td = document.createElement("td");
 			td.id = randomID["Maximum_Fractional_Text"];
+			td.style.paddingRight = "65px";
 			td.innerText = "Maximum fractional digits";
 			
 			div.appendChild(table);
@@ -609,19 +580,26 @@
 					document.querySelector(`#${this.#randomID["resultView"]}`).value = localStorage.viewResultPrint;
 					document.querySelector(`#${this.#randomID["resultView"]}`).style.color = localStorage.viewResultColor;
 
+<<<<<<< HEAD
 					//translation HTML
 					if(translation[document.querySelector(`#${this.#randomID["topTitle"]}`).innerText] !== "") document.querySelector(`#${this.#randomID["topTitle"]}`).innerText = translation[document.querySelector(`#${this.#randomID["topTitle"]}`).innerText];
 					if(translation[document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder] !== "") document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder = translation[document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder];
 					if(translation[document.querySelector(`#${this.#randomID["infix"]}`).value] !== "") document.querySelector(`#${this.#randomID["infix"]}`).value = translation[document.querySelector(`#${this.#randomID["infix"]}`).value];
+=======
+					//translation HTML`#${this.#randomID["license"]}`
+					if(translation[document.querySelector(`#${this.#randomID["topTitle"]}`).innerText] !== "" && translation[document.querySelector(`#${this.#randomID["topTitle"]}`).innerText] !== undefined) document.querySelector(`#${this.#randomID["topTitle"]}`).innerText = translation[document.querySelector(`#${this.#randomID["topTitle"]}`).innerText];
+					if(translation[document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder] !== "" && translation[document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder] !== undefined) document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder = translation[document.querySelector(`#${this.#randomID["enterValue"]}`).placeholder];
+					if(translation[document.querySelector(`#${this.#randomID["infix"]}`).value] !== "" && translation[document.querySelector(`#${this.#randomID["infix"]}`).value] !== undefined) document.querySelector(`#${this.#randomID["infix"]}`).value = translation[document.querySelector(`#${this.#randomID["infix"]}`).value];
+>>>>>>> 13cb1225c78caa4f76d5f86cfacaeb9dd9c7c821
 					if(translation[document.querySelector(`#${this.#randomID["resultView"]}`).value] !== "" && translation[document.querySelector(`#${this.#randomID["resultView"]}`).value] !== undefined) document.querySelector(`#${this.#randomID["resultView"]}`).value = translation[document.querySelector("#resultView").value];
-					if(translation[document.querySelector(`#${this.#randomID["calculateHistory"]}`).innerText] !== "") document.querySelector(`#${this.#randomID["calculateHistory"]}`).innerText = translation[document.querySelector(`#${this.#randomID["calculateHistory"]}`).innerText];
-					if(translation[document.querySelector(`#${this.#randomID["userOptions"]}`).innerText] !== "") document.querySelector(`#${this.#randomID["userOptions"]}`).innerText = translation[document.querySelector(`#${this.#randomID["userOptions"]}`).innerText];
-					if(translation[document.querySelector(`#${this.#randomID["Maximum_Fractional_Text"]}`).innerText] !== "") document.querySelector(`#${this.#randomID["Maximum_Fractional_Text"]}`).innerText = translation[document.querySelector(`#${this.#randomID["Maximum_Fractional_Text"]}`).innerText];
-					if(translation[document.querySelector(`#${this.#randomID["settingButtom"]}`).value] !== "") document.querySelector(`#${this.#randomID["settingButtom"]}`).value = translation[document.querySelector(`#${this.#randomID["settingButtom"]}`).value];
-					if(translation[document.querySelector(`#${this.#randomID["license"]}`).innerText] !== "") document.querySelector(`#${this.#randomID["license"]}`).innerText = translation[document.querySelector(`#${this.#randomID["license"]}`).innerText];
-					if(translation[document.querySelector(`#${this.#randomID["license2"]}`).innerText] !== "") document.querySelector(`#${this.#randomID["license2"]}`).innerText = translation[document.querySelector(`#${this.#randomID["license2"]}`).innerText];
-					if(translation[document.querySelector(`#${this.#randomID["Num0to1000"]}`).innerText] !== "") document.querySelector(`#${this.#randomID["setupSuccess"]}`).innerText = translation[document.querySelector(`#${this.#randomID["setupSuccess"]}`).innerText];
-					if(translation[document.querySelector(`#${this.#randomID["setupSuccess"]}`).innerText] !== "") document.querySelector(`#${this.#randomID["Num0to1000"]}`).innerText = translation[document.querySelector(`#${this.#randomID["Num0to1000"]}`).innerText];
+					if(translation[document.querySelector(`#${this.#randomID["calculateHistory"]}`).innerText] !== "" && translation[document.querySelector(`#${this.#randomID["calculateHistory"]}`).innerText] !== undefined) document.querySelector(`#${this.#randomID["calculateHistory"]}`).innerText = translation[document.querySelector(`#${this.#randomID["calculateHistory"]}`).innerText];
+					if(translation[document.querySelector(`#${this.#randomID["userOptions"]}`).innerText] !== "" && translation[document.querySelector(`#${this.#randomID["userOptions"]}`).innerText] !== undefined) document.querySelector(`#${this.#randomID["userOptions"]}`).innerText = translation[document.querySelector(`#${this.#randomID["userOptions"]}`).innerText];
+					if(translation[document.querySelector(`#${this.#randomID["Maximum_Fractional_Text"]}`).innerText] !== "" && translation[document.querySelector(`#${this.#randomID["Maximum_Fractional_Text"]}`).innerText] !== undefined) document.querySelector(`#${this.#randomID["Maximum_Fractional_Text"]}`).innerText = translation[document.querySelector(`#${this.#randomID["Maximum_Fractional_Text"]}`).innerText];
+					if(translation[document.querySelector(`#${this.#randomID["settingButtom"]}`).value] !== "" && translation[document.querySelector(`#${this.#randomID["settingButtom"]}`).value] !== undefined) document.querySelector(`#${this.#randomID["settingButtom"]}`).value = translation[document.querySelector(`#${this.#randomID["settingButtom"]}`).value];
+					if(translation[document.querySelector(`#${this.#randomID["license"]}`).innerText] !== "" && translation[document.querySelector(`#${this.#randomID["license"]}`).innerText] !== undefined) document.querySelector(`#${this.#randomID["license"]}`).innerText = translation[document.querySelector(`#${this.#randomID["license"]}`).innerText];
+					if(translation[document.querySelector(`#${this.#randomID["license2"]}`).innerText] !== "" && translation[document.querySelector(`#${this.#randomID["license2"]}`).innerText] !== undefined) document.querySelector(`#${this.#randomID["license2"]}`).innerText = translation[document.querySelector(`#${this.#randomID["license2"]}`).innerText];
+					if(translation[document.querySelector(`#${this.#randomID["Num0to1000"]}`).innerText] !== "" && translation[document.querySelector(`#${this.#randomID["Num0to1000"]}`).innerText] !== undefined) document.querySelector(`#${this.#randomID["Num0to1000"]}`).innerText = translation[document.querySelector(`#${this.#randomID["Num0to1000"]}`).innerText];
+					if(translation[document.querySelector(`#${this.#randomID["setupSuccess"]}`).innerText] !== "" && translation[document.querySelector(`#${this.#randomID["setupSuccess"]}`).innerText] !== undefined) document.querySelector(`#${this.#randomID["setupSuccess"]}`).innerText = translation[document.querySelector(`#${this.#randomID["setupSuccess"]}`).innerText];
 				})
 				.catch(error => console.log("No support for local language"));
 				
@@ -798,6 +776,7 @@
 				document.querySelector(`#${this.#randomID["PGcalculator_container2"]}`).hidden = false;
 				document.querySelector(`#${this.#randomID["Maximum_Fractional_Error"]}`).hidden =
 				document.querySelector(`#${this.#randomID["Maximum_Fractional_Success"]}`).hidden = true;
+				document.querySelector(`#${this.#randomID["license_block"]}`).style.top = (this.#set.viewBox.getBoundingClientRect().height - ((this.#set.viewBox.offsetWidth >= 340)? 154 : 167)).toString() + "px";
 			});
 			
 			document.querySelector(`#${this.#randomID["gear2"]}`).addEventListener("click", () => 
