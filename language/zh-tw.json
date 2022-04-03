@@ -26,8 +26,5 @@
 	"Unlawful ln value" : "\u7121\u610f\u7fa9\u7684ln\u6578\u503c",
 	"Unlawful log value" : "\u7121\u610f\u7fa9\u7684log\u6578\u503c",
 	"ln() is imaginary number" : "ln()\u8a08\u7b97\u5b8c\u5f8c\u70ba\u865b\u6578",
-	"log() is imaginary number" : "log()\u8a08\u7b97\u5b8c\u5f8c\u70ba\u865b\u6578",
-
-	"Copyright (c) 2022 zhang7391 All rights reserved" : "\u7248\u6b0a\u6240\u6709 (c) 2022 zhang7391",
-	"License: GNU General Public License v3.0" : "\u63a1\u300cGNU \u901a\u7528\u516c\u773e\u6388\u6b0a\u689d\u6b3e\u7b2c\u4e09\u7248\u300d\u6388\u6b0a"
+	"log() is imaginary number" : "log()\u8a08\u7b97\u5b8c\u5f8c\u70ba\u865b\u6578"
 }
