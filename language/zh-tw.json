@@ -17,7 +17,7 @@
 	"ln(x): Calculate ln x" : "ln(x): \u8a08\u7b97x\u53d6ln",
 	"log(x): Calculate log x" : "log(x): \u8a08\u7b97x\u53d6log",
 
-	"A space between two numbers" : "\u542b\u6709\u4e0d\u660e\u78ba\u7684\u7a7a\u683c",
+	"The unknown sign between two numbers" : "\u542b\u6709\u672a\u77e5\u7684\u7b26\u865f",
 	"Division by zero" : "\u9664\u6578\u70ba0",
 	"Error! Unlawful Infix Notation!" : "\u932f\u8aa4\u7684\u7b97\u5f0f",
 	"No have any value's ln()" : "\u542b\u6709\u5e36\u6709\u7a7a\u503c\u7684ln()",

@@ -19,6 +19,7 @@ class core
 	calculation(formula)
 	{
 		const tool = new toolbox();
+		formula = formula.toLowerCase();
 		formula = tool.standardization(formula);
 		
 		if(/log\s*\(\s*\)/.test(formula)) return ["no have any value's log()"];
@@ -33,6 +34,8 @@ class core
 			else return ["Error! Unlawful Infix Notation!"];
 		}
 		
+		if(/-\D*?[\*+\-\/]|\+\D*?[\*+\-\/]|\([\*+\-\/]/.test(formula)) return ["Error! Unlawful Infix Notation!"];
+		
 		const weighting =
 		{
 			"(" : 0,
@@ -44,6 +47,7 @@ class core
 		};
 
 		let isSymbol = false;
+		let mutOrDivError = false;
 		let noMul = false, noMul2 = false;
 		let needChange = false, endBracket = false;
 		let numStack = [], operStack = [];
@@ -51,8 +55,10 @@ class core
 		for(let x of tool.plusSplit(formula))
 		{
 			if(x === " " || !/[\*\^\-\+\/\s\d\.e\(\)]|log|ln/.test(x)) continue;
-			if(x === "Error! Unlawful Infix Notation!") return ["Error! Unlawful Infix Notation!"];
-
+console.log(x);
+			if(/[\*\/]/.test(x) && !mutOrDivError) mutOrDivError = true;
+			else if(/[\*\/]/.test(x) && mutOrDivError) return ["Error! Unlawful Infix Notation!"];
+			else mutOrDivError = false;
 			let nd;
 
 			switch(x)
@@ -217,7 +223,7 @@ class core
 						operStack.push("+");
 					}
 				}
-				if(noMul) return ["A space between two numbers"];	//Reject a space between two numbers.
+				if(noMul) return ["The unknown sign between two numbers"];	//Reject a space between two numbers.
 				else if(noMul2) 
 				{
 					if(x >= 0) numStack.push(`${numStack.pop()} ${x} *`);
@@ -349,9 +355,9 @@ class core
 
 		switch(result)
 		{
-		case "A space between two numbers":
+		case "The unknown sign between two numbers":
 			asari.viewResultColor_Update("#ff0000");
-			asari.viewResultPrint_Update("A space between two numbers");
+			asari.viewResultPrint_Update("The unknown sign between two numbers");
 			break;
 			
 		case "Division by zero":
@@ -515,7 +521,7 @@ class toolbox
 	{
 		let key = false;
 		for(let x of userInput) 
-			if(/[^\*\^\-\+\/\s\d\.\(\)]/.test(x))
+			if(/[^\*\^\-\+\/\s\d\.\(\)xepilogn]/.test(x))
 			{
 				key = true;
 				break;
@@ -643,11 +649,7 @@ class toolbox
 					continue;
 				}
 			}
-			else if(isNaN(parseFloat(x))) 
-			{
-				if(/-\D*?[\*+\-\/]|\+\D*?[\*+\-\/]|\([\*+\-\/]/.test(x)) yield "Error! Unlawful Infix Notation!";
-				for(let y of x) yield y;
-			}
+			else if(isNaN(parseFloat(x))) for(let y of x) yield y;
 			else yield x;
 		}
 		

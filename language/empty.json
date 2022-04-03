@@ -17,7 +17,7 @@
 	"ln(x): Calculate ln x" : "",
 	"log(x): Calculate log x" : "",
 	
-	"A space between two numbers" : "",
+	"The unknown sign between two numbers" : "",
 	"Division by zero" : "",
 	"Error! Unlawful Infix Notation!" : "",
 	"No have any value's ln()" : "",
