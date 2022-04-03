@@ -1,6 +1,6 @@
 # Just a calculator
 
-Version: PG-1.0.6
+Version: PG-1.0.7
 
 ## current features:
 
